@@ -21,11 +21,30 @@ public class AStar
 
         while (openList.Count > 0)
         {
-
+            Node current = openList[0]; //assume it has the lowest Fscore, need a function to get lowest fscored node from the openlist.
+            openList.Remove(current);
+            closedList.Add(current);
+            foreach (var item in current.edges)
+            {
+                Node neighbor = item.endNode; //not always the case, fix it.
+                //find gscore, find the neighbor with lowest gscore, and assign to it openlist.
+                if (!openList.Contains(neighbor))
+                {
+                    openList.Add(neighbor);
+                }
+            }
         }
         return path;
 
     }
+
+    private Node GetLowestFScoreNode(List<Node> nodeList, Dictionary<Node, float> fScore)
+    {
+        Node lowestFscoreNode = nodeList[0];
+        //Fill
+        return lowestFscoreNode;
+    }
+
 
     private float Cost(Node startNode, Node endNode)
     {
