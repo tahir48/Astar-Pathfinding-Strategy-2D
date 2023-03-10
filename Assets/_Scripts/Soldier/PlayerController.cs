@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
         _pathToWalk.Add(_graph.Nodes[5]);
         _pathToWalk.Add(_graph.Nodes[15]);
         _pathToWalk.Add(_graph.Nodes[28]);
+        
     }
 
     // Update is called once per frame
