@@ -1,14 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class AStar
 {
     public List<Node> FindPath(Node startNode, Node endNode)
     {
-        List<Node> openList = new List<Node>();
-        List<Node> closedList = new List<Node>();
+        List<Node> openList = new List<Node>(); //Nodes that have been discovered but not yet evaluated
+        List<Node> closedList = new List<Node>(); //Nodes that have been evaluated.
         List<Node> path = new List<Node>();
 
         Dictionary<Node, float> gScore = new Dictionary<Node, float>();
@@ -16,37 +14,57 @@ public class AStar
 
         openList.Add(startNode);
         gScore[startNode] = 0;
-        fScore[startNode] = Cost(startNode, endNode);
+        fScore[startNode] = HCost(startNode, endNode);
 
 
         while (openList.Count > 0)
         {
-            Node current = openList[0]; //assume it has the lowest Fscore, need a function to get lowest fscored node from the openlist.
+            Node current = GetLowestFScoreNode(openList, fScore);
+            //
+            //Edge cases for current node?
+            //
             openList.Remove(current);
             closedList.Add(current);
-            foreach (var item in current.edges)
+            foreach (var edge in current.edges)
             {
-                Node neighbor = item.endNode; //not always the case, fix it.
-                //find gscore, find the neighbor with lowest gscore, and assign to it openlist.
-                if (!openList.Contains(neighbor))
+                Node neighbor = edge.startNode == current ? edge.endNode : edge.startNode;
+                if (closedList.Contains(neighbor)) continue;
+                float tempGScore = gScore[current] + edge.weight;
+                if (!openList.Contains(neighbor) || tempGScore < gScore[neighbor])
                 {
+                    gScore[neighbor] = tempGScore;
+                    fScore[neighbor] = gScore[neighbor] + HCost(neighbor, endNode);
                     openList.Add(neighbor);
                 }
             }
         }
+        
         return path;
+        //NEXT TASK//
+        //Keep track of visited nodes, return the path whenever current node is the endnode 
 
     }
 
     private Node GetLowestFScoreNode(List<Node> nodeList, Dictionary<Node, float> fScore)
-    {
-        Node lowestFscoreNode = nodeList[0];
-        //Fill
-        return lowestFscoreNode;
+    {   //We start with the assumption that the first element of the list has the lowest fscore.
+        //Then we traverse through the list to find another node with a lower fscore.
+        //If we find one, we assign it as the node with the lowest fscore.
+        Node lowestNode = nodeList[0];
+        float lowestFScore = fScore[lowestNode];
+        foreach (Node node in nodeList)
+        {
+            float nodeFScore = fScore[node];
+            if (nodeFScore < lowestFScore)
+            {
+                lowestNode = node;
+                lowestFScore = nodeFScore;
+            }
+        }
+        return lowestNode;
     }
 
 
-    private float Cost(Node startNode, Node endNode)
+    private float HCost(Node startNode, Node endNode)
     {
         return Mathf.Sqrt(Mathf.Pow(endNode.x - startNode.x, 2) + Mathf.Pow(endNode.y - startNode.y, 2));
     }
