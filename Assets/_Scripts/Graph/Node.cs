@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class Node
 {
-    public Vector3Int Position;
-    public List<Edge> Edges;
+    public int x;
+    public int y;
+    public List<Edge> edges;
 
-    public Node(Vector3Int position)
+    public Node(int x, int y)
     {
-        Position = position;
-        Edges = new List<Edge>();
+        this.x = x;
+        this.y = y;
+        edges = new List<Edge>();
     }
 }

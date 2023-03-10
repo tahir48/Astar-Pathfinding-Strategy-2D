@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class Edge
 {
-    public Node StartNode;
-    public Node EndNode;
-    public float Weight;
+    public Node startNode;
+    public Node endNode;
+    public float weight;
 
     public Edge(Node startNode, Node endNode, float weight)
     {
-        StartNode = startNode;
-        EndNode = endNode;
-        Weight = weight;
+        this.startNode = startNode;
+        this.endNode = endNode;
+        this.weight = weight;
     }
 }

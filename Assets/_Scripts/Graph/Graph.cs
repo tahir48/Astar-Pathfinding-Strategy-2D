@@ -11,69 +11,57 @@ public class Graph
         Nodes = new List<Node>();
     }
 
+    public void AddNode(Node node)
+    {
+        Nodes.Add(node);
+    }
+
+    public void AddEdge(Node node1, Node node2, float cost)
+    {
+        Edge edge = new Edge(node1, node2, cost);
+        node1.edges.Add(edge);
+        node2.edges.Add(edge);
+    }
+
     public void CreateGraphFromTilemap(Tilemap tilemap)
     {
-        Grid grid = tilemap.layoutGrid;
-
-        foreach (Vector3Int position in tilemap.cellBounds.allPositionsWithin)
+        for (int x = tilemap.cellBounds.xMin; x < tilemap.cellBounds.xMax - 1; x++)
         {
-            TileBase tile = tilemap.GetTile(position);
-            if (tile != null)
+            for (int y = tilemap.cellBounds.yMin; y < tilemap.cellBounds.yMax; y++)
             {
-                Node node = new Node(position);
-                Nodes.Add(node);
-
-                // Check for adjacent tiles and add edges
-                Vector3Int leftPosition = position + Vector3Int.left;
-                if (tilemap.HasTile(leftPosition))
+                Vector3Int pos = new Vector3Int(x, y, 0);
+                TileBase tile = tilemap.GetTile(pos);
+                if (tile != null)
                 {
-                    TileBase leftTile = tilemap.GetTile(leftPosition);
-                    float weight = GetWeight(tile) + GetWeight(leftTile);
-                    Node leftNode = Nodes.Find(n => n.Position == leftPosition);
-                    Edge edge = new Edge(node, leftNode, weight);
-                    node.Edges.Add(edge);
-                }
-
-                Vector3Int rightPosition = position + Vector3Int.right;
-                if (tilemap.HasTile(rightPosition))
-                {
-                    TileBase rightTile = tilemap.GetTile(rightPosition);
-                    float weight = GetWeight(tile) + GetWeight(rightTile);
-                    Node rightNode = Nodes.Find(n => n.Position == rightPosition);
-                    Edge edge = new Edge(node, rightNode, weight);
-                    node.Edges.Add(edge);
-                }
-
-                Vector3Int downPosition = position + Vector3Int.down;
-                if (tilemap.HasTile(downPosition))
-                {
-                    TileBase downTile = tilemap.GetTile(downPosition);
-                    float weight = GetWeight(tile) + GetWeight(downTile);
-                    Node downNode = Nodes.Find(n => n.Position == downPosition);
-                    Edge edge = new Edge(node, downNode, weight);
-                    node.Edges.Add(edge);
-                }
-
-                Vector3Int upPosition = position + Vector3Int.up;
-                if (tilemap.HasTile(upPosition))
-                {
-                    TileBase upTile = tilemap.GetTile(upPosition);
-                    float weight = GetWeight(tile) + GetWeight(upTile);
-                    Node upNode = Nodes.Find(n => n.Position == upPosition);
-                    Edge edge = new Edge(node, upNode, weight);
-                    node.Edges.Add(edge);
+                    Node node = new Node(x, y);
+                    AddNode(node);
+                    if (x > tilemap.cellBounds.xMin)
+                    {
+                        TileBase leftTile = tilemap.GetTile(new Vector3Int(x - 1, y, 0));
+                        if (leftTile != null)
+                        {
+                            Node leftNode = Nodes.Find(n => n.x == x - 1 && n.y == y);
+                            if (leftNode != null)
+                            {
+                                AddEdge(node, leftNode, 1);
+                            }
+                        }
+                    }
+                    if (y > tilemap.cellBounds.yMin)
+                    {
+                        TileBase bottomTile = tilemap.GetTile(new Vector3Int(x, y - 1, 0));
+                        if (bottomTile != null)
+                        {
+                            Node bottomNode = Nodes.Find(n => n.x == x && n.y == y - 1);
+                            if (bottomNode != null)
+                            {
+                                AddEdge(node, bottomNode, 1);
+                            }
+                        }
+                    }
                 }
             }
         }
-
-    }
-
-
-    private float GetWeight(TileBase tile)
-    {
-        // Add logic here to determine the weight of a tile
-        return 1f;
     }
 }
 
-    

@@ -18,21 +18,17 @@ public class PlayerController : MonoBehaviour
     {
         _graph = new Graph();
         _graph.CreateGraphFromTilemap(tilemap);
-        foreach (var item in _graph.Nodes)
-        {
-            Debug.Log(item.Position);
-        }
-
+        transform.position = new Vector3(_graph.Nodes[0].x, _graph.Nodes[0].y, 0);
     }
     // Start is called before the first frame update
     void Start()
     {
         _pathToWalk = new List<Node>();
         if (tilemapController == null) { FindObjectOfType<TilemapController>(); }
-        _pathToWalk.Add(_graph.Nodes[10]);
-        _pathToWalk.Add(_graph.Nodes[8]);
+        _pathToWalk.Add(_graph.Nodes[0]);
+        _pathToWalk.Add(_graph.Nodes[5]);
         _pathToWalk.Add(_graph.Nodes[15]);
-        _pathToWalk.Add(_graph.Nodes[32]);
+        _pathToWalk.Add(_graph.Nodes[28]);
     }
 
     // Update is called once per frame
@@ -40,7 +36,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            transform.position = tilemapController.GetTilePositionAtMouseClick();
+            //transform.position = tilemapController.GetTilePositionAtMouseClick();
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -49,7 +45,7 @@ public class PlayerController : MonoBehaviour
         }
         if (isMoving)
         {
-            Vector3 targetPosition = _pathToWalk[_indexToVisit].Position;
+            Vector3 targetPosition = new Vector3(_pathToWalk[_indexToVisit].x, _pathToWalk[_indexToVisit].y, 0);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             if (transform.position == targetPosition)
             {
@@ -61,5 +57,31 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        if (_graph != null)
+        {
+            foreach (Node node in _graph.Nodes)
+            {
+                if (node != null)
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawSphere(new Vector3(node.x, node.y, 0), 0.1f);
+
+                    foreach (Edge edge in node.edges)
+                    {
+                        if (edge.endNode != null)
+                        {
+                            Gizmos.color = Color.green;
+                            Gizmos.DrawLine(new Vector3(node.x, node.y, 0), new Vector3(edge.endNode.x, edge.endNode.y, 0));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 }
 
