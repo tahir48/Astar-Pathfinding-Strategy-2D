@@ -63,5 +63,22 @@ public class Graph
             }
         }
     }
+
+
+    public Node GetNodeAtMouseClick(Tilemap tilemap, Camera camera, List<Node> nodes)
+    {
+        Vector3 mousePosScreen = Input.mousePosition;
+        Vector3 clickedPosition = camera.ScreenToWorldPoint(mousePosScreen);
+        Vector3Int clickedTilePosition = tilemap.WorldToCell(clickedPosition);
+        foreach (var node in nodes)
+        {
+            if (node.x == clickedTilePosition.x && node.y == clickedTilePosition.y)
+            {
+                return node;
+            }
+        }
+        return null;
+
+    }
 }
 

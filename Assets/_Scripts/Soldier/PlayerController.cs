@@ -38,7 +38,10 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            _pathToWalk = AStar.FindPath(_graph.Nodes[0], _graph.Nodes[67]);
+            //_pathToWalk = AStar.FindPath(_graph.Nodes[0], _graph.Nodes[67]);
+            Node nextNode;
+            nextNode = _graph.GetNodeAtMouseClick(tilemap, Camera.main, _graph.Nodes);
+            _pathToWalk = AStar.FindPath(_graph.Nodes[0], nextNode);
             //transform.position = tilemapController.GetTilePositionAtMouseClick();
         }
         if (Input.GetKeyDown(KeyCode.Space))
