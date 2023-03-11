@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -41,4 +39,31 @@ public class GameData : MonoBehaviour
     {
 
     }
+
+    #region Draw Graph OnGizmos
+    private void OnDrawGizmos()
+    {
+        if (GameData.instance.Graph != null)
+        {
+            foreach (Node node in GameData.instance.Graph.Nodes)
+            {
+                if (node != null)
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawSphere(new Vector3(node.x, node.y, 0), 0.1f);
+
+                    foreach (Edge edge in node.edges)
+                    {
+                        if (edge.endNode != null)
+                        {
+                            Gizmos.color = Color.green;
+                            Gizmos.DrawLine(new Vector3(node.x, node.y, 0), new Vector3(edge.endNode.x, edge.endNode.y, 0));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #endregion
+
 }
