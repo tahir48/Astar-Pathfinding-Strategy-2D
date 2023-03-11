@@ -7,7 +7,6 @@ public class AStar
     {
         List<Node> openList = new List<Node>(); //Nodes that have been discovered but not yet evaluated
         List<Node> closedList = new List<Node>(); //Nodes that have been evaluated.
-        List<Node> path = new List<Node>();
 
         Dictionary<Node, float> gScore = new Dictionary<Node, float>();
         Dictionary<Node, float> fScore = new Dictionary<Node, float>();
@@ -21,21 +20,9 @@ public class AStar
         while (openList.Count > 0)
         {
             Node current = GetLowestFScoreNode(openList, fScore);
-            //
-            //Edge cases for current node? *** check ***
-            //
             if (current == endNode)
             {
-                //List<Node> path = new List<Node>();
-                path.Add(endNode);
-                Node tmp = endNode;
-                while (coupledVisits.ContainsKey(tmp))
-                {
-                    tmp = coupledVisits[tmp]; //equivalent to tmp = tmp.prev
-                    path.Insert(0, tmp); //insert at the begining of the list
-                    Debug.Log(tmp.x + " inserted at the begining of the path list");
-                }
-                return path;
+                return PathGenerator(endNode, coupledVisits);
             }
 
             openList.Remove(current);
@@ -50,11 +37,24 @@ public class AStar
                     coupledVisits[neighbor] = current;
                     gScore[neighbor] = tempGScore;
                     fScore[neighbor] = gScore[neighbor] + HCost(neighbor, endNode);
-                    openList.Add(neighbor);
+                    if (!openList.Contains(neighbor)) openList.Add(neighbor);
                 }
             }
         }
         return null;
+    }
+
+    private static List<Node> PathGenerator(Node endNode, Dictionary<Node, Node> coupledVisits)
+    {
+        List<Node> path = new List<Node>();
+        path.Add(endNode);
+        Node tmp = endNode;
+        while (coupledVisits.ContainsKey(tmp))
+        {
+            tmp = coupledVisits[tmp]; //equivalent to tmp = tmp.prev
+            path.Insert(0, tmp); //insert at the begining of the list
+        }
+        return path;
     }
 
     private static Node GetLowestFScoreNode(List<Node> nodeList, Dictionary<Node, float> fScore)
@@ -78,6 +78,7 @@ public class AStar
 
     private static float HCost(Node startNode, Node endNode)
     {
+        //This function evaluates the most optimistic cost between the intermediary node and the target node.
         return Mathf.Sqrt(Mathf.Pow(endNode.x - startNode.x, 2) + Mathf.Pow(endNode.y - startNode.y, 2));
     }
 

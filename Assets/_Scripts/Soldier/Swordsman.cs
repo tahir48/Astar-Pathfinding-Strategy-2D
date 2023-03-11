@@ -6,7 +6,11 @@ namespace StrategyGame_2DPlatformer.Soldier
 {
     public class Swordsman : Soldier
     {
-        private bool selected = false;
+        #region Selection Related Variables
+        private Color _firstColor;
+        private SpriteRenderer _spriteRenderer;
+        #endregion
+
         #region Movement Related Variables
         private List<Node> _pathToWalk;
         private float moveSpeed = 2f;
@@ -15,6 +19,12 @@ namespace StrategyGame_2DPlatformer.Soldier
         #endregion
         private void Start()
         {
+            #region Selection Related Assignments
+            base.isSelected = false;
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _firstColor = _spriteRenderer.color;
+            #endregion
+            populationOccupied = 1;
             currentNode = GameData.instance.Graph.Nodes[0];
             transform.position = new Vector3(GameData.instance.Graph.Nodes[0].x, GameData.instance.Graph.Nodes[0].y, 0);
         }
@@ -22,17 +32,15 @@ namespace StrategyGame_2DPlatformer.Soldier
         void Update()
         {
             #region Movement Related Functionality
-            if (Input.GetMouseButtonDown(1) && selected)
+            if (Input.GetMouseButtonDown(1) && base.isSelected && !isMoving)
             {
+                _indexToVisit = 0;
                 Node nextNode;
                 nextNode = GameData.instance.Graph.GetNodeAtMouseClick(GameData.instance.Tilemap, Camera.main, GameData.instance.Graph.Nodes);
                 _pathToWalk = AStar.FindPath(currentNode, nextNode);
-            }
-            if (Input.GetKeyDown(KeyCode.Space) && selected)
-            {
-                _indexToVisit = 0;
                 isMoving = true;
-                selected = false;
+                base.isSelected = false;
+                _spriteRenderer.color = _firstColor;
             }
             if (isMoving)
             {
@@ -58,12 +66,14 @@ namespace StrategyGame_2DPlatformer.Soldier
         }
         #endregion
 
+        #region Selection Related Functionality
         void OnMouseDown()
         {
-            selected = true;
-            GetComponent<SpriteRenderer>().color = Color.yellow;
+            base.isSelected = true;
+            GetComponent<SpriteRenderer>().color = Color.red;
             Debug.Log("Is Selected");
         }
+        #endregion
 
     }
 }

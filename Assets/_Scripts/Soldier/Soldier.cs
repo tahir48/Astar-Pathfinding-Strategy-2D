@@ -5,7 +5,7 @@ namespace StrategyGame_2DPlatformer.Soldier
 {
     public abstract class Soldier : MonoBehaviour
     {
-        protected int isSelected;
+        protected bool isSelected;
         public int populationOccupied;
         protected Node currentNode;
         public abstract void Move();

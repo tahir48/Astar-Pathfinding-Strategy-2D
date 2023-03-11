@@ -33,10 +33,10 @@ public class TilemapController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            ChangeColorOfTileAtMouseClick();
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    ChangeColorOfTileAtMouseClick();
+        //}
     }
     public TileBase GetTileByIndex(int index)
     {
