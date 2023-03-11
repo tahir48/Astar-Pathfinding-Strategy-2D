@@ -25,10 +25,11 @@ public class PlayerController : MonoBehaviour
     {
         _pathToWalk = new List<Node>();
         if (tilemapController == null) { FindObjectOfType<TilemapController>(); }
-        _pathToWalk.Add(_graph.Nodes[0]);
-        _pathToWalk.Add(_graph.Nodes[5]);
-        _pathToWalk.Add(_graph.Nodes[15]);
-        _pathToWalk.Add(_graph.Nodes[28]);
+        //_pathToWalk.Add(_graph.Nodes[0]);
+        //_pathToWalk.Add(_graph.Nodes[5]);
+        //_pathToWalk.Add(_graph.Nodes[15]);
+        //_pathToWalk.Add(_graph.Nodes[28]);
+        
         
     }
 
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
+            _pathToWalk = AStar.FindPath(_graph.Nodes[0], _graph.Nodes[67]);
             //transform.position = tilemapController.GetTilePositionAtMouseClick();
         }
         if (Input.GetKeyDown(KeyCode.Space))
