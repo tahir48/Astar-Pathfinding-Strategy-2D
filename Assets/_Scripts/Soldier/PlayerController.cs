@@ -6,42 +6,28 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private TilemapController tilemapController;
     public Tilemap tilemap;
-    private Graph _graph;
-    public Graph Graph { get { return _graph; } private set { } }
     public float moveSpeed = 5f;
 
     private List<Node> _pathToWalk;
     private int _indexToVisit;
     private bool isMoving;
+    private Node currentNode;
 
-    private void Awake()
-    {
-        _graph = new Graph();
-        _graph.CreateGraphFromTilemap(tilemap);
-        transform.position = new Vector3(_graph.Nodes[0].x, _graph.Nodes[0].y, 0);
-    }
-    // Start is called before the first frame update
     void Start()
     {
+        transform.position = new Vector3(GameData.instance.Graph.Nodes[0].x, GameData.instance.Graph.Nodes[0].y, 0);
+        currentNode = GameData.instance.Graph.Nodes[0];
         _pathToWalk = new List<Node>();
         if (tilemapController == null) { FindObjectOfType<TilemapController>(); }
-        //_pathToWalk.Add(_graph.Nodes[0]);
-        //_pathToWalk.Add(_graph.Nodes[5]);
-        //_pathToWalk.Add(_graph.Nodes[15]);
-        //_pathToWalk.Add(_graph.Nodes[28]);
-        
-        
     }
-
     // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(1))
         {
-            //_pathToWalk = AStar.FindPath(_graph.Nodes[0], _graph.Nodes[67]);
             Node nextNode;
-            nextNode = _graph.GetNodeAtMouseClick(tilemap, Camera.main, _graph.Nodes);
-            _pathToWalk = AStar.FindPath(_graph.Nodes[0], nextNode);
+            nextNode = GameData.instance.Graph.GetNodeAtMouseClick(tilemap, Camera.main, GameData.instance.Graph.Nodes);
+            _pathToWalk = AStar.FindPath(currentNode, nextNode);
             //transform.position = tilemapController.GetTilePositionAtMouseClick();
         }
         if (Input.GetKeyDown(KeyCode.Space))
@@ -55,6 +41,7 @@ public class PlayerController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             if (transform.position == targetPosition)
             {
+                currentNode = _pathToWalk[_indexToVisit];
                 _indexToVisit++;
                 if (_indexToVisit >= _pathToWalk.Count)
                 {
@@ -66,9 +53,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (_graph != null)
+        if (GameData.instance.Graph != null)
         {
-            foreach (Node node in _graph.Nodes)
+            foreach (Node node in GameData.instance.Graph.Nodes)
             {
                 if (node != null)
                 {
