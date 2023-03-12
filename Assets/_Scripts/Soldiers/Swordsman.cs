@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using StrategyGame_2DPlatformer.GameManagement;
 
-namespace StrategyGame_2DPlatformer.Soldier
+namespace StrategyGame_2DPlatformer.Soldiers
 {
     public class Swordsman : Soldier
     {
@@ -37,7 +37,9 @@ namespace StrategyGame_2DPlatformer.Soldier
                 _indexToVisit = 0;
                 Node nextNode;
                 nextNode = GameData.instance.Graph.GetNodeAtMouseClick(GameData.instance.Tilemap, Camera.main, GameData.instance.Graph.Nodes);
+                if (nextNode == null || nextNode.isOccupied) return;
                 _pathToWalk = AStar.FindPath(currentNode, nextNode);
+                currentNode.isOccupied = false;
                 isMoving = true;
                 base.isSelected = false;
                 _spriteRenderer.color = _firstColor;
@@ -57,6 +59,7 @@ namespace StrategyGame_2DPlatformer.Soldier
             if (transform.position == targetPosition)
             {
                 currentNode = _pathToWalk[_indexToVisit];
+                currentNode.isOccupied = true;
                 _indexToVisit++;
                 if (_indexToVisit >= _pathToWalk.Count)
                 {
@@ -71,7 +74,6 @@ namespace StrategyGame_2DPlatformer.Soldier
         {
             base.isSelected = true;
             GetComponent<SpriteRenderer>().color = Color.red;
-            Debug.Log("Is Selected");
         }
         #endregion
 

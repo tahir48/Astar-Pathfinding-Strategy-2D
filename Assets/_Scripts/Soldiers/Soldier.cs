@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace StrategyGame_2DPlatformer.Soldier
+namespace StrategyGame_2DPlatformer.Soldiers
 {
     public abstract class Soldier : MonoBehaviour
     {

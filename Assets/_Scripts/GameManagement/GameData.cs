@@ -14,6 +14,14 @@ namespace StrategyGame_2DPlatformer.GameManagement
         public Graph Graph { get { return _graph; } private set { } }
         public Tilemap Tilemap { get { return _tilemap; } private set { } }
         #endregion
+
+        #region Gameplay Related Data
+        private int _maxPopulation;
+        private int _currentPopulation;
+        public int MaxPopulation { get { return _maxPopulation;} private set { } }
+        public int CurrentPopulation { get { return _currentPopulation;} set { _currentPopulation = value; } }
+        
+        #endregion
         private void Awake()
         {
             #region Simple Sington
