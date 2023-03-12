@@ -6,5 +6,7 @@ namespace StrategyGame_2DPlatformer
     {
         protected int health;
         protected int cost;
+        protected int sizeX;
+        protected int sizeY;
     }
 }

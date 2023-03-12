@@ -27,7 +27,7 @@ namespace StrategyGame_2DPlatformer
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int tilePosition = GameData.instance.Tilemap.WorldToCell(mousePosition);
 
-            if (GameData.instance.Graph.GetNodeAtMouseClick(GameData.instance.Tilemap,Camera.main,GameData.instance.Graph.Nodes).isOccupied)
+            if (GameData.instance.Graph.GetNodeAtMouseClick().isOccupied)
             {
                 highlightColor = unavalaibleColor;
             }else
@@ -37,22 +37,21 @@ namespace StrategyGame_2DPlatformer
 
             if (previousPosition != tilePosition)
             {
-                GameData.instance.Tilemap.SetTileFlags(previousPosition, TileFlags.None);
-                GameData.instance.Tilemap.SetColor(previousPosition, previousColor);
+                ChangeTileColor(previousPosition, previousColor);
             }
 
             highlightedTile = GameData.instance.Tilemap.GetTile(tilePosition);
             if (highlightedTile != null)
             {
                 previousPosition = tilePosition;
-                GameData.instance.Tilemap.SetTileFlags(tilePosition, TileFlags.None);
-                GameData.instance.Tilemap.SetColor(tilePosition, highlightColor);
+                ChangeTileColor(tilePosition, highlightColor);
             }
         }
+
+        private void ChangeTileColor(Vector3Int pos, Color color)
+        {
+            GameData.instance.Tilemap.SetTileFlags(pos, TileFlags.None);
+            GameData.instance.Tilemap.SetColor(pos, color);
+        }
     }
-
-
-
-
-
 }

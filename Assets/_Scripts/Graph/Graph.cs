@@ -1,3 +1,4 @@
+using StrategyGame_2DPlatformer.GameManagement;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -65,12 +66,12 @@ public class Graph
     }
 
 
-    public Node GetNodeAtMouseClick(Tilemap tilemap, Camera camera, List<Node> nodes)
+    public Node GetNodeAtMouseClick()
     {
         Vector3 mousePosScreen = Input.mousePosition;
-        Vector3 clickedPosition = camera.ScreenToWorldPoint(mousePosScreen);
-        Vector3Int clickedTilePosition = tilemap.WorldToCell(clickedPosition);
-        foreach (var node in nodes)
+        Vector3 clickedPosition = Camera.main.ScreenToWorldPoint(mousePosScreen);
+        Vector3Int clickedTilePosition = GameData.instance.Tilemap.WorldToCell(clickedPosition);
+        foreach (var node in GameData.instance.Graph.Nodes)
         {
             if (node.x == clickedTilePosition.x && node.y == clickedTilePosition.y)
             {
@@ -78,7 +79,19 @@ public class Graph
             }
         }
         return null;
-
     }
+
+    public Node GetNodeAtPosition(Vector3Int pos)
+    {
+        foreach (var node in GameData.instance.Graph.Nodes)
+        {
+            if (node.x == pos.x && node.y == pos.y)
+            {
+                return node;
+            }
+        }
+        return null;
+    }
+
 }
 

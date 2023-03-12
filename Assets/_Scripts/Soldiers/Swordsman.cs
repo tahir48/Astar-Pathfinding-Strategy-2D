@@ -36,7 +36,7 @@ namespace StrategyGame_2DPlatformer.Soldiers
             {
                 _indexToVisit = 0;
                 Node nextNode;
-                nextNode = GameData.instance.Graph.GetNodeAtMouseClick(GameData.instance.Tilemap, Camera.main, GameData.instance.Graph.Nodes);
+                nextNode = GameData.instance.Graph.GetNodeAtMouseClick();
                 if (nextNode == null || nextNode.isOccupied) return;
                 _pathToWalk = AStar.FindPath(currentNode, nextNode);
                 currentNode.isOccupied = false;
