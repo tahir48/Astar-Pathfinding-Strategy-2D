@@ -59,10 +59,10 @@ namespace StrategyGame_2DPlatformer.Soldiers
             if (transform.position == targetPosition)
             {
                 currentNode = _pathToWalk[_indexToVisit];
-                currentNode.isOccupied = true;
                 _indexToVisit++;
                 if (_indexToVisit >= _pathToWalk.Count)
                 {
+                    currentNode.isOccupied = true;
                     isMoving = false;
                 }
             }

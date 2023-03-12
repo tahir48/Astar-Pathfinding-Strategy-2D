@@ -7,20 +7,33 @@ namespace StrategyGame_2DPlatformer
     public class HighligtMousePosition : MonoBehaviour
     {
         private Color highlightColor;
+        public Color unavalaibleColor;
+        public Color availaibleColor;
         private TileBase highlightedTile;
         private Vector3Int previousPosition;
         private Color previousColor;
+        private bool isOccupied;
 
         private void Start()
         {
-            highlightColor = Color.red;
-            previousColor = Color.green;
+            unavalaibleColor = Color.red;
+            availaibleColor = Color.green;
+            highlightColor = availaibleColor;
+            previousColor = GameData.instance.Tilemap.GetColor(new Vector3Int(1, 1, 1));
         }
 
         void Update()
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int tilePosition = GameData.instance.Tilemap.WorldToCell(mousePosition);
+
+            if (GameData.instance.Graph.GetNodeAtMouseClick(GameData.instance.Tilemap,Camera.main,GameData.instance.Graph.Nodes).isOccupied)
+            {
+                highlightColor = unavalaibleColor;
+            }else
+            {
+                highlightColor = availaibleColor;
+            }
 
             if (previousPosition != tilePosition)
             {
@@ -32,11 +45,14 @@ namespace StrategyGame_2DPlatformer
             if (highlightedTile != null)
             {
                 previousPosition = tilePosition;
-                previousColor = GameData.instance.Tilemap.GetColor(tilePosition);
                 GameData.instance.Tilemap.SetTileFlags(tilePosition, TileFlags.None);
                 GameData.instance.Tilemap.SetColor(tilePosition, highlightColor);
             }
         }
     }
+
+
+
+
 
 }

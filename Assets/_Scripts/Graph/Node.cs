@@ -16,4 +16,6 @@ public class Node
         edges = new List<Edge>();
         this.isOccupied = isOccupied;
     }
+
+
 }

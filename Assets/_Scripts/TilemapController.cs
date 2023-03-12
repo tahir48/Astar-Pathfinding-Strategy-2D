@@ -9,8 +9,6 @@ public class TilemapController : MonoBehaviour
     [SerializeField] private GameObject _player;
     Vector3 nextposition;
 
-
-
     void Start()
     {
         mainCamera = Camera.main;
