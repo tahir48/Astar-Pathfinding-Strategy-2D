@@ -24,7 +24,7 @@ public class AStar
             {
                 return PathGenerator(endNode, coupledVisits);
             }
-
+            
             openList.Remove(current);
             closedList.Add(current);
             foreach (var edge in current.edges)
@@ -37,7 +37,7 @@ public class AStar
                     coupledVisits[neighbor] = current;
                     gScore[neighbor] = tempGScore;
                     fScore[neighbor] = gScore[neighbor] + HCost(neighbor, endNode);
-                    if (!openList.Contains(neighbor)) openList.Add(neighbor);
+                    if (!openList.Contains(neighbor) && !neighbor.isOccupied) openList.Add(neighbor);
                 }
             }
         }
