@@ -973,8 +973,8 @@ GameObject:
   - component: {fileID: 725052071}
   - component: {fileID: 725052070}
   m_Layer: 5
-  m_Name: Element2
-  m_TagString: Untagged
+  m_Name: Soldiers
+  m_TagString: Soldiers
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1191,10 +1191,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -4349897377185923112, guid: 6028f905977c3cf41ad0f956c4f5def3, type: 3}
-      propertyPath: image
-      value: 
-      objectReference: {fileID: 970504620}
     - target: {fileID: 1400177977207723537, guid: 6028f905977c3cf41ad0f956c4f5def3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1510,8 +1506,8 @@ GameObject:
   - component: {fileID: 970504620}
   - component: {fileID: 970504622}
   m_Layer: 5
-  m_Name: Element1
-  m_TagString: Untagged
+  m_Name: BuildingImage
+  m_TagString: BuildingImage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
