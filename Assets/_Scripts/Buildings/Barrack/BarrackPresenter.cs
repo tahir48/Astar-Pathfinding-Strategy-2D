@@ -44,6 +44,7 @@ namespace StrategyGame_2DPlatformer
                 }
                 sprite.GetComponent<SpriteFollowMouse>().enabled = false;
                 _placeBuilding.enabled = false;
+                sprite.GetComponent<MilitaryBuilding>().isPlaced = true;
                 Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector3Int tileToPlace = GameData.instance.Tilemap.WorldToCell(mousePos);
                 Vector3 destinationToPlace = GameData.instance.Tilemap.GetCellCenterWorld(tileToPlace);
