@@ -37,6 +37,7 @@ namespace StrategyGame_2DPlatformer
                         Debug.Log(node.x);
                         node.isOccupied = true;
                     }
+                    sprite.GetComponent<MilitaryBuilding>().occupiedPositions = _placeBuilding.PositionsToPlace;
                 }
                 else
                 {
