@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1400177977207723539}
   - component: {fileID: 1400177977207723538}
   - component: {fileID: -9124901349407087527}
+  - component: {fileID: 305667869396345496}
   m_Layer: 0
   m_Name: Barracks
   m_TagString: Untagged
@@ -136,5 +137,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37e5bbb3ed0917d468224f1f10d94353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _placeBuilding: {fileID: 305667869396345496}
+--- !u!114 &305667869396345496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400177977207723549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086d9a6a24c05304bb8d7cc1a7cb7726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

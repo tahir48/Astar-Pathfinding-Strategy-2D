@@ -23,7 +23,7 @@ public class Graph
         node1.edges.Add(edge);
         node2.edges.Add(edge);
     }
-
+  
     public void CreateGraphFromTilemap(Tilemap tilemap)
     {
         for (int x = tilemap.cellBounds.xMin; x < tilemap.cellBounds.xMax - 1; x++)
