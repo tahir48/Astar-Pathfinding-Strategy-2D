@@ -39,6 +39,7 @@ namespace StrategyGame_2DPlatformer
                 }
             }
 
+
             int occupiedCount = 0;
             if (currentTilePositions.Count != 0)
             {

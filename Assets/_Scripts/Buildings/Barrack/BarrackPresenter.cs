@@ -1,4 +1,6 @@
+using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace StrategyGame_2DPlatformer
 {
@@ -28,6 +30,7 @@ namespace StrategyGame_2DPlatformer
                 
                 if (_placeBuilding.PositionsToPlace != null)
                 {
+                    Debug.Log("_placeBuilding.PositionsToPlace  " + _placeBuilding.PositionsToPlace.Count);
                     foreach (var pos in _placeBuilding.PositionsToPlace)
                     {
                         Node node = GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos);
@@ -41,8 +44,11 @@ namespace StrategyGame_2DPlatformer
                 }
                 sprite.GetComponent<SpriteFollowMouse>().enabled = false;
                 _placeBuilding.enabled = false;
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector3Int tileToPlace = GameData.instance.Tilemap.WorldToCell(mousePos);
+                Vector3 destinationToPlace = GameData.instance.Tilemap.GetCellCenterWorld(tileToPlace);
+                sprite.transform.position = new Vector3(destinationToPlace.x, destinationToPlace.y, 0f);
                 isOpen = false;
-
             }
 
 
