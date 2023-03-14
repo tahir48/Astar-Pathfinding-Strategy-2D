@@ -1,16 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using StrategyGame_2DPlatformer.GameManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
 
 namespace StrategyGame_2DPlatformer.Soldiers
 {
     public class Swordsman : Soldier
     {
+        #region Population Related Functionality
+        [SerializeField] private int swordsmanPopulationOccupied;
+        protected override int PopulationOccupied
+        {
+            get { return swordsmanPopulationOccupied; }
+            set { swordsmanPopulationOccupied = value; }
+        }
+        #endregion
         #region Selection Related Variables
         private Color _firstColor;
         private SpriteRenderer _spriteRenderer;
         #endregion
-
         #region Movement Related Variables
         private List<Node> _pathToWalk;
         private float moveSpeed = 2f;
@@ -24,11 +33,10 @@ namespace StrategyGame_2DPlatformer.Soldiers
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _firstColor = _spriteRenderer.color;
             #endregion
-            populationOccupied = 1;
-            currentNode = GameData.instance.Graph.Nodes[0];
-            transform.position = new Vector3(GameData.instance.Graph.Nodes[0].x, GameData.instance.Graph.Nodes[0].y, 0);
+            #region Population Related Variables
+            GameData.instance.CurrentPopulation += PopulationOccupied;
+            #endregion
         }
-
         void Update()
         {
             #region Movement Related Functionality
@@ -49,9 +57,28 @@ namespace StrategyGame_2DPlatformer.Soldiers
                 Move();
             }
             #endregion
+            #region Selection Related Functionality
+            if (isSelected && Input.GetMouseButtonDown(0))
+            {
+                // Check if the clicked object is not the building itself
+                if (!EventSystem.current.IsPointerOverGameObject() && !IsClickOnBuilding())
+                {
+                    // Deselect the building
+                    isSelected = false;
+                    GetComponent<SpriteRenderer>().color = Color.white;
+                }
+            }
+            #endregion
+        }
+        #region Movement Related Functionality
+        public void SetCurrentNodeOnSpawn()
+        {
+            var currentWorldpos = transform.position;
+            Vector3Int currentTilePosition = GameData.instance.Tilemap.WorldToCell(currentWorldpos);
+            Node nodeToAssign = GameData.instance.Graph.GetNodeAtPosition(currentTilePosition);
+            currentNode = nodeToAssign;
         }
 
-        #region Movement Related Functionality
         public override void Move()
         {
             Vector3 targetPosition = new Vector3(_pathToWalk[_indexToVisit].x, _pathToWalk[_indexToVisit].y, 0);
@@ -68,13 +95,19 @@ namespace StrategyGame_2DPlatformer.Soldiers
             }
         }
         #endregion
-
         #region Selection Related Functionality
         void OnMouseDown()
         {
             base.isSelected = true;
             GetComponent<SpriteRenderer>().color = Color.red;
         }
+        bool IsClickOnBuilding()
+        {
+            // Check if the mouse position is inside the building sprite
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            return GetComponent<SpriteRenderer>().bounds.Contains(mousePosition);
+        }
+
         #endregion
 
     }

@@ -1,3 +1,5 @@
+using StrategyGame_2DPlatformer.GameManagement;
+using StrategyGame_2DPlatformer.Soldiers;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,8 +10,13 @@ namespace StrategyGame_2DPlatformer
 {
     public class MilitaryBuilding : Building
     {
-        #region Placement Related Variables
+        [SerializeField] GameObject swordsmanPrefab;
+
+        #region Production Related Variables
         private Vector3Int _spawnpoint;
+        #endregion
+
+        #region Placement Related Variables
         public bool isPlaced;
         public List<Vector3Int> occupiedPositions;
         #endregion
@@ -22,15 +29,14 @@ namespace StrategyGame_2DPlatformer
         private SpriteRenderer _spriteRender;
         bool isSelected = false;
         #endregion
+        #region Production Related Functionality
         private void FindSpawnPoint()
         {
             Vector3Int pos = FindCorner();
             if (pos != null && !GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied)
             {
                 _spawnpoint = pos + Vector3Int.right;
-                GameManagement.GameData.instance.Tilemap.SetTileFlags(_spawnpoint, TileFlags.None);
-                GameManagement.GameData.instance.Tilemap.SetColor(_spawnpoint, Color.blue);
-            }                       
+            }
         }
         private Vector3Int FindCorner()
         {
@@ -42,19 +48,37 @@ namespace StrategyGame_2DPlatformer
             }
             return corner;
         }
+
+
+        private void OnEnable()
+        {
+            SpawnEvent.onSpawnButtonClick += HandleButtonClick;
+        }
+
+        private void OnDisable()
+        {
+            SpawnEvent.onSpawnButtonClick -= HandleButtonClick;
+        }
+
+        private void HandleButtonClick()
+        {
+            FindSpawnPoint();
+            Vector3 spawnPoint = GameData.instance.Tilemap.GetCellCenterWorld(_spawnpoint);
+            var swordsman = Instantiate(GameData.instance.swordsmanPrefab, spawnPoint, Quaternion.identity);
+            swordsman.GetComponent<Swordsman>().SetCurrentNodeOnSpawn();
+        }
+        #endregion
         private void Start()
         {
+            #region Selection Related Variables
             buildingsImageUI = GameObject.FindGameObjectWithTag("BuildingImage").GetComponent<Image>();
             soldierImageUI = GameObject.FindGameObjectWithTag("Soldiers").GetComponent<Image>();
             _spriteRender = GetComponent<SpriteRenderer>();
+            #endregion
         }
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                FindSpawnPoint();
-            }
-
+            #region Selection Related Functionality
             if (isSelected && Input.GetMouseButtonDown(0))
             {
                 // Check if the clicked object is not the building itself
@@ -67,17 +91,18 @@ namespace StrategyGame_2DPlatformer
                     soldierImageUI.sprite = nullImage;
                 }
             }
+            #endregion
         }
 
+
+
+        #region Selection Related Functionality
         bool IsClickOnBuilding()
         {
             // Check if the mouse position is inside the building sprite
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             return _spriteRender.bounds.Contains(mousePosition);
         }
-
-
-        #region Selection Related Functionality
         public void OnBarracksClicked()
         {
             buildingsImageUI.sprite = sprite;
