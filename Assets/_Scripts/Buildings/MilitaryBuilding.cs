@@ -27,7 +27,6 @@ namespace StrategyGame_2DPlatformer
         [SerializeField] private Sprite nullImage;
         [SerializeField] private Sprite swordsmanSprite;
         private SpriteRenderer _spriteRender;
-        bool isSelected = false;
         #endregion
         #region Production Related Functionality
         private void FindSpawnPoint()
@@ -65,12 +64,13 @@ namespace StrategyGame_2DPlatformer
             FindSpawnPoint();
             Vector3 spawnPoint = GameData.instance.Tilemap.GetCellCenterWorld(_spawnpoint);
             var swordsman = Instantiate(GameData.instance.swordsmanPrefab, spawnPoint, Quaternion.identity);
-            swordsman.GetComponent<Swordsman>().SetCurrentNodeOnSpawn();
+            swordsman.GetComponent<MeleeSoldier>().SetCurrentNodeOnSpawn();
         }
         #endregion
         private void Start()
         {
             #region Selection Related Variables
+            base.IsSelected = false;
             buildingsImageUI = GameObject.FindGameObjectWithTag("BuildingImage").GetComponent<Image>();
             soldierImageUI = GameObject.FindGameObjectWithTag("Soldiers").GetComponent<Image>();
             _spriteRender = GetComponent<SpriteRenderer>();
@@ -79,17 +79,10 @@ namespace StrategyGame_2DPlatformer
         void Update()
         {
             #region Selection Related Functionality
-            if (isSelected && Input.GetMouseButtonDown(0))
+            if (IsSelected && Input.GetMouseButtonDown(0))
             {
-                // Check if the clicked object is not the building itself
-                if (!EventSystem.current.IsPointerOverGameObject() && !IsClickOnBuilding())
-                {
-                    // Deselect the building
-                    isSelected = false;
-                    _spriteRender.color = Color.white;
-                    buildingsImageUI.sprite = nullImage;
-                    soldierImageUI.sprite = nullImage;
-                }
+                OnDeselected();
+
             }
             #endregion
         }
@@ -113,10 +106,27 @@ namespace StrategyGame_2DPlatformer
         {
             if (isPlaced)
             {
-                isSelected = true;
-                _spriteRender.color = Color.red;
-                OnBarracksClicked();
+                OnSelected();
             }
+        }
+
+        public override void OnDeselected()
+        {
+            if (!EventSystem.current.IsPointerOverGameObject() && !IsClickOnBuilding())
+            {
+                // Deselect the building
+                IsSelected = false;
+                _spriteRender.color = Color.white;
+                buildingsImageUI.sprite = nullImage;
+                soldierImageUI.sprite = nullImage;
+            }
+        }
+
+        public override void OnSelected()
+        {
+            IsSelected = true;
+            _spriteRender.color = Color.red;
+            OnBarracksClicked();
         }
         #endregion
 
