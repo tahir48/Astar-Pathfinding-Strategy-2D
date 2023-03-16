@@ -5,6 +5,8 @@ namespace StrategyGame_2DPlatformer.GameManagement
     public class GameData : MonoBehaviour
     {
         public GameObject swordsmanPrefab;
+        public GameObject spearmanPrefab;
+        public GameObject knightPrefab;
 
         #region Population Related Variables
         private int _currentPopulationSize;

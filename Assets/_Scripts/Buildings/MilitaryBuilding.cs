@@ -1,17 +1,15 @@
 using StrategyGame_2DPlatformer.GameManagement;
 using StrategyGame_2DPlatformer.Soldiers;
+using StrategyGame_2DPlatformer.UI;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 namespace StrategyGame_2DPlatformer
 {
     public class MilitaryBuilding : Building
     {
-        [SerializeField] GameObject swordsmanPrefab;
-
         #region Production Related Variables
         private Vector3Int _spawnpoint;
         #endregion
@@ -23,9 +21,12 @@ namespace StrategyGame_2DPlatformer
         #region Selection Related Variables
         private Image buildingsImageUI;
         private Image soldierImageUI;
+        public RectTransform soldierHolder;
         [SerializeField] private Sprite sprite;
         [SerializeField] private Sprite nullImage;
         [SerializeField] private Sprite swordsmanSprite;
+        [SerializeField] private Sprite spearmanSprite;
+        [SerializeField] private Sprite knightSprite;
         private SpriteRenderer _spriteRender;
         #endregion
         #region Production Related Functionality
@@ -59,11 +60,29 @@ namespace StrategyGame_2DPlatformer
             SpawnEvent.onSpawnButtonClick -= HandleButtonClick;
         }
 
-        private void HandleButtonClick()
+        private void HandleButtonClick(string soldierName)
         {
+            //This method will replace with factory very soon
             FindSpawnPoint();
             Vector3 spawnPoint = GameData.instance.Tilemap.GetCellCenterWorld(_spawnpoint);
-            var swordsman = Instantiate(GameData.instance.swordsmanPrefab, spawnPoint, Quaternion.identity);
+            var _prefab = GameData.instance.swordsmanPrefab;
+
+            if (spawnPoint != null && soldierName != null)
+            {
+                if (soldierName == "swordsman")
+                {
+                    _prefab = GameData.instance.swordsmanPrefab;
+                }
+                else if (soldierName == "spearman")
+                {
+                    _prefab = GameData.instance.spearmanPrefab;
+                }
+                else
+                {
+                    _prefab = GameData.instance.knightPrefab;
+                }
+            }
+            var swordsman = Instantiate(_prefab, spawnPoint, Quaternion.identity);
             swordsman.GetComponent<MeleeSoldier>().SetCurrentNodeOnSpawn();
         }
         #endregion
@@ -72,7 +91,8 @@ namespace StrategyGame_2DPlatformer
             #region Selection Related Variables
             base.IsSelected = false;
             buildingsImageUI = GameObject.FindGameObjectWithTag("BuildingImage").GetComponent<Image>();
-            soldierImageUI = GameObject.FindGameObjectWithTag("Soldiers").GetComponent<Image>();
+            //soldierImageUI = GameObject.FindGameObjectWithTag("Soldiers").GetComponent<Image>();
+            soldierHolder = GameObject.FindGameObjectWithTag("Soldiers").GetComponent<RectTransform>();
             _spriteRender = GetComponent<SpriteRenderer>();
             #endregion
         }
@@ -99,7 +119,9 @@ namespace StrategyGame_2DPlatformer
         public void OnBarracksClicked()
         {
             buildingsImageUI.sprite = sprite;
-            soldierImageUI.sprite = swordsmanSprite;
+            soldierHolder.gameObject.SetActive(true);
+            //soldierImageUI.sprite = swordsmanSprite;
+            //soldierImageUI.gameObject.SetActive(true);
         }
 
         void OnMouseDown()
@@ -117,8 +139,10 @@ namespace StrategyGame_2DPlatformer
                 // Deselect the building
                 IsSelected = false;
                 _spriteRender.color = Color.white;
+                soldierHolder.gameObject.SetActive(false);
+                //soldierImageUI.gameObject.SetActive(false);
                 buildingsImageUI.sprite = nullImage;
-                soldierImageUI.sprite = nullImage;
+                //soldierImageUI.sprite = nullImage;
             }
         }
 

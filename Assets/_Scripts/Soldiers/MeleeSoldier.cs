@@ -8,8 +8,8 @@ namespace StrategyGame_2DPlatformer.Soldiers
 {
     public class MeleeSoldier : Soldier
     {
-        [SerializeField] private int swordsmanPopulationOccupied;
-        protected override int PopulationOccupied => swordsmanPopulationOccupied;
+        [SerializeField] private int meleePopulationOccupied;
+        protected override int PopulationOccupied => meleePopulationOccupied;
         private SpriteRenderer _spriteRenderer;
         private List<Node> _pathToWalk;
         private float moveSpeed = 2f;
