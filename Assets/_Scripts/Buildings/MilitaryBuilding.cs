@@ -13,11 +13,6 @@ namespace StrategyGame_2DPlatformer
         #region Production Related Variables
         private Vector3Int _spawnpoint;
         #endregion
-
-        #region Placement Related Variables
-        public bool isPlaced;
-        public List<Vector3Int> occupiedPositions;
-        #endregion
         #region Selection Related Variables
         private Image buildingsImageUI;
         private Image soldierImageUI;
@@ -40,8 +35,8 @@ namespace StrategyGame_2DPlatformer
         }
         private Vector3Int FindCorner()
         {
-            Vector3Int corner = occupiedPositions[0];
-            foreach (Vector3Int pos in occupiedPositions)
+            Vector3Int corner = OccupiedPositions[0];
+            foreach (Vector3Int pos in OccupiedPositions)
             {
                 if (pos.x > corner.x) corner.x = pos.x;
                 if (pos.y > corner.y) corner.y = pos.y;
@@ -120,13 +115,11 @@ namespace StrategyGame_2DPlatformer
         {
             buildingsImageUI.sprite = sprite;
             soldierHolder.gameObject.SetActive(true);
-            //soldierImageUI.sprite = swordsmanSprite;
-            //soldierImageUI.gameObject.SetActive(true);
         }
 
         void OnMouseDown()
         {
-            if (isPlaced)
+            if (IsPlaced)
             {
                 OnSelected();
             }
@@ -140,9 +133,7 @@ namespace StrategyGame_2DPlatformer
                 IsSelected = false;
                 _spriteRender.color = Color.white;
                 soldierHolder.gameObject.SetActive(false);
-                //soldierImageUI.gameObject.SetActive(false);
                 buildingsImageUI.sprite = nullImage;
-                //soldierImageUI.sprite = nullImage;
             }
         }
 

@@ -1,6 +1,6 @@
+using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace StrategyGame_2DPlatformer
 {
@@ -37,7 +37,7 @@ namespace StrategyGame_2DPlatformer
                         Debug.Log(node.x);
                         node.isOccupied = true;
                     }
-                    sprite.GetComponent<MilitaryBuilding>().occupiedPositions = _placeBuilding.PositionsToPlace;
+                    sprite.GetComponent<IPlaceable>().OccupiedPositions = _placeBuilding.PositionsToPlace;
                 }
                 else
                 {
@@ -45,7 +45,7 @@ namespace StrategyGame_2DPlatformer
                 }
                 sprite.GetComponent<SpriteFollowMouse>().enabled = false;
                 _placeBuilding.enabled = false;
-                sprite.GetComponent<MilitaryBuilding>().isPlaced = true;
+                sprite.GetComponent<IPlaceable>().IsPlaced = true;
                 Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector3Int tileToPlace = GameData.instance.Tilemap.WorldToCell(mousePos);
                 Vector3 destinationToPlace = GameData.instance.Tilemap.GetCellCenterWorld(tileToPlace);

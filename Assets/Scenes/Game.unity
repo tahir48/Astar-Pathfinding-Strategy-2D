@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 28498811}
   - component: {fileID: 28498810}
   m_Layer: 5
-  m_Name: Content1 (1)
+  m_Name: availaiblePop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2771,7 +2771,7 @@ GameObject:
   - component: {fileID: 1328872595}
   - component: {fileID: 1328872594}
   m_Layer: 5
-  m_Name: Content1
+  m_Name: currentPop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
