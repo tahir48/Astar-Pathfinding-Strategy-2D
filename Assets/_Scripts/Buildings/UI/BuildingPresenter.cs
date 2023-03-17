@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace StrategyGame_2DPlatformer
 {
-    public class BarrackPresenter : MonoBehaviour
+    public class BuildingPresenter : MonoBehaviour
     {
         public GameObject spritePrefab;
         public int spriteWidth = 4;

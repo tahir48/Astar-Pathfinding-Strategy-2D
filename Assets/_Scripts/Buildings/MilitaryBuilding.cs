@@ -1,7 +1,7 @@
+using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using StrategyGame_2DPlatformer.Soldiers;
 using StrategyGame_2DPlatformer.UI;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,6 +10,13 @@ namespace StrategyGame_2DPlatformer
 {
     public class MilitaryBuilding : Building
     {
+        #region Placement Related Variables
+        [SerializeField] private int _sizeX;
+        [SerializeField] private int _sizeY;
+        public override int SizeX { get => _sizeX; set => _sizeX = value; }
+        public override int SizeY { get => _sizeY; set => _sizeY = value; }
+        #endregion
+
         #region Production Related Variables
         private Vector3Int _spawnpoint;
         #endregion

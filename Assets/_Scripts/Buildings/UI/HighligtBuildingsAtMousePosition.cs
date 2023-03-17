@@ -3,6 +3,7 @@ using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using System.Linq;
+using StrategyGame_2DPlatformer.Contracts;
 
 namespace StrategyGame_2DPlatformer
 {
@@ -20,8 +21,8 @@ namespace StrategyGame_2DPlatformer
 
         private void Start()
         {
-            sizeX = 3;
-            sizeY = 3;
+            sizeX = GetComponent<IPlaceable>().SizeX;
+            sizeY = GetComponent<IPlaceable>().SizeY;
             unavalaibleColor = Color.red;
             availaibleColor = Color.green;
             highlightColor = availaibleColor;
@@ -36,9 +37,12 @@ namespace StrategyGame_2DPlatformer
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int tilePosition = GameData.instance.Tilemap.WorldToCell(mousePosition);
 
-            for (int x = tilePosition.x - sizeX / 2; x <= tilePosition.x + sizeX / 2; x++)
+            int startX = tilePosition.x - (sizeX - 1) / 2;
+            int startY = tilePosition.y - (sizeY - 1) / 2;
+
+            for (int x = startX; x < startX + sizeX; x++)
             {
-                for (int y = tilePosition.y - sizeY / 2; y <= tilePosition.y + sizeY / 2; y++)
+                for (int y = startY; y < startY + sizeY; y++)
                 {
                     Vector3Int position = new Vector3Int(x, y, tilePosition.z);
                     currentTilePositions.Add(position);

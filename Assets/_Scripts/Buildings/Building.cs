@@ -8,11 +8,16 @@ namespace StrategyGame_2DPlatformer
     {
         protected int health;
         protected int cost;
-        public bool IsSelected { get; set; }
+        
+
+        #region IPlaceable
         public bool IsPlaced { get; set; }
         public List<Vector3Int> OccupiedPositions { get; set; }
-        public int SizeX { get ;}
-        public int SizeY { get ;}
+        public virtual int SizeX { get; set; }
+        public virtual int SizeY { get; set; }
+        #endregion
+
+        public bool IsSelected { get; set; }
 
         public abstract void OnDeselected();
         public abstract void OnSelected();
