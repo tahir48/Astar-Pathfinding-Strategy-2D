@@ -2,99 +2,87 @@ using UnityEngine;
 using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
-using System.Linq;
-using StrategyGame_2DPlatformer.Contracts;
 
 namespace StrategyGame_2DPlatformer
 {
     public class HighligtBuildingsAtMousePosition : MonoBehaviour
     {
 
-        private Color highlightColor; // Is determined on each frame
         public Color unavalaibleColor;
         public Color availaibleColor;
         private Color originalColor; // If a tile is to be de-emphasized, it turns back to its original color.
         private List<Vector3Int> currentTilePositions; // Will depend on mouse position and building size when the class will be over
-        private List<Vector3Int> previousPositions; // To store difference between two sets, observer which tiles are changed on mouse drag
         private int sizeX;
         private int sizeY;
+        Vector3Int previousCellPosToCompare;
+
 
         private void Start()
         {
-            sizeX = GetComponent<IPlaceable>().SizeX;
-            sizeY = GetComponent<IPlaceable>().SizeY;
-            unavalaibleColor = Color.red;
-            availaibleColor = Color.green;
-            highlightColor = availaibleColor;
+            //sizeX = GetComponent<IPlaceable>().SizeX;
+            //sizeY = GetComponent<IPlaceable>().SizeY; //used after attached to building prefab
+            sizeX = 2;
+            sizeY = 3;
             originalColor = GameData.instance.Tilemap.GetColor(new Vector3Int(1, 1, 1));
             currentTilePositions = new List<Vector3Int>();
-            previousPositions = new List<Vector3Int>();
         }
+
 
         void Update()
         {
-            currentTilePositions.Clear();
+            // Get the current cell position under the mouse 
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int tilePosition = GameData.instance.Tilemap.WorldToCell(mousePosition);
 
-            int startX = tilePosition.x - (sizeX - 1) / 2;
-            int startY = tilePosition.y - (sizeY - 1) / 2;
-
-            for (int x = startX; x < startX + sizeX; x++)
+            if (tilePosition != previousCellPosToCompare) // Instead of comparing the list, I now compare single cell to understand if the mouse position is changed.
             {
-                for (int y = startY; y < startY + sizeY; y++)
+                int startX = tilePosition.x - (sizeX - 1) / 2;
+                int endX = startX + sizeX - 1;
+                int startY = tilePosition.y - (sizeY - 1) / 2;
+                int endY = startY + sizeY - 1;
+                // Reset the colors of the previously highlighted cells
+                foreach (var pos in currentTilePositions)
                 {
-                    Vector3Int position = new Vector3Int(x, y, tilePosition.z);
-                    currentTilePositions.Add(position);
-                }
-            }
-
-            int occupiedCount = 0;
-            if (currentTilePositions.Count != 0)
-            {
-                foreach (var item in currentTilePositions)
-                {
-                    bool occupied = false;
-                    if (GameData.instance.Graph.GetNodeAtPosition(item) != null)
+                    if (!(pos.x >= startX && pos.x <= endX && pos.y >= startY && pos.y <= endY))
                     {
-                        occupied = GameData.instance.Graph.GetNodeAtPosition(item).isOccupied;
+                        ChangeTileColor(pos, Color.white);
                     }
-                    if (occupied) { occupiedCount++; }
                 }
-            }
-            // If any tile under the building is occupied, we count this position to be unavailaible
-            if (occupiedCount != 0)
-            {
-                highlightColor = unavalaibleColor;
-            }
-            else
-            {
-                highlightColor = availaibleColor;
-            }
 
-            // Highlight the current tiles
-            ChangeTileColors(currentTilePositions, highlightColor);
-            // Unhighlight the previous tiles that are not in the current tiles
-            var positionsToUnhighlight = previousPositions.Except(currentTilePositions);
-            foreach (var pos in positionsToUnhighlight)
-            {
-                GameData.instance.Tilemap.SetTileFlags(pos, TileFlags.None);
-                GameData.instance.Tilemap.SetColor(pos, originalColor);
+                // Get the positions of the cells around the current cell position
+                currentTilePositions.Clear();
+                for (int x = startX; x < startX + sizeX; x++)
+                {
+                    for (int y = startY; y < startY + sizeY; y++)
+                    {
+                        Vector3Int position = new Vector3Int(x, y, tilePosition.z);
+                        currentTilePositions.Add(position);
+                    }
+                }
+
+                // Highlight the cells that are not occupied
+                foreach (var pos in currentTilePositions)
+                {
+                    Node node = GameData.instance.Graph.GetNodeAtPosition(pos);
+                    if (node.isOccupied)
+                    {
+                        ChangeTileColor(pos, unavalaibleColor);
+                    }
+                    else
+                    {
+                        ChangeTileColor(pos, availaibleColor);
+                    }
+                }
+                previousCellPosToCompare = tilePosition;
             }
-            // Save the current positions as previous positions for the next frame
-            previousPositions.Clear();
-            previousPositions = currentTilePositions;
         }
 
-        private void ChangeTileColors(List<Vector3Int> positions, Color color)
+
+        private void ChangeTileColor(Vector3Int pos, Color color)
         {
-            //This function is used to change colors of tiles that are accessed through a list of positions.
-            foreach (var pos in positions)
-            {
-                GameData.instance.Tilemap.SetTileFlags(pos, TileFlags.None);
-                GameData.instance.Tilemap.SetColor(pos, color);
-            }
-
+            GameData.instance.Tilemap.SetTileFlags(pos, TileFlags.None);
+            GameData.instance.Tilemap.SetColor(pos, color);
         }
+
     }
 }

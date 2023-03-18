@@ -1,4 +1,5 @@
 using StrategyGame_2DPlatformer.GameManagement;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -6,6 +7,8 @@ namespace StrategyGame_2DPlatformer
 {
     public class TilemapAvailaibilityCheckerForSingleTile : MonoBehaviour
     {
+        //This class is raycast version of "HighligtMousePosition" class. Same responsibility with different functionality.
+
         [SerializeField] LayerMask tilemapLayer;
         Vector3Int previouslyVisitedTilePos = new Vector3Int();
         // Update is called once per frame
