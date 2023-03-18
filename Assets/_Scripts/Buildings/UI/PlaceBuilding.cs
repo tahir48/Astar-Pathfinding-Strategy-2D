@@ -1,3 +1,4 @@
+using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,8 +17,8 @@ namespace StrategyGame_2DPlatformer
 
         void Start()
         {
-            sizeX = 4;
-            sizeY = 4;
+            sizeX = GetComponent<IPlaceable>().SizeX;
+            sizeY = GetComponent<IPlaceable>().SizeY;
             currentTilePositions = new List<Vector3Int>();
         }
 
@@ -29,9 +30,13 @@ namespace StrategyGame_2DPlatformer
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int tilePosition = GameData.instance.Tilemap.WorldToCell(mousePosition);
 
-            for (int x = tilePosition.x - sizeX / 2; x <= tilePosition.x + sizeX / 2; x++)
+            int startX = tilePosition.x - (sizeX - 1) / 2;
+            int startY = tilePosition.y - (sizeY - 1) / 2;
+            // Get the positions of the cells around the current cell position
+            currentTilePositions.Clear();
+            for (int x = startX; x < startX + sizeX; x++)
             {
-                for (int y = tilePosition.y - sizeY / 2; y <= tilePosition.y + sizeY / 2; y++)
+                for (int y = startY; y < startY + sizeY; y++)
                 {
                     Vector3Int position = new Vector3Int(x, y, tilePosition.z);
                     currentTilePositions.Add(position);
@@ -50,6 +55,15 @@ namespace StrategyGame_2DPlatformer
                         occupied = GameData.instance.Graph.GetNodeAtPosition(item).isOccupied;
                     }
                     if (occupied) { occupiedCount++; }
+                }
+
+                if (occupiedCount == 0)
+                {
+                    GetComponent<IPlaceable>().IsPlaceable = true;
+                }
+                else 
+                { 
+                    GetComponent<IPlaceable>().IsPlaceable = false; 
                 }
             }
 

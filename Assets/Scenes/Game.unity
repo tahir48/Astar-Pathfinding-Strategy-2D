@@ -2667,7 +2667,6 @@ GameObject:
   - component: {fileID: 1125169790}
   - component: {fileID: 1125169792}
   - component: {fileID: 1125169793}
-  - component: {fileID: 1125169794}
   m_Layer: 0
   m_Name: MousePosHighligt
   m_TagString: Untagged
@@ -2733,23 +2732,6 @@ MonoBehaviour:
   tilemapLayer:
     serializedVersion: 2
     m_Bits: 0
---- !u!114 &1125169794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1125169789}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69f510d383bcbf84f8fe55fec32f8408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemapLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  sizeX: 2
-  sizeY: 3
 --- !u!1 &1221956677
 GameObject:
   m_ObjectHideFlags: 0

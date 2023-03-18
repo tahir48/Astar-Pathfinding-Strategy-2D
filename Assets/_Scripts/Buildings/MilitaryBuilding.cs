@@ -1,4 +1,3 @@
-using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using StrategyGame_2DPlatformer.Soldiers;
 using StrategyGame_2DPlatformer.UI;
