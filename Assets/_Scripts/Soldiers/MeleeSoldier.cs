@@ -2,7 +2,6 @@ using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using System;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -157,6 +156,7 @@ namespace StrategyGame_2DPlatformer.Soldiers
         #region Damage related functionality
         public override void Damage(int damage)
         {
+            if (_currentHealth <= damage) { Destroy(gameObject); return; }
             _currentHealth -= damage;
             _fillBar.fillAmount = ((float)_currentHealth / (float)_maxHealth);
         }

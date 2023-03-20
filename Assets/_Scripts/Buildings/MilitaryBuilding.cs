@@ -4,11 +4,22 @@ using StrategyGame_2DPlatformer.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 namespace StrategyGame_2DPlatformer
 {
     public class MilitaryBuilding : Building
     {
+        #region Factory Related Variables
+        public enum FactoryStates { Swordsman, Spearman, Knight }
+        public FactoryStates factoryState;
+        private Factory swordsmanFactory;
+        private Factory spearmanFactory;
+        private Factory knightFactory;
+        private Factory _currentFactory;
+        #endregion
+
+
         #region Damage Related Variables
         private int _currentHealth;
         public override Vector3Int DamageFrom { get => _spawnpoint + Vector3Int.down; }
@@ -60,6 +71,10 @@ namespace StrategyGame_2DPlatformer
         private void OnEnable()
         {
             SpawnEvent.onSpawnButtonClick += HandleButtonClick;
+            swordsmanFactory = FindObjectOfType<SwordsmanConcreteFactory>();
+            knightFactory = FindObjectOfType<KnightConcreteFactory>();
+            spearmanFactory = FindObjectOfType<SpearmanConcreteFactory>();
+            ChangeFactoryState(FactoryStates.Swordsman);
         }
 
         private void OnDisable()
@@ -70,28 +85,19 @@ namespace StrategyGame_2DPlatformer
         private void HandleButtonClick(string soldierName)
         {
             if (!IsSelected) return;
-            //This method will replace with factory very soon
             FindSpawnPoint();
             Vector3 spawnPoint = GameData.instance.Tilemap.GetCellCenterWorld(_spawnpoint);
-            var _prefab = GameData.instance.swordsmanPrefab;
+            Debug.LogWarning("Spawn Point  " + spawnPoint);
+            Debug.LogWarning("SoldierName   " + soldierName);
 
-            if (spawnPoint != null && soldierName != null)
+            if (Enum.TryParse(soldierName, out factoryState))
             {
-                if (soldierName == "swordsman")
-                {
-                    _prefab = GameData.instance.swordsmanPrefab;
-                }
-                else if (soldierName == "spearman")
-                {
-                    _prefab = GameData.instance.spearmanPrefab;
-                }
-                else
-                {
-                    _prefab = GameData.instance.knightPrefab;
-                }
+                ChangeFactoryState(factoryState);
             }
-            var swordsman = Instantiate(_prefab, spawnPoint, Quaternion.identity);
-            swordsman.GetComponent<MeleeSoldier>().SetCurrentNodeOnSpawn();
+            
+            if (spawnPoint != null && soldierName != null) {
+                _currentFactory?.GetProduct(spawnPoint); 
+            }
         }
         #endregion
         private void Start()
@@ -170,6 +176,28 @@ namespace StrategyGame_2DPlatformer
 
         }
         #endregion
+
+
+        public void ChangeFactoryState(FactoryStates state) //Event caller
+        {
+            factoryState = state;
+            Debug.Log("Factory state has been " + state);
+            switch (state)
+            {
+                case FactoryStates.Swordsman:
+                    _currentFactory = swordsmanFactory;
+                    break;
+                case FactoryStates.Spearman:
+                    _currentFactory = spearmanFactory;
+                    break;
+                case FactoryStates.Knight:
+                    _currentFactory = knightFactory;
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
     }
 }

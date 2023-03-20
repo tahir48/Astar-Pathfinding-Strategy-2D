@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6371031810745327077}
   - component: {fileID: 6371031810745327078}
   - component: {fileID: 6371031810745327098}
+  - component: {fileID: 4596641184805130114}
   m_Layer: 0
   m_Name: Spearman
   m_TagString: Untagged
@@ -142,6 +143,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8057568, y: 1.3154935}
   m_EdgeRadius: 0
+--- !u!114 &4596641184805130114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6371031810745327079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c436c2d2fa70554f9954b6760ea254c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  productName: Spearman
 --- !u!1001 &4093768834404174810
 PrefabInstance:
   m_ObjectHideFlags: 0
