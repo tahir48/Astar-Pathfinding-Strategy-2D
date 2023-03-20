@@ -19,8 +19,7 @@ namespace StrategyGame_2DPlatformer
         {
             if (isOpen && Input.GetMouseButtonDown(1))
             {
-                Destroy(sprite);
-                isOpen = false;
+                OnPlacementFailed();
             }
 
             if (isOpen && Input.GetMouseButtonDown(0))
@@ -49,12 +48,20 @@ namespace StrategyGame_2DPlatformer
                 else
                 {
                     Debug.LogWarning("The position is not availaible to place the building.");
+                    OnPlacementFailed();
                 }
 
             }
 
 
         }
+
+        private void OnPlacementFailed()
+        {
+            Destroy(sprite);
+            isOpen = false;
+        }
+
         public void OnBarracksButtonClick()
         {
             sprite = Instantiate(spritePrefab, Vector3.zero, Quaternion.identity);

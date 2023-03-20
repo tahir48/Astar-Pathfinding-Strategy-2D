@@ -1,12 +1,25 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 namespace StrategyGame_2DPlatformer.GameManagement
 {
     public class GameData : MonoBehaviour
     {
+        #region Sprites
+        public Sprite populationBuildingSprite;
+        public Sprite productionBuildingSprite;
+        public Sprite MilitaryBuildingSprite;
+        #endregion
+
+
+        public RectTransform informationMenu;
+        public Image buildingsImageUI;
+
+        #region Soldier Prefabs
         public GameObject swordsmanPrefab;
         public GameObject spearmanPrefab;
         public GameObject knightPrefab;
+        #endregion
 
         #region Population Related Variables
         private int _currentPopulationSize;
@@ -56,7 +69,24 @@ namespace StrategyGame_2DPlatformer.GameManagement
         }
         void Start()
         {
+            HideInformationMenu();
         }
+
+        public void HideInformationMenu()
+        {
+            Vector2 position = informationMenu.anchoredPosition;
+            position.x = 150;
+            informationMenu.anchoredPosition = position;
+        }
+
+        public void ShowInformationMenu()
+        {
+            Vector2 position = informationMenu.anchoredPosition;
+            position.x = -150;
+            informationMenu.anchoredPosition = position;
+        }
+
+
 
         // Update is called once per frame
         void Update()

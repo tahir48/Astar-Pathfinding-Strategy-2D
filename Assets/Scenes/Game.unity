@@ -1660,6 +1660,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbcf435e0540abb40a0c5cdf11fa40d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  populationBuildingSprite: {fileID: 21300000, guid: 2f3048d910e34e34b963873c6c6377a0, type: 3}
+  productionBuildingSprite: {fileID: 21300000, guid: 2f9d65344d83cad43b82805f8548ef6b, type: 3}
+  MilitaryBuildingSprite: {fileID: 21300000, guid: 0b1d75d96c376cb42a172c06b8838300, type: 3}
+  informationMenu: {fileID: 1422768918}
+  buildingsImageUI: {fileID: 1757952468}
   swordsmanPrefab: {fileID: 6371031810745327079, guid: 98b12ebb9a497d04b9919aca4b9997c8, type: 3}
   spearmanPrefab: {fileID: 6371031810745327079, guid: 0974a8f7d9a001548a0970ad24f3a7ca, type: 3}
   knightPrefab: {fileID: 6371031810745327079, guid: 1ba61944edb701c45bd9c8bdd118a425, type: 3}
@@ -2041,8 +2046,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spritePrefab: {fileID: 1400177977207723549, guid: 6028f905977c3cf41ad0f956c4f5def3, type: 3}
-  spriteWidth: 4
-  spriteHeight: 4
 --- !u!1 &885030436
 GameObject:
   m_ObjectHideFlags: 0
@@ -2438,8 +2441,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spritePrefab: {fileID: 2587456785259176959, guid: 134537fccce06c2439867384266f8f87, type: 3}
-  spriteWidth: 4
-  spriteHeight: 4
 --- !u!1 &1041312102
 GameObject:
   m_ObjectHideFlags: 0
@@ -3445,7 +3446,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -153, y: 0}
+  m_AnchoredPosition: {x: -150, y: 0}
   m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1422768919
@@ -5348,6 +5349,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774749104}
   m_CullTransparentMesh: 1
+--- !u!1 &1779249363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1779249364}
+  - component: {fileID: 1779249365}
+  m_Layer: 0
+  m_Name: DamageGiver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1779249364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779249363}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.7853675, y: -0.37434173, z: 5.134639}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1779249365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779249363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb50a8450295a5f4a8f81a4c64f28b1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1797835010
 GameObject:
   m_ObjectHideFlags: 0
@@ -5398,8 +5443,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spritePrefab: {fileID: 1417690800880776379, guid: 1b454bd49e079e849941ed2ad777ebef, type: 3}
-  spriteWidth: 4
-  spriteHeight: 4
 --- !u!1 &1884958062
 GameObject:
   m_ObjectHideFlags: 0

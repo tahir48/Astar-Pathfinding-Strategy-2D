@@ -2,12 +2,20 @@ using StrategyGame_2DPlatformer.GameManagement;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using UnityEngine.UI;
 
 namespace StrategyGame_2DPlatformer.Soldiers
 {
     public class MeleeSoldier : Soldier
     {
+        #region Damage Related Variables
+        private int _currentHealth;
+        [SerializeField] private int _maxHealth;
+        public override int MaxHealth { get { return _maxHealth; }}
+        [SerializeField] private Image _fillBar;
+        #endregion
+
+
         [SerializeField] private int meleePopulationOccupied;
         protected override int PopulationOccupied => meleePopulationOccupied;
         private SpriteRenderer _spriteRenderer;
@@ -18,6 +26,7 @@ namespace StrategyGame_2DPlatformer.Soldiers
 
         private void Start()
         {
+            _currentHealth = MaxHealth;
             _spriteRenderer = GetComponent<SpriteRenderer>();
             GameData.instance.CurrentPopulation += PopulationOccupied;
             base.IsSelected = false;
@@ -82,7 +91,7 @@ namespace StrategyGame_2DPlatformer.Soldiers
             Node nodeToAssign = GameData.instance.Graph.GetNodeAtPosition(currentTilePosition);
             currentNode = nodeToAssign;
         }
-
+        #region Selection Related Functionality
         private void OnMouseDown()
         {
             OnSelected();
@@ -101,5 +110,15 @@ namespace StrategyGame_2DPlatformer.Soldiers
                 _spriteRenderer.color = Color.white;
             }
         }
+        #endregion
+
+        #region Damage related functionality
+        public override void Damage(int damage)
+        {
+            _currentHealth -= damage;
+            _fillBar.fillAmount = ((float)_currentHealth / (float)_maxHealth);
+        }
+        #endregion
+
     }
 }

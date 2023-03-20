@@ -2,13 +2,21 @@ using StrategyGame_2DPlatformer.GameManagement;
 using StrategyGame_2DPlatformer.Soldiers;
 using StrategyGame_2DPlatformer.UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace StrategyGame_2DPlatformer
 {
     public class MilitaryBuilding : Building
     {
+        #region Damage Related Variables
+        private int _currentHealth;
+
+        [SerializeField] private int _maxHealth;
+        public override int MaxHealth { get { return _maxHealth; } }
+        [SerializeField] private Image _fillBar;
+        #endregion
+
         #region Placement Related Variables
         [SerializeField] private int _sizeX;
         [SerializeField] private int _sizeY;
@@ -19,16 +27,14 @@ namespace StrategyGame_2DPlatformer
         #region Production Related Variables
         private Vector3Int _spawnpoint;
         #endregion
+
         #region Selection Related Variables
-        private Image buildingsImageUI;
-        private Image soldierImageUI;
         public RectTransform soldierHolder;
-        [SerializeField] private Sprite sprite;
         [SerializeField] private Sprite nullImage;
         [SerializeField] private Sprite swordsmanSprite;
         [SerializeField] private Sprite spearmanSprite;
         [SerializeField] private Sprite knightSprite;
-        private SpriteRenderer _spriteRender;
+        private SpriteRenderer _spriteRenderer;
         #endregion
         #region Production Related Functionality
         private void FindSpawnPoint()
@@ -63,6 +69,7 @@ namespace StrategyGame_2DPlatformer
 
         private void HandleButtonClick(string soldierName)
         {
+            if (!IsSelected) return;
             //This method will replace with factory very soon
             FindSpawnPoint();
             Vector3 spawnPoint = GameData.instance.Tilemap.GetCellCenterWorld(_spawnpoint);
@@ -89,12 +96,14 @@ namespace StrategyGame_2DPlatformer
         #endregion
         private void Start()
         {
+            #region Damage Related Assignments
+            _currentHealth = _maxHealth;
+            #endregion
+
             #region Selection Related Variables
-            base.IsSelected = false;
-            buildingsImageUI = GameObject.FindGameObjectWithTag("BuildingImage").GetComponent<Image>();
-            //soldierImageUI = GameObject.FindGameObjectWithTag("Soldiers").GetComponent<Image>();
+            IsSelected = false;
             soldierHolder = GameObject.FindGameObjectWithTag("Soldiers").GetComponent<RectTransform>();
-            _spriteRender = GetComponent<SpriteRenderer>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             #endregion
         }
         void Update()
@@ -103,7 +112,6 @@ namespace StrategyGame_2DPlatformer
             if (IsSelected && Input.GetMouseButtonDown(0))
             {
                 OnDeselected();
-
             }
             #endregion
         }
@@ -115,11 +123,12 @@ namespace StrategyGame_2DPlatformer
         {
             // Check if the mouse position is inside the building sprite
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            return _spriteRender.bounds.Contains(mousePosition);
+            return _spriteRenderer.bounds.Contains(mousePosition);
         }
         public void OnBarracksClicked()
         {
-            buildingsImageUI.sprite = sprite;
+            GameData.instance.ShowInformationMenu();
+            GameData.instance.buildingsImageUI.sprite = GameData.instance.MilitaryBuildingSprite;
             soldierHolder.gameObject.SetActive(true);
         }
 
@@ -137,17 +146,27 @@ namespace StrategyGame_2DPlatformer
             {
                 // Deselect the building
                 IsSelected = false;
-                _spriteRender.color = Color.white;
+                _spriteRenderer.color = Color.white;
                 soldierHolder.gameObject.SetActive(false);
-                buildingsImageUI.sprite = nullImage;
+                GameData.instance.buildingsImageUI.sprite = nullImage;
+                GameData.instance.HideInformationMenu();
             }
         }
 
         public override void OnSelected()
         {
+
             IsSelected = true;
-            _spriteRender.color = Color.red;
+            _spriteRenderer.color = Color.red;
             OnBarracksClicked();
+        }
+
+        #endregion
+        #region Damage related functionality
+        public override void Damage(int damage)
+        {
+            _currentHealth -= damage;
+            _fillBar.fillAmount = ((float)_currentHealth / (float)_maxHealth);
         }
         #endregion
 
