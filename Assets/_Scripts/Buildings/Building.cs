@@ -25,6 +25,9 @@ namespace StrategyGame_2DPlatformer
 
         #region IDamageable
         public virtual int MaxHealth { get;}
+
+        public virtual Vector3Int DamageFrom { get; }
+
         public abstract void Damage(int damage);
  
         #endregion

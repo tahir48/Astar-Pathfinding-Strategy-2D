@@ -1,5 +1,8 @@
+using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
+using System;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,10 +14,21 @@ namespace StrategyGame_2DPlatformer.Soldiers
         #region Damage Related Variables
         private int _currentHealth;
         [SerializeField] private int _maxHealth;
-        public override int MaxHealth { get { return _maxHealth; }}
+        public override int MaxHealth { get { return _maxHealth; } }
         [SerializeField] private Image _fillBar;
+        public override Vector3Int DamageFrom { get => new Vector3Int(currentNode.x, currentNode.y, 0) + Vector3Int.left; }
+        public event Action<int> OnMovementComplete;
         #endregion
 
+        private void OnEnable()
+        {
+            OnMovementComplete += WhenReachedTargetToAttack;
+        }
+
+        private void WhenReachedTargetToAttack(int damage)
+        {
+            hitObj1.Damage(damage);
+        }
 
         [SerializeField] private int meleePopulationOccupied;
         protected override int PopulationOccupied => meleePopulationOccupied;
@@ -31,13 +45,32 @@ namespace StrategyGame_2DPlatformer.Soldiers
             GameData.instance.CurrentPopulation += PopulationOccupied;
             base.IsSelected = false;
         }
-
+        Node nextNodee;
+        IDamageable hitObj1;
+        Collider2D collider1;
         private void Update()
         {
             if (Input.GetMouseButtonDown(1) && IsSelected && !isMoving)
             {
-                Node nextNode = GameData.instance.Graph.GetNodeAtMouseClick();
-                MoveTo(nextNode);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+                if (hit && hit.collider.GetComponent<IDamageable>() != null)
+                {
+                    collider1 = hit.collider;
+                    Debug.Log("Attack The Damageable!");
+                    IDamageable hitObj = hit.collider.GetComponent<IDamageable>();
+                    hitObj1 = hitObj;
+                    Vector3Int nextNode = hitObj.DamageFrom;
+                    nextNodee = GameData.instance.Graph.GetNodeAtPosition(nextNode);
+                    MoveTo(nextNodee);
+                    //hitObj.Damage(10);
+                }
+                else
+                {
+                    Node nextNode = GameData.instance.Graph.GetNodeAtMouseClick();
+                    MoveTo(nextNode);
+                }
             }
 
             if (isMoving)
@@ -49,7 +82,9 @@ namespace StrategyGame_2DPlatformer.Soldiers
             {
                 OnDeselected();
             }
+
         }
+
 
         public void MoveTo(Node targetNode)
         {
@@ -61,6 +96,7 @@ namespace StrategyGame_2DPlatformer.Soldiers
             isMoving = true;
             _indexToVisit = 0;
         }
+
 
         public override void Move()
         {
@@ -74,6 +110,12 @@ namespace StrategyGame_2DPlatformer.Soldiers
                 {
                     currentNode.isOccupied = true;
                     isMoving = false;
+                    if (hitObj1 != null)
+                    {
+                        OnMovementComplete?.Invoke(20);
+                    }
+                    hitObj1 = null;
+
                 }
             }
         }
@@ -117,6 +159,11 @@ namespace StrategyGame_2DPlatformer.Soldiers
         {
             _currentHealth -= damage;
             _fillBar.fillAmount = ((float)_currentHealth / (float)_maxHealth);
+        }
+
+        public override void Attack()
+        {
+
         }
         #endregion
 

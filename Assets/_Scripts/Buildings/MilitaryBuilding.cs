@@ -11,7 +11,7 @@ namespace StrategyGame_2DPlatformer
     {
         #region Damage Related Variables
         private int _currentHealth;
-
+        public override Vector3Int DamageFrom { get => _spawnpoint + Vector3Int.down; }
         [SerializeField] private int _maxHealth;
         public override int MaxHealth { get { return _maxHealth; } }
         [SerializeField] private Image _fillBar;
@@ -155,7 +155,6 @@ namespace StrategyGame_2DPlatformer
 
         public override void OnSelected()
         {
-
             IsSelected = true;
             _spriteRenderer.color = Color.red;
             OnBarracksClicked();
@@ -165,8 +164,10 @@ namespace StrategyGame_2DPlatformer
         #region Damage related functionality
         public override void Damage(int damage)
         {
+            if (_currentHealth <= damage) { Destroy(gameObject); return; }
             _currentHealth -= damage;
             _fillBar.fillAmount = ((float)_currentHealth / (float)_maxHealth);
+
         }
         #endregion
 

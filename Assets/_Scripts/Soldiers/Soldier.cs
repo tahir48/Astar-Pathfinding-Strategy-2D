@@ -1,5 +1,6 @@
 using UnityEngine;
 using StrategyGame_2DPlatformer.Contracts;
+using System;
 
 namespace StrategyGame_2DPlatformer.Soldiers
 {
@@ -7,6 +8,7 @@ namespace StrategyGame_2DPlatformer.Soldiers
     {
         protected Node currentNode;
         public abstract void Move();
+        public abstract void Attack();
         protected virtual int PopulationOccupied { get; set; }
 
         #region ISelectable
@@ -18,6 +20,7 @@ namespace StrategyGame_2DPlatformer.Soldiers
         #region IDamageable
         public virtual int MaxHealth { get;}
         public abstract void Damage(int damage);
+        public virtual Vector3Int DamageFrom { get; }
   
         #endregion
 
