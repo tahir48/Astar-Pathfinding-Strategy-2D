@@ -166,10 +166,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 251d2f73cd556ad4db91d3bd2414f5ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _name: Mill
+  _cost: 10
   _maxHealth: 50
   _fillBar: {fileID: 1595611674731612517}
   _sizeX: 2
   _sizeY: 3
+  _damagePoint: {x: 0, y: 0, z: 0}
 --- !u!114 &-2598455119479231062
 MonoBehaviour:
   m_ObjectHideFlags: 0

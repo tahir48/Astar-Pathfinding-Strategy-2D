@@ -24,16 +24,21 @@ namespace StrategyGame_2DPlatformer
 
             if (isOpen && Input.GetMouseButtonDown(0))
             {
-
+                if (GameData.instance.Money < sprite.GetComponent<Building>().Cost)
+                {
+                    Debug.LogWarning("Not Enough Money To Construct! Build A Mill To Earn Some Money");
+                    OnPlacementFailed();
+                    return;
+                }
                 if (_placeBuilding.PositionsToPlace != null && sprite.GetComponent<IPlaceable>().IsPlaceable)
                 {
                     Debug.Log("_placeBuilding.PositionsToPlace  " + _placeBuilding.PositionsToPlace.Count);
                     foreach (var pos in _placeBuilding.PositionsToPlace)
                     {
                         Node node = GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos);
-                        Debug.Log(node.x);
                         node.isOccupied = true;
                     }
+
                     sprite.GetComponent<IPlaceable>().OccupiedPositions = _placeBuilding.PositionsToPlace;
                     sprite.GetComponent<IPlaceable>().IsPlaced = true;
                     sprite.GetComponent<IPlaceable>().OnPlaced();

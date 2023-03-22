@@ -166,10 +166,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c47dd19cc96c1498d1f3f259a2771a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _name: House
+  _cost: 5
   _maxHealth: 30
   _fillBar: {fileID: 2098291073176625695}
   _sizeX: 2
   _sizeY: 2
+  _damagePoint: {x: 0, y: 0, z: 0}
 --- !u!114 &3896332727249660882
 MonoBehaviour:
   m_ObjectHideFlags: 0

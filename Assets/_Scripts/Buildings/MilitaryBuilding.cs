@@ -1,5 +1,4 @@
 using StrategyGame_2DPlatformer.GameManagement;
-using StrategyGame_2DPlatformer.Soldiers;
 using StrategyGame_2DPlatformer.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +9,11 @@ namespace StrategyGame_2DPlatformer
 {
     public class MilitaryBuilding : Building
     {
+        [SerializeField] private string _name;
+        [SerializeField] private int _cost;
+        public override string Name { get { return _name; } }
+        public override int Cost { get { return _cost; } }
+
         #region Factory Related Variables
         public enum FactoryStates { Swordsman, Spearman, Knight }
         public FactoryStates factoryState;
@@ -88,9 +92,6 @@ namespace StrategyGame_2DPlatformer
             if (GameData.instance.CurrentPopulationSize - GameData.instance.CurrentHumanPopulationSize <= 0) return;
             FindSpawnPoint();
             Vector3 spawnPoint = GameData.instance.Tilemap.GetCellCenterWorld(_spawnpoint);
-            Debug.LogWarning("Spawn Point  " + spawnPoint);
-            Debug.LogWarning("SoldierName   " + soldierName);
-
             if (Enum.TryParse(soldierName, out factoryState))
             {
                 ChangeFactoryState(factoryState);
@@ -137,6 +138,7 @@ namespace StrategyGame_2DPlatformer
         {
             GameData.instance.ShowInformationMenu();
             GameData.instance.buildingsImageUI.sprite = GameData.instance.MilitaryBuildingSprite;
+            GameData.instance.buildingText.text = Name;
             soldierHolder.gameObject.SetActive(true);
         }
 
@@ -211,7 +213,7 @@ namespace StrategyGame_2DPlatformer
 
         public override void OnPlaced()
         {
-            Debug.Log("Will be implemented soon");
+            GameData.instance.DecreaseMoney(20);
         }
     }
 }

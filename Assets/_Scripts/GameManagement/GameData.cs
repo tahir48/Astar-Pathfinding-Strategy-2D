@@ -16,6 +16,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
 
         public RectTransform informationMenu;
         public Image buildingsImageUI;
+        public Text buildingText;
 
         #region Soldier Prefabs
         public GameObject swordsmanPrefab;
@@ -24,7 +25,6 @@ namespace StrategyGame_2DPlatformer.GameManagement
         #endregion
 
         #region Population Related Variables
-
         private int _maxPopulationSize;
         public int MaxPopulationSize { get { return _maxPopulationSize; } private set { } }
         #endregion
@@ -84,7 +84,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
         #region Resources MVP Pattern
         public event Action MoneyChanged;
         private int _money;
-        public  int Money { get { return _money; } set { _money = value; } }
+        public int Money { get { return _money; } set { _money = value; } }
         public void IncreaseMoney()
         {
             _money++;
@@ -93,7 +93,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
 
         public void DecreaseMoney(int amount)
         {
-            _money-= amount;
+            _money -= amount;
             UpdateMoney();
         }
 
@@ -110,6 +110,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
             #region Population Related Variables
             _currentPopulationSize = 5;
             _maxPopulationSize = 200;
+            _money = 100;
             #endregion
             #region Simple Sington
             if (instance == null)
@@ -133,9 +134,11 @@ namespace StrategyGame_2DPlatformer.GameManagement
 
         Coroutine cor;
         float lerpDuration = 0.5f;
+        private bool menuOpened;
 
         public void HideInformationMenu()
         {
+            if (!menuOpened) return;
             if (cor != null) StopCoroutine(cor);
             cor = StartCoroutine(InformationMenuHider());
         }
@@ -159,6 +162,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
             }
             position.x = endValue;
             informationMenu.anchoredPosition = position;
+            menuOpened = false;
         }
 
         public void InitializeHiddenInformationMenu()
@@ -166,10 +170,12 @@ namespace StrategyGame_2DPlatformer.GameManagement
             Vector2 position = informationMenu.anchoredPosition;
             position.x = 150;
             informationMenu.anchoredPosition = position;
+            menuOpened = false;
         }
 
         public void ShowInformationMenu()
         {
+            if (menuOpened) return;
             if (cor != null) StopCoroutine(cor);
             cor = StartCoroutine(InformationMenuOpener());
         }
@@ -192,6 +198,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
             }
             position.x = endValue;
             informationMenu.anchoredPosition = position;
+            menuOpened = true;
         }
 
         // Update is called once per frame

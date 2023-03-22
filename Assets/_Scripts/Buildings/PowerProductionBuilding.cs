@@ -1,12 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using StrategyGame_2DPlatformer.GameManagement;
-
+using UnityEngine.EventSystems;
 
 namespace StrategyGame_2DPlatformer
 {
     public class PowerProductionBuilding : Building
     {
+        [SerializeField] private string _name;
+        [SerializeField] private int _cost;
+        public override string Name { get { return _name; } }
+        public override int Cost { get { return _cost; } }
         #region Damage Related Variables
         private int _currentHealth;
         [SerializeField] private int _maxHealth;
@@ -20,6 +24,7 @@ namespace StrategyGame_2DPlatformer
         bool generate = false;
         private void OnEnable()
         {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             _currentHealth = _maxHealth;
         }
         #region Placement Related Variables
@@ -31,35 +36,55 @@ namespace StrategyGame_2DPlatformer
         private SpriteRenderer _spriteRenderer;
         public override void OnDeselected()
         {
-            GameData.instance.HideInformationMenu(); //I will possibly use Coroutine here
+            if (!EventSystem.current.IsPointerOverGameObject() && !IsClickOnBuilding())
+            {
+                // Deselect the building
+                IsSelected = false;
+                _spriteRenderer.color = Color.white;
+                GameData.instance.HideInformationMenu();
+            }
         }
+        bool IsClickOnBuilding()
+        {
+            // Check if the mouse position is inside the building sprite
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            return _spriteRenderer.bounds.Contains(mousePosition);
+        }
+
         float durationPassed = 0;
         float durationToPass = 1;
         
         private void Update()
         {
-            if (!generate) return;
-
-            if (durationPassed > durationToPass)
+            if (generate)
             {
-                GameData.instance.IncreaseMoney();
-                durationPassed = 0;
+                if (durationPassed > durationToPass)
+                {
+                    GameData.instance.IncreaseMoney();
+                    durationPassed = 0;
+                }
+                durationPassed += Time.deltaTime;
             }
-            durationPassed += Time.deltaTime;
 
+            #region Selection Related Functionality
+            if (IsSelected && Input.GetMouseButtonDown(0))
+            {
+                OnDeselected();
+            }
+            #endregion
         }
         public override void OnSelected()
         {
             IsSelected = true;
             _spriteRenderer.color = Color.red;
-            Debug.Log("Ekstra functionality");
-            GameData.instance.ShowInformationMenu(); //I will possibly use Coroutine here
+            OnMillClicked();
         }
 
         public void OnMillClicked()
         {
-            GameData.instance.buildingsImageUI.sprite = GameData.instance.productionBuildingSprite;
             GameData.instance.ShowInformationMenu();
+            GameData.instance.buildingsImageUI.sprite = GameData.instance.productionBuildingSprite; 
+            GameData.instance.buildingText.text = Name;
         }
 
 
@@ -100,10 +125,18 @@ namespace StrategyGame_2DPlatformer
             }
             return corner;
         }
+        void OnMouseDown()
+        {
+            if (IsPlaced)
+            {
+                OnSelected();
+            }
+        }
 
         public override void OnPlaced()
         {
             generate = true;
+            GameData.instance.DecreaseMoney(5);
         }
     }
 }

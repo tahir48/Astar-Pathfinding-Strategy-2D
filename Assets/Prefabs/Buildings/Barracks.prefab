@@ -166,9 +166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44649ff726f9f1f47831b23bc83836fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _swordsmanFactory: {fileID: 0}
-  _spearmanFactory: {fileID: 0}
-  _knightFactory: {fileID: 0}
+  _name: Barracks
+  _cost: 20
+  factoryState: 0
   _maxHealth: 100
   _fillBar: {fileID: 7277717158711280012}
   _sizeX: 4

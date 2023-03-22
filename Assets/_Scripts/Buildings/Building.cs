@@ -6,7 +6,8 @@ namespace StrategyGame_2DPlatformer
 {
     public abstract class Building : MonoBehaviour, ISelectable, IPlaceable, IDamageable
     {
-        protected int cost;
+        public virtual int Cost { get; }
+        public virtual string Name { get; }
 
         #region IPlaceable
         public bool IsPlaceable { get; set; }

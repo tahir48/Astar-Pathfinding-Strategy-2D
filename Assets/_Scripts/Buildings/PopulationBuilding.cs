@@ -7,6 +7,10 @@ namespace StrategyGame_2DPlatformer
 {
     public class PopulationBuilding : Building
     {
+        [SerializeField] private string _name;
+        [SerializeField] private int _cost;
+        public override string Name { get { return _name; } }
+        public override int Cost { get { return _cost; } }
         #region Damage Related Variables
         private int _currentHealth;
         [SerializeField] private int _maxHealth;
@@ -49,14 +53,14 @@ namespace StrategyGame_2DPlatformer
         {
             IsSelected = true;
             _spriteRenderer.color = Color.red;
-            Debug.Log("Ekstra functionality");
-            GameData.instance.ShowInformationMenu(); //I will possibly use Coroutine here
+            OnHouseClicked();
         }
 
         public void OnHouseClicked()
         {
             GameData.instance.ShowInformationMenu();
-            GameData.instance.buildingsImageUI.sprite = GameData.instance.productionBuildingSprite;
+            GameData.instance.buildingsImageUI.sprite = GameData.instance.populationBuildingSprite;
+            GameData.instance.buildingText.text = Name;
         }
         void OnMouseDown()
         {
@@ -129,6 +133,7 @@ namespace StrategyGame_2DPlatformer
         public override void OnPlaced()
         {
             GameData.instance.IncreaseCurrentAvailaiblePop(5);
+            GameData.instance.DecreaseMoney(5);
         }
     }
 }
