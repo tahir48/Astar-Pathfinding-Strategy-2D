@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -69,10 +70,40 @@ namespace StrategyGame_2DPlatformer.GameManagement
         }
         void Start()
         {
-            HideInformationMenu();
+            InitializeHiddenInformationMenu();
         }
 
+        Coroutine cor;
+        float lerpDuration = 0.5f;
+
         public void HideInformationMenu()
+        {
+            if (cor != null) StopCoroutine(cor);
+            cor = StartCoroutine(InformationMenuHider());
+        }
+
+        IEnumerator InformationMenuHider()
+        {
+            float time = 0;
+            float startValue = -150;
+            float endValue = 150f;
+            float menuPosition;
+            if (informationMenu == null) yield break;
+            Vector2 position = informationMenu.anchoredPosition;
+
+            while (time < lerpDuration)
+            {
+                menuPosition = Mathf.Lerp(startValue, endValue, time / lerpDuration);
+                position.x = menuPosition;
+                informationMenu.anchoredPosition = position;
+                time += Time.deltaTime;
+                yield return null;
+            }
+            position.x = endValue;
+            informationMenu.anchoredPosition = position;
+        }
+
+        public void InitializeHiddenInformationMenu()
         {
             Vector2 position = informationMenu.anchoredPosition;
             position.x = 150;
@@ -81,12 +112,29 @@ namespace StrategyGame_2DPlatformer.GameManagement
 
         public void ShowInformationMenu()
         {
-            Vector2 position = informationMenu.anchoredPosition;
-            position.x = -150;
-            informationMenu.anchoredPosition = position;
+            if (cor != null) StopCoroutine(cor);
+            cor = StartCoroutine(InformationMenuOpener());
         }
 
-
+        IEnumerator InformationMenuOpener()
+        {
+            float time = 0;
+            float startValue = 150f;
+            float endValue = -150f;
+            float menuPosition;
+            Vector2 position = informationMenu.anchoredPosition;
+            if (informationMenu == null) yield break;
+            while (time < lerpDuration)
+            {
+                menuPosition = Mathf.Lerp(startValue, endValue, time / lerpDuration);
+                position.x = menuPosition;
+                informationMenu.anchoredPosition = position;
+                time += Time.deltaTime;
+                yield return null;
+            }
+            position.x = endValue;
+            informationMenu.anchoredPosition = position;
+        }
 
         // Update is called once per frame
         void Update()
