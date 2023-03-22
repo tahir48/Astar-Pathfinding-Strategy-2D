@@ -51,7 +51,15 @@ namespace StrategyGame_2DPlatformer
         #region Damage related functionality
         public override void Damage(int damage)
         {
-            if (_currentHealth <= damage) { Destroy(gameObject); return; }
+            if (_currentHealth <= damage)
+            {
+                Destroy(gameObject);
+                foreach (var pos in OccupiedPositions)
+                {
+                    GameData.instance.Graph.GetNodeAtPosition(pos).isOccupied = false;
+                }
+                return;
+            }
             _currentHealth -= damage;
             _fillBar.fillAmount = ((float)_currentHealth / (float)_maxHealth);
         }
