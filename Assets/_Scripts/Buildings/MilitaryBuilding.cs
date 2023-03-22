@@ -85,6 +85,7 @@ namespace StrategyGame_2DPlatformer
         private void HandleButtonClick(string soldierName)
         {
             if (!IsSelected) return;
+            if (GameData.instance.CurrentPopulationSize - GameData.instance.CurrentHumanPopulationSize <= 0) return;
             FindSpawnPoint();
             Vector3 spawnPoint = GameData.instance.Tilemap.GetCellCenterWorld(_spawnpoint);
             Debug.LogWarning("Spawn Point  " + spawnPoint);
@@ -208,6 +209,9 @@ namespace StrategyGame_2DPlatformer
             }
         }
 
-
+        public override void OnPlaced()
+        {
+            Debug.Log("Will be implemented soon");
+        }
     }
 }

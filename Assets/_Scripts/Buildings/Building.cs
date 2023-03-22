@@ -14,6 +14,7 @@ namespace StrategyGame_2DPlatformer
         public List<Vector3Int> OccupiedPositions { get; set; }
         public virtual int SizeX { get; set; }
         public virtual int SizeY { get; set; }
+        public abstract void OnPlaced();
         #endregion
 
         #region ISelectable

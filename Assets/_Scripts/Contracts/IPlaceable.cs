@@ -10,5 +10,7 @@ namespace StrategyGame_2DPlatformer.Contracts
         int SizeY { get; set; }
         bool IsPlaced { get; set; }
         List<Vector3Int> OccupiedPositions { get; set; }
+
+        void OnPlaced();
     }
 }

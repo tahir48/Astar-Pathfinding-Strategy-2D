@@ -17,6 +17,7 @@ namespace StrategyGame_2DPlatformer
 
         #endregion
 
+        bool generate = false;
         private void OnEnable()
         {
             _currentHealth = _maxHealth;
@@ -32,7 +33,21 @@ namespace StrategyGame_2DPlatformer
         {
             GameData.instance.HideInformationMenu(); //I will possibly use Coroutine here
         }
+        float durationPassed = 0;
+        float durationToPass = 1;
+        
+        private void Update()
+        {
+            if (!generate) return;
 
+            if (durationPassed > durationToPass)
+            {
+                GameData.instance.IncreaseMoney();
+                durationPassed = 0;
+            }
+            durationPassed += Time.deltaTime;
+
+        }
         public override void OnSelected()
         {
             IsSelected = true;
@@ -86,6 +101,9 @@ namespace StrategyGame_2DPlatformer
             return corner;
         }
 
-
+        public override void OnPlaced()
+        {
+            generate = true;
+        }
     }
 }

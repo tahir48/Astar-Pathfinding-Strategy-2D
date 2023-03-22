@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 045e46fc8a2383e45a5c914a83fc6e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cost: 10
   _maxHealth: 10
   _fillBar: {fileID: 7697712997286259024}
   meleePopulationOccupied: 1
@@ -155,7 +156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c436c2d2fa70554f9954b6760ea254c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productName: Spearman
 --- !u!1001 &4093768834404174810
 PrefabInstance:
   m_ObjectHideFlags: 0

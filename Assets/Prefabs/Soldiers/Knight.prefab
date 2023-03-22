@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 045e46fc8a2383e45a5c914a83fc6e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cost: 20
   _maxHealth: 10
   _fillBar: {fileID: 9164943172890224555}
   meleePopulationOccupied: 2
@@ -155,7 +156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd05786c00e2e145ab034180ee474f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productName: Knight
 --- !u!1001 &3255068433525310753
 PrefabInstance:
   m_ObjectHideFlags: 0

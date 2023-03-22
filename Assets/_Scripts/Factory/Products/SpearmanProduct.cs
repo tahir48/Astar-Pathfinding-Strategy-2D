@@ -8,7 +8,9 @@ namespace StrategyGame_2DPlatformer
     {
         public void Initialize()
         {
-            GetComponent<MeleeSoldier>().SetCurrentNodeOnSpawn();
+            var sold = GetComponent<MeleeSoldier>();
+            sold.SetCurrentNodeOnSpawn();
+            GameManagement.GameData.instance.DecreaseMoney(sold.Cost);
         }
     }
 }

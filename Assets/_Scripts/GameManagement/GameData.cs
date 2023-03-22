@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -23,9 +24,8 @@ namespace StrategyGame_2DPlatformer.GameManagement
         #endregion
 
         #region Population Related Variables
-        private int _currentPopulationSize;
+
         private int _maxPopulationSize;
-        public int CurrentPopulationSize { get { return _currentPopulationSize; } set { _currentPopulationSize = value; } }
         public int MaxPopulationSize { get { return _maxPopulationSize; } private set { } }
         #endregion
 
@@ -40,13 +40,71 @@ namespace StrategyGame_2DPlatformer.GameManagement
         public Tilemap Tilemap { get { return _tilemap; } private set { } }
         #endregion
 
-        #region Gameplay Related Data
-        private int _maxPopulation;
-        private int _currentPopulation;
-        public int MaxPopulation { get { return _maxPopulation; } private set { } }
-        public int CurrentPopulation { get { return _currentPopulation; } set { _currentPopulation = value; } }
+        #region Population MVP Pattern
+        //This class contains population data, therefore it is our Model for MVP pattern
+        //This class implements events in population change
+        public event Action PopulationChanged; // This event notifies the Presenter that the population has changed.
+        private int _currentHumanPopulationSize;
+        private int _currentPopulationSize;
+        public int CurrentHumanPopulationSize { get { return _currentHumanPopulationSize; } set { _currentHumanPopulationSize = value; } }
+        public int CurrentPopulationSize { get { return _currentPopulationSize; } set { _currentPopulationSize = value; } }
+
+
+        public void IncreaseCurrentHumanPop(int amount)
+        {
+            _currentHumanPopulationSize += amount;
+            UpdatePopulation();
+        }
+
+        public void IncreaseCurrentAvailaiblePop(int amount)
+        {
+            _currentPopulationSize += amount;
+            UpdatePopulation();
+        }
+
+        public void DecreaseCurrentHumanPop(int amount)
+        {
+            _currentHumanPopulationSize -= amount;
+            UpdatePopulation();
+        }
+
+        public void DecreaseCurrentAvailaiblePop(int amount)
+        {
+            _currentPopulationSize -= amount;
+            UpdatePopulation();
+        }
+
+        public void UpdatePopulation()
+        {
+            PopulationChanged.Invoke();
+        }
 
         #endregion
+
+        #region Resources MVP Pattern
+        public event Action MoneyChanged;
+        private int _money;
+        public  int Money { get { return _money; } set { _money = value; } }
+        public void IncreaseMoney()
+        {
+            _money++;
+            UpdateMoney();
+        }
+
+        public void DecreaseMoney(int amount)
+        {
+            _money-= amount;
+            UpdateMoney();
+        }
+
+        public void UpdateMoney()
+        {
+            MoneyChanged.Invoke();
+        }
+        #endregion
+
+
+
         private void Awake()
         {
             #region Population Related Variables

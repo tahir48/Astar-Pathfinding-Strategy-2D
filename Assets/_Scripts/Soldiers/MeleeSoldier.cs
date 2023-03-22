@@ -2,6 +2,7 @@ using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,6 +11,10 @@ namespace StrategyGame_2DPlatformer.Soldiers
 {
     public class MeleeSoldier : Soldier
     {
+
+        [SerializeField] private int _cost;
+        public override int Cost { get { return _cost; } }
+
         #region Damage Related Variables
         private int _currentHealth;
         [SerializeField] private int _maxHealth;
@@ -22,6 +27,12 @@ namespace StrategyGame_2DPlatformer.Soldiers
         private void OnEnable()
         {
             OnMovementComplete += WhenReachedTargetToAttack;
+            GameData.instance.IncreaseCurrentHumanPop(PopulationOccupied);
+        }
+
+        private void OnDisable()
+        {
+            GameData.instance.DecreaseCurrentHumanPop(PopulationOccupied);
         }
 
         private void WhenReachedTargetToAttack(int damage)
@@ -41,12 +52,14 @@ namespace StrategyGame_2DPlatformer.Soldiers
         {
             _currentHealth = MaxHealth;
             _spriteRenderer = GetComponent<SpriteRenderer>();
-            GameData.instance.CurrentPopulation += PopulationOccupied;
+            GameData.instance.CurrentHumanPopulationSize += PopulationOccupied;
             base.IsSelected = false;
         }
         Node nextNodee;
         IDamageable hitObj1;
         Collider2D collider1;
+
+        
         private void Update()
         {
             if (Input.GetMouseButtonDown(1) && IsSelected && !isMoving)

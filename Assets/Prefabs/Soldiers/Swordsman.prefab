@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 045e46fc8a2383e45a5c914a83fc6e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cost: 10
   _maxHealth: 10
   _fillBar: {fileID: 2299244181315090114}
   meleePopulationOccupied: 1
@@ -155,7 +156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9fd078c970ba644b8b8add61f18f96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productName: Swordsman
 --- !u!1001 &5617315132267107400
 PrefabInstance:
   m_ObjectHideFlags: 0

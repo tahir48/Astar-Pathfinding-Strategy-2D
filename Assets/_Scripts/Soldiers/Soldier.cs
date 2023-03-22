@@ -6,6 +6,8 @@ namespace StrategyGame_2DPlatformer.Soldiers
 {
     public abstract class Soldier :  MonoBehaviour, ISelectable, IDamageable
     {
+        public virtual int Cost { get;}
+
         protected Node currentNode;
         public abstract void Move();
         public abstract void Attack();

@@ -36,6 +36,7 @@ namespace StrategyGame_2DPlatformer
                     }
                     sprite.GetComponent<IPlaceable>().OccupiedPositions = _placeBuilding.PositionsToPlace;
                     sprite.GetComponent<IPlaceable>().IsPlaced = true;
+                    sprite.GetComponent<IPlaceable>().OnPlaced();
                     sprite.GetComponent<SpriteFollowMouse>().enabled = false;
                     _placeBuilding.enabled = false;
                     sprite.GetComponent<HighligtBuildingsAtMousePosition>().enabled = false;

@@ -30,6 +30,10 @@ namespace StrategyGame_2DPlatformer
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
+        private void OnDisable()
+        {
+            GameData.instance.DecreaseCurrentAvailaiblePop(5);
+        }
 
         void Update()
         {
@@ -122,6 +126,9 @@ namespace StrategyGame_2DPlatformer
             return corner;
         }
 
-
+        public override void OnPlaced()
+        {
+            GameData.instance.IncreaseCurrentAvailaiblePop(5);
+        }
     }
 }
