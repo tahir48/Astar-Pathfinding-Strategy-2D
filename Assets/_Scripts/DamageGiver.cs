@@ -1,18 +1,10 @@
 using StrategyGame_2DPlatformer.Contracts;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace StrategyGame_2DPlatformer
 {
     public class DamageGiver : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
         // Update is called once per frame
         void Update()
         {
@@ -27,7 +19,6 @@ namespace StrategyGame_2DPlatformer
                     IDamageable hitObj = hit.collider?.gameObject.GetComponent<IDamageable>();
                     hitObj?.Damage(2);
                 }
-
             }
         }
     }

@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e5bbb3ed0917d468224f1f10d94353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _offSet: {x: 0.4, y: 0.4}
 --- !u!114 &3799880307580606330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,10 +170,10 @@ MonoBehaviour:
   _name: House
   _cost: 5
   _maxHealth: 30
+  takeDamageFrom: {x: 0, y: 0, z: 0}
   _fillBar: {fileID: 2098291073176625695}
   _sizeX: 2
   _sizeY: 2
-  _damagePoint: {x: 0, y: 0, z: 0}
 --- !u!114 &3896332727249660882
 MonoBehaviour:
   m_ObjectHideFlags: 0

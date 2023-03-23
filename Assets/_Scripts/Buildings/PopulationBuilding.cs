@@ -3,10 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Buildings
 {
     public class PopulationBuilding : Building
     {
+
         [SerializeField] private string _name;
         [SerializeField] private int _cost;
         public override string Name { get { return _name; } }
@@ -16,18 +17,19 @@ namespace StrategyGame_2DPlatformer
         [SerializeField] private int _maxHealth;
         public override int MaxHealth { get { return _maxHealth; } }
         public override Vector3Int DamageFrom { get { return FindSpawnPoint() + Vector3Int.down; } }
+        public Vector3Int takeDamageFrom;
         [SerializeField] private Image _fillBar;
-
         #endregion
-
         #region Placement Related Variables
         [SerializeField] private int _sizeX;
         [SerializeField] private int _sizeY;
         public override int SizeX { get => _sizeX; set => _sizeX = value; }
         public override int SizeY { get => _sizeY; set => _sizeY = value; }
         #endregion
-
         private SpriteRenderer _spriteRenderer;
+        //To make conditional statement self-explanatory
+        private bool ClickIsNotOnUIandClickIsNotOnBuilding => !EventSystem.current.IsPointerOverGameObject() && !IsClickOnTheBuilding();
+
         private void OnEnable()
         {
             _currentHealth = MaxHealth;
@@ -39,14 +41,15 @@ namespace StrategyGame_2DPlatformer
             GameData.instance.DecreaseCurrentAvailaiblePop(5);
         }
 
+        #region Selection Related Functionality
         void Update()
         {
-            #region Selection Related Functionality
+
             if (IsSelected && Input.GetMouseButtonDown(0))
             {
                 OnDeselected();
             }
-            #endregion
+
         }
 
         public override void OnSelected()
@@ -72,7 +75,7 @@ namespace StrategyGame_2DPlatformer
 
         public override void OnDeselected()
         {
-            if (!EventSystem.current.IsPointerOverGameObject() && !IsClickOnBuilding())
+            if (ClickIsNotOnUIandClickIsNotOnBuilding)
             {
                 // Deselect the building
                 IsSelected = false;
@@ -81,14 +84,15 @@ namespace StrategyGame_2DPlatformer
             }
         }
 
-        bool IsClickOnBuilding()
+        bool IsClickOnTheBuilding()
         {
             // Check if the mouse position is inside the building sprite
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             return _spriteRenderer.bounds.Contains(mousePosition);
         }
+        #endregion
 
-        #region Damage related functionality
+        #region Damage Related Functionality
         public override void Damage(int damage)
         {
             if (_currentHealth <= damage)
@@ -103,21 +107,17 @@ namespace StrategyGame_2DPlatformer
             _currentHealth -= damage;
             _fillBar.fillAmount = ((float)_currentHealth / (float)_maxHealth);
         }
-        #endregion
 
 
-
-
-
-        public Vector3Int _damagePoint; 
         public Vector3Int FindSpawnPoint()
         {
             Vector3Int pos = FindCorner();
-            if (pos != null && !GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied)
+            var isRightSideOpen = pos != null && !GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied;
+            if (isRightSideOpen)
             {
-                _damagePoint = pos + Vector3Int.right;
+                takeDamageFrom = pos + Vector3Int.right;
             }
-            return _damagePoint;
+            return takeDamageFrom;
         }
         private Vector3Int FindCorner()
         {
@@ -129,11 +129,14 @@ namespace StrategyGame_2DPlatformer
             }
             return corner;
         }
+        #endregion
 
-        public override void OnPlaced()
+        #region Placement Related Functionality
+        public override void OnBuildingPlaced()
         {
             GameData.instance.IncreaseCurrentAvailaiblePop(5);
-            GameData.instance.DecreaseMoney(5);
+            GameData.instance.SpendMoney(5);
         }
+        #endregion
     }
 }

@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine.Tilemaps;
-using UnityEngine;
 
 public class Node
 {
@@ -16,6 +14,4 @@ public class Node
         edges = new List<Edge>();
         this.isOccupied = isOccupied;
     }
-
-
 }

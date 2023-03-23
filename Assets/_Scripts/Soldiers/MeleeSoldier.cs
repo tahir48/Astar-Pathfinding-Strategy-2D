@@ -108,7 +108,6 @@ namespace StrategyGame_2DPlatformer.Soldiers
             _indexToVisit = 0;
         }
 
-
         public override void Move()
         {
             Vector3 targetPosition = new Vector3(_pathToWalk[_indexToVisit].x, _pathToWalk[_indexToVisit].y, 0);

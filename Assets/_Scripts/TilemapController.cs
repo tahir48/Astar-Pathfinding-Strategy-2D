@@ -7,7 +7,6 @@ public class TilemapController : MonoBehaviour
     public Tilemap tilemap;
     public TileBase[] tiles; // An array of Tiles in the Tileset
     [SerializeField] private GameObject _player;
-    Vector3 nextposition;
 
     void Start()
     {
@@ -28,14 +27,6 @@ public class TilemapController : MonoBehaviour
         }
     }
 
-
-    private void Update()
-    {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    ChangeColorOfTileAtMouseClick();
-        //}
-    }
     public TileBase GetTileByIndex(int index)
     {
         // Check that the index is within the range of the tiles array
@@ -71,7 +62,7 @@ public class TilemapController : MonoBehaviour
     public TileBase GetTileAtPosition(Vector3Int tilePosition)
     {
         TileBase tile = tilemap.GetTile(tilePosition);
-        return tile; 
+        return tile;
     }
 
 

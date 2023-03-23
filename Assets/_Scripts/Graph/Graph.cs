@@ -65,7 +65,6 @@ public class Graph
         }
     }
 
-
     public Node GetNodeAtMouseClick()
     {
         Vector3 mousePosScreen = Input.mousePosition;

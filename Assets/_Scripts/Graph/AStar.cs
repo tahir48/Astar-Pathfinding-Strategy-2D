@@ -7,7 +7,6 @@ public class AStar
     {
         List<Node> openList = new List<Node>(); //Nodes that have been discovered but not yet evaluated
         List<Node> closedList = new List<Node>(); //Nodes that have been evaluated.
-
         Dictionary<Node, float> gScore = new Dictionary<Node, float>();
         Dictionary<Node, float> fScore = new Dictionary<Node, float>();
         Dictionary<Node, Node> coupledVisits = new Dictionary<Node, Node>();
@@ -16,7 +15,6 @@ public class AStar
         gScore[startNode] = 0;
         fScore[startNode] = HCost(startNode, endNode);
 
-
         while (openList.Count > 0)
         {
             Node current = GetLowestFScoreNode(openList, fScore);
@@ -24,7 +22,7 @@ public class AStar
             {
                 return PathGenerator(endNode, coupledVisits);
             }
-            
+
             openList.Remove(current);
             closedList.Add(current);
             foreach (var edge in current.edges)
@@ -58,7 +56,8 @@ public class AStar
     }
 
     private static Node GetLowestFScoreNode(List<Node> nodeList, Dictionary<Node, float> fScore)
-    {   //We start with the assumption that the first element of the list has the lowest fscore.
+    {
+        //We start with the assumption that the first element of the list has the lowest fscore.
         //Then we traverse through the list to find another node with a lower fscore.
         //If we find one, we assign it as the node with the lowest fscore.
         Node lowestNode = nodeList[0];
@@ -75,11 +74,9 @@ public class AStar
         return lowestNode;
     }
 
-
     private static float HCost(Node startNode, Node endNode)
     {
         //This function evaluates the most optimistic cost between the intermediary node and the target node.
         return Mathf.Sqrt(Mathf.Pow(endNode.x - startNode.x, 2) + Mathf.Pow(endNode.y - startNode.y, 2));
     }
-
 }

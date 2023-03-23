@@ -1,15 +1,14 @@
-using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.Soldiers;
 using UnityEngine;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.SoldierFactory.Products
 {
     public class KnightProduct : MonoBehaviour, IProduct
     {
         public void Initialize()
         { var sold = GetComponent<MeleeSoldier>();
             sold.SetCurrentNodeOnSpawn();
-            GameManagement.GameData.instance.DecreaseMoney(sold.Cost);
+            GameManagement.GameData.instance.SpendMoney(sold.Cost);
         }
     }
 }

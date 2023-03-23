@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class Edge
 {
     public Node startNode;

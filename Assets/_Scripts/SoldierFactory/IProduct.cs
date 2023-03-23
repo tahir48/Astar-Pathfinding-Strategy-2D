@@ -1,4 +1,4 @@
-namespace StrategyGame_2DPlatformer.Contracts
+namespace StrategyGame_2DPlatformer.SoldierFactory
 {
     public interface IProduct
     {

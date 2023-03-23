@@ -2,7 +2,6 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
 namespace StrategyGame_2DPlatformer
 {
     public class PoolHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IScrollHandler
@@ -13,7 +12,7 @@ namespace StrategyGame_2DPlatformer
         private ScrollRect myScrollRect;
         private Vector2 lastDragPosition; // Used to understand scroll direction
         private bool positiveDrag;
-
+        [SerializeField] int _margin;
 
         private void Start()
         {
@@ -33,11 +32,9 @@ namespace StrategyGame_2DPlatformer
 
         public void OnDrag(PointerEventData data) // Is called when the user drags on the scroll view
         {
-
             positiveDrag = data.position.y > lastDragPosition.y;
             lastDragPosition = data.position;
         }
-
 
         public void OnScroll(PointerEventData data)
         {
@@ -74,12 +71,10 @@ namespace StrategyGame_2DPlatformer
                     return;
                 }
             }
-
             Vector2 newPos = RecalculatePoolPositions(lastElement);
             UpdatePool(firstElement, newPos, lastIndex);
         }
 
-        [SerializeField] int _margin;
         private Vector2 RecalculatePoolPositions(Transform lastElement)
         {
             Vector2 newPos = lastElement.position;
@@ -99,6 +94,5 @@ namespace StrategyGame_2DPlatformer
             firstElement.position = newPos;
             firstElement.SetSiblingIndex(lastIndex);
         }
-
     }
 }

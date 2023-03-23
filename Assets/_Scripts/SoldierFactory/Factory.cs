@@ -1,7 +1,6 @@
-using StrategyGame_2DPlatformer.Contracts;
 using UnityEngine;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.SoldierFactory
 {
     public abstract class Factory : MonoBehaviour
     {

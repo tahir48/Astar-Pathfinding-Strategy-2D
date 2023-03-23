@@ -4,31 +4,26 @@ using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using StrategyGame_2DPlatformer.Contracts;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Buildings.UI
 {
     public class HighligtBuildingsAtMousePosition : MonoBehaviour
     {
 
         public Color unavalaibleColor;
         public Color availaibleColor;
-        private Color originalColor; // If a tile is to be de-emphasized, it turns back to its original color.
-        private List<Vector3Int> _currentTilePositions; // Will depend on mouse position and building size when the class will be over
-        public List<Vector3Int> CurrentTilePositions { get { return _currentTilePositions; } private set { } }
+        private List<Vector3Int> _currentTilePositions;
         private int sizeX;
         private int sizeY;
-        Vector3Int previousCellPosToCompare;
-
+        private Vector3Int previousCellPosToCompare;
+        private IPlaceable _placeable;
 
         private void Start()
         {
-            sizeX = GetComponent<IPlaceable>().SizeX;
-            sizeY = GetComponent<IPlaceable>().SizeY;
-            //sizeX = 2;
-            //sizeY = 3;
-            originalColor = GameData.instance.Tilemap.GetColor(new Vector3Int(1, 1, 1));
+            _placeable = GetComponent<IPlaceable>();
+            sizeX = _placeable.SizeX;
+            sizeY = _placeable.SizeY;
             _currentTilePositions = new List<Vector3Int>();
         }
-
 
         void Update()
         {

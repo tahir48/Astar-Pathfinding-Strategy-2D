@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e5bbb3ed0917d468224f1f10d94353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _offSet: {x: 0.5, y: 0.5}
 --- !u!114 &360071885091913790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,11 +169,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Mill
   _cost: 10
+  takeDamageFrom: {x: 0, y: 0, z: 0}
   _maxHealth: 50
   _fillBar: {fileID: 1595611674731612517}
   _sizeX: 2
   _sizeY: 3
-  _damagePoint: {x: 0, y: 0, z: 0}
 --- !u!114 &-2598455119479231062
 MonoBehaviour:
   m_ObjectHideFlags: 0

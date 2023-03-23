@@ -1,7 +1,7 @@
-using StrategyGame_2DPlatformer.Contracts;
+using StrategyGame_2DPlatformer.SoldierFactory.Products;
 using UnityEngine;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.SoldierFactory.Factories
 {
     public class SpearmanConcreteFactory : Factory
     {

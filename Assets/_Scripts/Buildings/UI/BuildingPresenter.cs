@@ -2,7 +2,7 @@ using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Buildings.UI
 {
     public class BuildingPresenter : MonoBehaviour
     {
@@ -10,6 +10,7 @@ namespace StrategyGame_2DPlatformer
         private bool isOpen;
         GameObject sprite;
         private PlaceBuilding _placeBuilding;
+        private IPlaceable _placeable;
         private void Start()
         {
             isOpen = false;
@@ -24,31 +25,32 @@ namespace StrategyGame_2DPlatformer
 
             if (isOpen && Input.GetMouseButtonDown(0))
             {
+                _placeable = sprite.GetComponent<IPlaceable>();
                 if (GameData.instance.Money < sprite.GetComponent<Building>().Cost)
                 {
                     Debug.LogWarning("Not Enough Money To Construct! Build A Mill To Earn Some Money");
                     OnPlacementFailed();
                     return;
                 }
-                if (_placeBuilding.PositionsToPlace != null && sprite.GetComponent<IPlaceable>().IsPlaceable)
+
+                if (_placeBuilding.PositionsToPlace != null && _placeable.IsPlaceable)
                 {
-                    Debug.Log("_placeBuilding.PositionsToPlace  " + _placeBuilding.PositionsToPlace.Count);
                     foreach (var pos in _placeBuilding.PositionsToPlace)
                     {
                         Node node = GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos);
                         node.isOccupied = true;
                     }
 
-                    sprite.GetComponent<IPlaceable>().OccupiedPositions = _placeBuilding.PositionsToPlace;
-                    sprite.GetComponent<IPlaceable>().IsPlaced = true;
-                    sprite.GetComponent<IPlaceable>().OnPlaced();
+                    _placeable.OccupiedPositions = _placeBuilding.PositionsToPlace;
+                    _placeable.IsPlaced = true;
+                    _placeable.OnBuildingPlaced();
                     sprite.GetComponent<SpriteFollowMouse>().enabled = false;
                     _placeBuilding.enabled = false;
                     sprite.GetComponent<HighligtBuildingsAtMousePosition>().enabled = false;
                     Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     Vector3Int tileToPlace = GameData.instance.Tilemap.WorldToCell(mousePos);
                     Vector3 destinationToPlace = GameData.instance.Tilemap.GetCellCenterWorld(tileToPlace);
-                    sprite.transform.position = new Vector3(destinationToPlace.x, destinationToPlace.y, 0f);
+                    sprite.transform.position = new Vector3(destinationToPlace.x + 0.5f, destinationToPlace.y + 0.5f, 0f);
                     isOpen = false;
                 }
                 else
@@ -56,10 +58,7 @@ namespace StrategyGame_2DPlatformer
                     Debug.LogWarning("The position is not availaible to place the building.");
                     OnPlacementFailed();
                 }
-
             }
-
-
         }
 
         private void OnPlacementFailed()

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine.EventSystems;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Buildings
 {
     public class PowerProductionBuilding : Building
     {
@@ -11,14 +11,21 @@ namespace StrategyGame_2DPlatformer
         [SerializeField] private int _cost;
         public override string Name { get { return _name; } }
         public override int Cost { get { return _cost; } }
+
         #region Damage Related Variables
+        public Vector3Int takeDamageFrom;
         private int _currentHealth;
         [SerializeField] private int _maxHealth;
-        public override Vector3Int DamageFrom { get { return FindSpawnPoint() + Vector3Int.down; } }
+        public override Vector3Int DamageFrom
+        {
+            get
+            {
+                return FindSpawnPoint() + Vector3Int.down;
+            }
+        }
 
-        public override int MaxHealth { get { return _maxHealth; }}
+        public override int MaxHealth { get { return _maxHealth; } }
         [SerializeField] private Image _fillBar;
-
         #endregion
 
         bool generate = false;
@@ -34,6 +41,45 @@ namespace StrategyGame_2DPlatformer
         public override int SizeY { get => _sizeY; set => _sizeY = value; }
         #endregion
         private SpriteRenderer _spriteRenderer;
+
+        #region Generate Money
+        float durationPassed = 0;
+        float durationToPass = 1;
+
+        private void Update()
+        {
+            if (generate)
+            {
+                //Generate money per "durationToPass" seconds
+                if (durationPassed > durationToPass)
+                {
+                    GameData.instance.IncreaseMoney();
+                    durationPassed = 0;
+                }
+                durationPassed += Time.deltaTime;
+            }
+            #endregion
+            #region Selection Related Functionality
+            if (IsSelected && Input.GetMouseButtonDown(0))
+            {
+                OnDeselected();
+            }
+
+        }
+        public override void OnSelected()
+        {
+            IsSelected = true;
+            _spriteRenderer.color = Color.red;
+            OnMillClicked();
+        }
+
+        public void OnMillClicked()
+        {
+            GameData.instance.ShowInformationMenu();
+            GameData.instance.buildingsImageUI.sprite = GameData.instance.productionBuildingSprite;
+            GameData.instance.buildingText.text = Name;
+        }
+
         public override void OnDeselected()
         {
             if (!EventSystem.current.IsPointerOverGameObject() && !IsClickOnBuilding())
@@ -50,43 +96,14 @@ namespace StrategyGame_2DPlatformer
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             return _spriteRenderer.bounds.Contains(mousePosition);
         }
-
-        float durationPassed = 0;
-        float durationToPass = 1;
-        
-        private void Update()
+        void OnMouseDown()
         {
-            if (generate)
+            if (IsPlaced)
             {
-                if (durationPassed > durationToPass)
-                {
-                    GameData.instance.IncreaseMoney();
-                    durationPassed = 0;
-                }
-                durationPassed += Time.deltaTime;
+                OnSelected();
             }
-
-            #region Selection Related Functionality
-            if (IsSelected && Input.GetMouseButtonDown(0))
-            {
-                OnDeselected();
-            }
-            #endregion
         }
-        public override void OnSelected()
-        {
-            IsSelected = true;
-            _spriteRenderer.color = Color.red;
-            OnMillClicked();
-        }
-
-        public void OnMillClicked()
-        {
-            GameData.instance.ShowInformationMenu();
-            GameData.instance.buildingsImageUI.sprite = GameData.instance.productionBuildingSprite; 
-            GameData.instance.buildingText.text = Name;
-        }
-
+        #endregion
 
         #region Damage related functionality
         public override void Damage(int damage)
@@ -103,17 +120,18 @@ namespace StrategyGame_2DPlatformer
             _currentHealth -= damage;
             _fillBar.fillAmount = ((float)_currentHealth / (float)_maxHealth);
         }
-        #endregion
 
-        public Vector3Int _damagePoint;
+
+
         public Vector3Int FindSpawnPoint()
         {
             Vector3Int pos = FindCorner();
-            if (pos != null && !GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied)
+            var isRightSideOpen = pos != null && !GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied;
+            if (isRightSideOpen)
             {
-                _damagePoint = pos + Vector3Int.right;
+                takeDamageFrom = pos + Vector3Int.right;
             }
-            return _damagePoint;
+            return takeDamageFrom;
         }
         private Vector3Int FindCorner()
         {
@@ -125,18 +143,14 @@ namespace StrategyGame_2DPlatformer
             }
             return corner;
         }
-        void OnMouseDown()
-        {
-            if (IsPlaced)
-            {
-                OnSelected();
-            }
-        }
+        #endregion
 
-        public override void OnPlaced()
+        #region Placement Related Functionality
+        public override void OnBuildingPlaced()
         {
             generate = true;
-            GameData.instance.DecreaseMoney(5);
+            GameData.instance.SpendMoney(5);
         }
+        #endregion
     }
 }

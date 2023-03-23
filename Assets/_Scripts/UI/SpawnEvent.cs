@@ -9,9 +9,7 @@ namespace StrategyGame_2DPlatformer.UI
         public void HandleButtonClick(string soldierName)
         {
             // This method will be called when the button is clicked.
-
             onSpawnButtonClick.Invoke(soldierName);
         }
-
     }
 }

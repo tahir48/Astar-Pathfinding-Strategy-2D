@@ -10,16 +10,12 @@ namespace StrategyGame_2DPlatformer
         public uint InitPoolSize => initPoolSize;
         [SerializeField] private PooledObject[] objectToPoolArray;
         #endregion
-
-
         #region Scroll Related Variables
         public float ChildHeight { get { return heightOfPooledobject; } }
-        
         private RectTransform rectTransform;
         private RectTransform[] rtPool;
         private float  heightOfPooledobject;
-
-        [SerializeField] private float verticalMargin;
+        [SerializeField] int _margin;
         #endregion
 
         private void Awake()
@@ -30,7 +26,6 @@ namespace StrategyGame_2DPlatformer
 
         private void Start()
         {
-
             #region Pool Related Assignments
             List<RectTransform> activePoolElements = new List<RectTransform>();
             for (int i = 0; i < rectTransform.childCount; i++)
@@ -41,14 +36,12 @@ namespace StrategyGame_2DPlatformer
                     activePoolElements.Add(child);
                 }
             }
-
             rtPool = new RectTransform[activePoolElements.Count];
             for (int i = 0; i < activePoolElements.Count; i++)
             {
                 rtPool[i] = activePoolElements[i];
             }
             #endregion
-
             #region Scroll Related Assignments
             heightOfPooledobject = rtPool[0].rect.height;
 
@@ -73,7 +66,6 @@ namespace StrategyGame_2DPlatformer
                 index = index + 1;
             }
         }
-        [SerializeField] int _margin;
         //Set the vertical position of each RectTransform in an array of RectTransforms
         //relative to the parent RectTransform
         private void ArrangePoolPositionsAtStart()

@@ -12,8 +12,6 @@ namespace StrategyGame_2DPlatformer.GameManagement
         public Sprite productionBuildingSprite;
         public Sprite MilitaryBuildingSprite;
         #endregion
-
-
         public RectTransform informationMenu;
         public Image buildingsImageUI;
         public Text buildingText;
@@ -29,7 +27,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
         public int MaxPopulationSize { get { return _maxPopulationSize; } private set { } }
         #endregion
 
-        #region Simple Sington
+        #region Simple Singleton
         public static GameData instance;
         #endregion
 
@@ -76,7 +74,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
 
         public void UpdatePopulation()
         {
-            PopulationChanged.Invoke();
+            PopulationChanged?.Invoke();
         }
 
         #endregion
@@ -91,7 +89,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
             UpdateMoney();
         }
 
-        public void DecreaseMoney(int amount)
+        public void SpendMoney(int amount)
         {
             _money -= amount;
             UpdateMoney();
@@ -112,7 +110,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
             _maxPopulationSize = 200;
             _money = 100;
             #endregion
-            #region Simple Sington
+            #region Simple Singleton
             if (instance == null)
             {
                 instance = this;
@@ -199,12 +197,6 @@ namespace StrategyGame_2DPlatformer.GameManagement
             position.x = endValue;
             informationMenu.anchoredPosition = position;
             menuOpened = true;
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         #region Draw Graph OnGizmos

@@ -2,7 +2,7 @@ using UnityEngine;
 using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine.Tilemaps;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Buildings.UI
 {
     public class HighligtMousePosition : MonoBehaviour
     {

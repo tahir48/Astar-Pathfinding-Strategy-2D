@@ -31,7 +31,6 @@ namespace StrategyGame_2DPlatformer
 
         public void UpdateView()
         {
-            Debug.LogError("Pop has changed");
             if (currentPop != null) currentPop.text = GameData.instance.CurrentHumanPopulationSize.ToString();
             if (availaiblePop != null) availaiblePop.text = "/ " + GameData.instance.CurrentPopulationSize.ToString();
         }
