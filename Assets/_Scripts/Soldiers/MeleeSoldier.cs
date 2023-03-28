@@ -1,4 +1,3 @@
-using StrategyGame_2DPlatformer.Buildings;
 using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using System;
@@ -28,9 +27,10 @@ namespace StrategyGame_2DPlatformer.Soldiers
         private float moveSpeed = 2f;
         private int _indexToVisit;
         private bool isMoving;
-        Node nextNodee;
+        //Node nextNodee;
         IDamageable _targetDamageable;
         private bool isAttacking;
+        private Camera _mainCamera;
 
         private bool destinationReached => _indexToVisit == _pathToWalk.Count;
 
@@ -41,6 +41,7 @@ namespace StrategyGame_2DPlatformer.Soldiers
             selectable = GetComponent<Selectable>();
             _indexToVisit = 0;
             isAttacking = false;
+            _mainCamera = Camera.main;
         }
 
         private void OnDisable()
@@ -71,7 +72,7 @@ namespace StrategyGame_2DPlatformer.Soldiers
 
         private void StopAttack()
         {
-            isAttacking = false; //What if he attackes elsewhere during attack
+            isAttacking = false;
             CancelInvoke("DealDamage");
             _targetDamageable = null;
             Debug.Log("Stop Attacking the Damageable!");
@@ -86,17 +87,15 @@ namespace StrategyGame_2DPlatformer.Soldiers
             HandleRightClick();
             HandleMovement();
         }
-        Building building;
         private void HandleRightClick()
         {
             if (Input.GetMouseButtonDown(1) && selectable.IsSelected && !isMoving)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
                 if (hit && hit.collider.GetComponent<IDamageable>() != null)
                 {
-                    if (hit.collider.GetComponent<Building>() != null) building = hit.collider.GetComponent<Building>();
                     HandleAttack(hit);
                 }
                 else
@@ -120,11 +119,17 @@ namespace StrategyGame_2DPlatformer.Soldiers
         {
             _targetDamageable = hitObj;
             Vector3Int nextNode = hitObj.DamageFrom;
-            nextNodee = GameData.instance.Graph.GetNodeAtPosition(nextNode);
-            MoveToTarget(nextNodee);
-            //MoveToTarget(GetClosestNodeToAttack(building));
+            Node nextNodee = GameData.instance.Graph.GetNodeAtPosition(nextNode);
+            if (currentNode == nextNodee)
+            {
+                OnMovementComplete?.Invoke();
+            }
+            else
+            {
+                MoveToTarget(nextNodee);
+            }
         }
-        
+
 
         public void MoveToTarget(Node targetNode)
         {
@@ -134,7 +139,6 @@ namespace StrategyGame_2DPlatformer.Soldiers
             if (_pathToWalk == null || _pathToWalk.Count == 0) return;
             currentNode.isOccupied = false;
             isMoving = true;
-            //_indexToVisit = 0;
         }
 
         private void HandleMovement()
@@ -163,7 +167,6 @@ namespace StrategyGame_2DPlatformer.Soldiers
                     {
                         OnMovementComplete?.Invoke();
                     }
-                    //_targetDamageable = null;
                     _pathToWalk = null;
                     _indexToVisit = 0;
                 }

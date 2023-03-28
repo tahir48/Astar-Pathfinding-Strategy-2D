@@ -1,4 +1,3 @@
-using StrategyGame_2DPlatformer.Buildings;
 using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using StrategyGame_2DPlatformer.Soldiers;
@@ -13,23 +12,15 @@ namespace StrategyGame_2DPlatformer
 
         //Model for MVP Pattern in Health Bar
         private int _currentHealth;
-        public int CurrentHealth { get { return _currentHealth; } }
-
+        private bool _isAlive;
         [SerializeField] private int _maxHealth;
+        public int CurrentHealth { get { return _currentHealth; } }
         public int MaxHealth { get { return _maxHealth; } }
 
-        //public Vector3Int DamageFrom
-        //{
-        //    get => new Vector3Int(
-        //        GetComponent<Soldier>().currentNode.x,
-        //        GetComponent<Soldier>().currentNode.y, 0)
-        //        + Vector3Int.right;
-        //} 
         public Vector3Int DamageFrom
         {
             get => GetClosestNodeToAttack(GameData.instance.soldier);
         }
-        private bool _isAlive;
         public bool IsAlive => _isAlive;
 
         private void Start()
@@ -61,31 +52,32 @@ namespace StrategyGame_2DPlatformer
             HealthChanged?.Invoke();
         }
 
-        // Buraya en yakýn yeri soldierden soldiere de hesaplaa
         public Vector3Int GetClosestNodeToAttack(Soldier selectedSoldier)
         {
+            var damageableSoldier = GetComponent<Soldier>();
             Vector3Int soldierPosition = new Vector3Int(selectedSoldier.currentNode.x, selectedSoldier.currentNode.y, 0);
-            Vector3Int closestPosition = new Vector3Int(GetComponent<Soldier>().currentNode.x, GetComponent<Soldier>().currentNode.y, 0);
-            //TileBase closestTile = null;
+            Vector3Int closestPosition = new Vector3Int(damageableSoldier.currentNode.x, damageableSoldier.currentNode.y, 0);
+            Vector3Int attackPoint;
 
-            Vector3Int attackPoint = Vector3Int.right;
             if (soldierPosition.x < closestPosition.x)
             {
-                attackPoint = closestPosition + Vector3Int.left;
+                attackPoint = new Vector3Int(closestPosition.x - 1, closestPosition.y, 0);
             }
             else if (soldierPosition.x > closestPosition.x)
             {
-                attackPoint = closestPosition + Vector3Int.right;
+                attackPoint = new Vector3Int(closestPosition.x + 1, closestPosition.y, 0);
             }
             else if (soldierPosition.y < closestPosition.y)
             {
-                attackPoint = closestPosition + Vector3Int.down;
+                attackPoint = new Vector3Int(closestPosition.x, closestPosition.y - 1, 0);
             }
             else
             {
-                attackPoint = closestPosition + Vector3Int.up;
+                attackPoint = new Vector3Int(closestPosition.x, closestPosition.y + 1, 0);
             }
+
             return attackPoint;
         }
+
     }
 }

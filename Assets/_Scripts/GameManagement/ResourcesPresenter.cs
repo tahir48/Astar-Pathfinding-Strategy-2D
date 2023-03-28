@@ -6,21 +6,20 @@ namespace StrategyGame_2DPlatformer
 {
     public class ResourcesPresenter : MonoBehaviour
     {
-        // Start is called before the first frame update
-        [Header("Model")]
-        //GameData.instance since I follow a singleton pattern to keep data in one place
-
+        //Model
+        private GameData Model;
         [Header("View")]
         [SerializeField] Text currentMoney;
 
         private void Start()
         {
-            GameData.instance.MoneyChanged += OnMoneyChanged;
+            Model = GameData.instance;
+            Model.MoneyChanged += OnMoneyChanged;
         }
 
         private void OnDestroy()
         {
-            GameData.instance.MoneyChanged -= OnMoneyChanged;
+            Model.MoneyChanged -= OnMoneyChanged;
         }
 
         private void OnMoneyChanged()
@@ -30,7 +29,7 @@ namespace StrategyGame_2DPlatformer
 
         public void UpdateView()
         {
-            if (currentMoney != null) currentMoney.text = GameData.instance.Money.ToString();
+            if (currentMoney != null) currentMoney.text = Model.Money.ToString();
         }
     }
 }

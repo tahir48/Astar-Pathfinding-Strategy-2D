@@ -1635,6 +1635,7 @@ MonoBehaviour:
   productionBuildingSprite: {fileID: 21300000, guid: 2f9d65344d83cad43b82805f8548ef6b, type: 3}
   MilitaryBuildingSprite: {fileID: 21300000, guid: 0b1d75d96c376cb42a172c06b8838300, type: 3}
   informationMenu: {fileID: 1422768918}
+  soldierHolder: {fileID: 725052069}
   buildingsImageUI: {fileID: 1757952468}
   buildingText: {fileID: 853217558}
   swordsmanPrefab: {fileID: 6371031810745327079, guid: 98b12ebb9a497d04b9919aca4b9997c8, type: 3}
@@ -2654,8 +2655,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf39491e0504fee4ea4d1f642e5b46aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unavalaibleColor: {r: 1, g: 0, b: 0, a: 1}
-  availaibleColor: {r: 0.1689837, g: 1, b: 0, a: 1}
 --- !u!4 &1125169791
 Transform:
   m_ObjectHideFlags: 0
@@ -2698,7 +2697,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemapLayer:
-    serializedVersion: 2
     m_Bits: 0
 --- !u!1 &1221956677
 GameObject:
@@ -10171,50 +10169,6 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!1 &1676869402
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1676869404}
-  - component: {fileID: 1676869403}
-  m_Layer: 0
-  m_Name: DamageGiver
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1676869403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1676869402}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb50a8450295a5f4a8f81a4c64f28b1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1676869404
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1676869402}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 247, y: 1445.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1718612813
 GameObject:
   m_ObjectHideFlags: 0
@@ -10455,7 +10409,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b064c5bf068845449a6373d8858e149c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 1605867754}
 --- !u!4 &1949649097
 Transform:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using StrategyGame_2DPlatformer.SoldierFactory.Factories;
 using StrategyGame_2DPlatformer.Soldiers;
+using UnityEngine.Tilemaps;
 
 namespace StrategyGame_2DPlatformer.Buildings
 {
@@ -48,11 +49,13 @@ namespace StrategyGame_2DPlatformer.Buildings
         public override int SizeX { get => _sizeX; set => _sizeX = value; }
         public override int SizeY { get => _sizeY; set => _sizeY = value; }
         #endregion
+        private Tilemap tilemap;
+        private Graph graph;
         #region Production Related Functionality
         private void FindSpawnPoint()
         {
             Vector3Int pos = FindCorner();
-            var isRightSideOpen = pos != null && !GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied;
+            var isRightSideOpen = pos != null && !graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied;
             if (isRightSideOpen)
             {
                 _spawnpoint = pos + Vector3Int.right;
@@ -70,7 +73,11 @@ namespace StrategyGame_2DPlatformer.Buildings
             return corner;
         }
 
-
+        private void Start()
+        {
+            tilemap = GameData.instance.Tilemap;
+            graph = GameData.instance.Graph;
+        }
         private void OnEnable()
         {
             SpawnEvent.onSpawnButtonClick += HandleButtonClick;
@@ -95,13 +102,12 @@ namespace StrategyGame_2DPlatformer.Buildings
 
             foreach (Vector3Int occupiedPosition in OccupiedPositions)
             {
-                Vector3 position = GameData.instance.Tilemap.CellToWorld(occupiedPosition);
+                Vector3 position = tilemap.CellToWorld(occupiedPosition);
                 float distance = Vector3.Distance(position, soldierPosition);
 
                 if (distance < closestDistance)
                 {
-                    //closestTile = GameData.instance.Tilemap.GetTile(occupiedPosition);
-                    closestPosition = GameData.instance.Tilemap.WorldToCell(position);
+                    closestPosition = tilemap.WorldToCell(position);
                     closestDistance = distance;
                 }
             }
@@ -132,7 +138,7 @@ namespace StrategyGame_2DPlatformer.Buildings
             if (!GetComponent<SelectableBuilding>().IsSelected) return;
             if (GameData.instance.AvailaiblePopulation - GameData.instance.CurrentPopulation <= 0) return;
             FindSpawnPoint();
-            Vector3 spawnPoint = GameData.instance.Tilemap.GetCellCenterWorld(_spawnpoint);
+            Vector3 spawnPoint = tilemap.GetCellCenterWorld(_spawnpoint);
             if (Enum.TryParse(soldierName, out factoryState))
             {
                 ChangeFactoryState(factoryState);

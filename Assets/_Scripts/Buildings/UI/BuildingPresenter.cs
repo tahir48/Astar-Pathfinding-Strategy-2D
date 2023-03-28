@@ -3,30 +3,47 @@ using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine;
 
 namespace StrategyGame_2DPlatformer.Buildings.UI
-{
+{    //I shall rename this class, not as a presenter, but as a controller
+
     public class BuildingPresenter : MonoBehaviour
     {
+        /// <summary>
+        /// This class is responsible for placing the buildings on the map.
+        /// It instantiates a building sprite when button is clicked, checks if the position where the building is being placed is valid, 
+        /// and handles the final placement of the building on the nodes.
+        /// </summary>
+        
         public GameObject spritePrefab;
         private bool isOpen;
         GameObject sprite;
         private PlaceBuilding _placeBuilding;
         private IPlaceable _placeable;
+        private Camera mainCamera;
+        private GameData gameData;
         private void Start()
         {
             isOpen = false;
+            mainCamera = Camera.main;
+            gameData = GameData.instance;
         }
 
         private void Update()
         {
-            if (isOpen && Input.GetMouseButtonDown(1))
+            if (!isOpen) return;
+ 
+            if (Input.GetMouseButtonDown(1))
             {
                 OnPlacementFailed();
             }
 
-            if (isOpen && Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
-                _placeable = sprite.GetComponent<IPlaceable>();
-                if (GameData.instance.Money < sprite.GetComponent<Building>().Cost)
+                if (!sprite.TryGetComponent(out _placeable))
+                {
+                    return;
+                }
+                var building = sprite.GetComponent<Building>();
+                if (gameData.Money < building.Cost)
                 {
                     Debug.LogWarning("Not Enough Money To Construct! Build A Mill To Earn Some Money");
                     OnPlacementFailed();
@@ -35,22 +52,26 @@ namespace StrategyGame_2DPlatformer.Buildings.UI
 
                 if (_placeBuilding.PositionsToPlace != null && _placeable.IsPlaceable)
                 {
+                    //Set the nodes occupied
                     foreach (var pos in _placeBuilding.PositionsToPlace)
                     {
-                        Node node = GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos);
-                        node.isOccupied = true;
+                        Node node = gameData.Graph.GetNodeAtPosition(pos);
+                        node?.SetOccupied(true);
                     }
 
                     _placeable.OccupiedPositions = _placeBuilding.PositionsToPlace;
                     _placeable.IsPlaced = true;
                     _placeable.OnBuildingPlaced();
-                    sprite.GetComponent<SpriteFollowMouse>().enabled = false;
+
+                    if (sprite.TryGetComponent(out SpriteFollowMouse spriteFollowMouse)) spriteFollowMouse.enabled = false;
+                    if (sprite.TryGetComponent(out HighligtBuildingsAtMousePosition highligtBuildingsAtMousePosition)) highligtBuildingsAtMousePosition.enabled = false;
                     _placeBuilding.enabled = false;
-                    sprite.GetComponent<HighligtBuildingsAtMousePosition>().enabled = false;
-                    Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Vector3Int tileToPlace = GameData.instance.Tilemap.WorldToCell(mousePos);
-                    Vector3 destinationToPlace = GameData.instance.Tilemap.GetCellCenterWorld(tileToPlace);
+
+                    Vector3 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+                    Vector3Int tileToPlace = gameData.Tilemap.WorldToCell(mousePos);
+                    Vector3 destinationToPlace = gameData.Tilemap.GetCellCenterWorld(tileToPlace);
                     sprite.transform.position = new Vector3(destinationToPlace.x + 0.5f, destinationToPlace.y + 0.5f, 0f);
+
                     isOpen = false;
                 }
                 else
@@ -65,13 +86,14 @@ namespace StrategyGame_2DPlatformer.Buildings.UI
         {
             Destroy(sprite);
             isOpen = false;
+            return;
         }
 
         public void OnBarracksButtonClick()
         {
             sprite = Instantiate(spritePrefab, Vector3.zero, Quaternion.identity);
             _placeBuilding = sprite.GetComponent<PlaceBuilding>();
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             sprite.transform.position = new Vector3(mousePos.x, mousePos.y, 0f);
             isOpen = true;
         }

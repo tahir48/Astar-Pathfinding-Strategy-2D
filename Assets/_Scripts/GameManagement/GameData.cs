@@ -28,6 +28,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
         public Sprite MilitaryBuildingSprite;
         #endregion
         public RectTransform informationMenu;
+        public RectTransform soldierHolder;
         public Image buildingsImageUI;
         public Text buildingText;
 

@@ -21,6 +21,7 @@ namespace StrategyGame_2DPlatformer
         {
             OnSelected();
         }
+
         public void OnSelected()
         {
             _isSelected = true;
@@ -34,7 +35,6 @@ namespace StrategyGame_2DPlatformer
             {
                 _isSelected = false;
                 _spriteRenderer.color = Color.white;
-                GameManagement.GameData.instance.soldier = null;
             }
         }
 

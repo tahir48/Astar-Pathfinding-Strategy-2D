@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using StrategyGame_2DPlatformer.GameManagement;
 
 namespace StrategyGame_2DPlatformer.Buildings
@@ -40,6 +39,11 @@ namespace StrategyGame_2DPlatformer.Buildings
         #region Generate Money
         float durationPassed = 0;
         float durationToPass = 1;
+        private GameData _gameData;
+        private void OnEnable()
+        {
+            _gameData = GameData.instance;
+        }
 
         private void Update()
         {
@@ -48,7 +52,7 @@ namespace StrategyGame_2DPlatformer.Buildings
                 //Generate money per "durationToPass" seconds
                 if (durationPassed > durationToPass)
                 {
-                    GameData.instance.IncreaseMoney();
+                    _gameData.IncreaseMoney();
                     durationPassed = 0;
                 }
                 durationPassed += Time.deltaTime;
@@ -61,7 +65,7 @@ namespace StrategyGame_2DPlatformer.Buildings
         public Vector3Int FindSpawnPoint()
         {
             Vector3Int pos = FindCorner();
-            var isRightSideOpen = pos != null && !GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied;
+            var isRightSideOpen = pos != null && !_gameData.Graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied;
             if (isRightSideOpen)
             {
                 takeDamageFrom = pos + Vector3Int.right;
@@ -84,7 +88,7 @@ namespace StrategyGame_2DPlatformer.Buildings
         public override void OnBuildingPlaced()
         {
             generate = true;
-            GameData.instance.SpendMoney(5);
+            _gameData.SpendMoney(5);
         }
         #endregion
     }

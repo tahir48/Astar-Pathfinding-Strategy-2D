@@ -7,6 +7,10 @@ namespace StrategyGame_2DPlatformer.Buildings.UI
 {
     public class PlaceBuilding : MonoBehaviour
     {
+        /// <summary>
+        /// This class is responsible for deciding if the building can be placed on the map.
+        /// And if it can be placed, it assigns the positions of the nodes that the building will occupy.
+        /// </summary>
         private List<Vector3Int> currentTilePositions;
         private List<Vector3Int> _positionsToPlace;
         public List<Vector3Int> PositionsToPlace { get { return _positionsToPlace; } private set { } }

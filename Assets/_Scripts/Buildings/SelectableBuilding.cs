@@ -1,26 +1,25 @@
 using StrategyGame_2DPlatformer.Buildings;
-using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace StrategyGame_2DPlatformer
 {
-    public class SelectableBuilding : MonoBehaviour, ISelectable
+    public class SelectableBuilding : MonoBehaviour, Contracts.ISelectable
     {
         private bool _isSelected;
         private SpriteRenderer _spriteRenderer;
         public bool IsSelected { get => _isSelected; set => _isSelected = value; }
         private bool ClickIsNotOnUIandClickIsNotOnBuilding => !EventSystem.current.IsPointerOverGameObject() && !IsClickOnTheBuilding();
-        public RectTransform soldierHolder;
         Building building;
+        private GameData _gamedata;
 
         private void Start()
         {
+            _gamedata = GameData.instance;
             _isSelected = false;
             _spriteRenderer = GetComponent<SpriteRenderer>();
             building = GetComponent<Building>();
-            if (building?.Name == "Barracks") soldierHolder = GameObject.FindGameObjectWithTag("Soldiers").GetComponent<RectTransform>();
         }
 
         private void OnMouseDown()
@@ -30,32 +29,34 @@ namespace StrategyGame_2DPlatformer
                 OnSelected();
             }
         }
+
         public void OnSelected()
         {
             _isSelected = true;
             GetComponent<SpriteRenderer>().color = Color.red;
-            OnBarracksClicked();
-        }
-        public void OnBarracksClicked()
-        {
-            GameData.instance.ShowInformationMenu();
-            GameData.instance.buildingsImageUI.sprite = GameData.instance.MilitaryBuildingSprite;
-            GameData.instance.buildingText.text = building.Name;
-            if (building?.Name == "Barracks") soldierHolder?.gameObject.SetActive(true);
+            OnBuildingClicked(building);
         }
 
-        public void OnMillClicked()
+        public void OnBuildingClicked(Building building)
         {
-            GameData.instance.ShowInformationMenu();
-            GameData.instance.buildingsImageUI.sprite = GameData.instance.productionBuildingSprite;
-            GameData.instance.buildingText.text = building.Name;
-        }
+            _gamedata.ShowInformationMenu();
+            _gamedata.buildingText.text = building.Name;
+            switch (building.Name)
+            {
+                case "House":
+                    _gamedata.buildingsImageUI.sprite = _gamedata.populationBuildingSprite;
+                    break;
+                case "Mill":
+                    _gamedata.buildingsImageUI.sprite = _gamedata.productionBuildingSprite;
+                    break;
+                case "Barracks":
+                    _gamedata.buildingsImageUI.sprite = _gamedata.MilitaryBuildingSprite;
+                    _gamedata.soldierHolder?.gameObject.SetActive(true);
+                    break;
+                default:
+                    break;
+            }
 
-        public void OnHouseClicked()
-        {
-            GameData.instance.ShowInformationMenu();
-            GameData.instance.buildingsImageUI.sprite = GameData.instance.populationBuildingSprite;
-            GameData.instance.buildingText.text = building.Name;
         }
 
 
@@ -65,8 +66,8 @@ namespace StrategyGame_2DPlatformer
             {
                 IsSelected = false;
                 _spriteRenderer.color = Color.white;
-                if (building?.Name == "Barracks") soldierHolder?.gameObject.SetActive(false);
-                GameData.instance.HideInformationMenu();
+                if (building.Name == "Barracks") _gamedata.soldierHolder.gameObject.SetActive(false);
+                _gamedata.HideInformationMenu();
             }
         }
 

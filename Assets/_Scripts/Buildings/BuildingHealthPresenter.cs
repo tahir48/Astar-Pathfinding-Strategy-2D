@@ -5,11 +5,12 @@ namespace StrategyGame_2DPlatformer
 {
     public class BuildingHealthPresenter : MonoBehaviour
     {
-        // Start is called before the first frame update
-
+        /// <summary>
+        /// This class is responsible for updating the health bar of the building i.e. Presenter.
+        /// </summary>
         [SerializeField] private Image healthBar;
         DamageableBuilding damageable;
-        // Start is called before the first frame update
+
         private void Start()
         {
             damageable = GetComponent<DamageableBuilding>();

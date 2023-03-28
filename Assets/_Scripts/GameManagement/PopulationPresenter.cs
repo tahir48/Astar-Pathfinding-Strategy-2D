@@ -6,22 +6,21 @@ namespace StrategyGame_2DPlatformer
 {
     public class PopulationPresenter : MonoBehaviour
     {
-        // Start is called before the first frame update
-        [Header("Model")]
-        //GameData.instance since I follow a singleton pattern to keep data in one place
-
+        //Model
+        private GameData Model;
         [Header("View")]
         [SerializeField] Text currentPop;
         [SerializeField] Text availaiblePop;
 
         private void Start()
         {
-            GameData.instance.PopulationChanged += OnPopulationChanged;
+            Model = GameData.instance;
+            Model.PopulationChanged += OnPopulationChanged;
         }
 
         private void OnDestroy()
         {
-            GameData.instance.PopulationChanged -= OnPopulationChanged;
+            Model.PopulationChanged -= OnPopulationChanged;
         }
 
         private void OnPopulationChanged()
@@ -31,11 +30,8 @@ namespace StrategyGame_2DPlatformer
 
         public void UpdateView()
         {
-            if (currentPop != null) currentPop.text = GameData.instance.CurrentPopulation.ToString();
-            if (availaiblePop != null) availaiblePop.text = "/ " + GameData.instance.AvailaiblePopulation.ToString();
+            if (currentPop != null) currentPop.text = Model.CurrentPopulation.ToString();
+            if (availaiblePop != null) availaiblePop.text = "/ " + Model.AvailaiblePopulation.ToString();
         }
-
-
-
     }
 }

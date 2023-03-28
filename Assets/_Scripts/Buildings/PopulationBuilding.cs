@@ -1,6 +1,5 @@
 using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace StrategyGame_2DPlatformer.Buildings
 {
@@ -34,19 +33,24 @@ namespace StrategyGame_2DPlatformer.Buildings
         public override int SizeX { get => _sizeX; set => _sizeX = value; }
         public override int SizeY { get => _sizeY; set => _sizeY = value; }
         #endregion
+        private GameData _gameData;
 
 
+        private void OnEnable()
+        {
+            _gameData = GameData.instance;
+        }
 
         private void OnDisable()
         {
-            GameData.instance.DecreaseCurrentAvailaiblePop(5);
+            _gameData.DecreaseCurrentAvailaiblePop(5);
         }
 
         #region Damage Related Functionality
         public Vector3Int FindSpawnPoint()
         {
             Vector3Int pos = FindCorner();
-            var isRightSideOpen = pos != null && !GameManagement.GameData.instance.Graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied;
+            var isRightSideOpen = pos != null && !_gameData.Graph.GetNodeAtPosition(pos + Vector3Int.right).isOccupied;
             if (isRightSideOpen)
             {
                 takeDamageFrom = pos + Vector3Int.right;
@@ -68,8 +72,8 @@ namespace StrategyGame_2DPlatformer.Buildings
         #region Placement Related Functionality
         public override void OnBuildingPlaced()
         {
-            GameData.instance.IncreaseCurrentAvailaiblePop(5);
-            GameData.instance.SpendMoney(5);
+            _gameData.IncreaseCurrentAvailaiblePop(5);
+            _gameData.SpendMoney(5);
         }
         #endregion
     }
