@@ -17,7 +17,7 @@ namespace StrategyGame_2DPlatformer
                     Debug.Log("Damage geldi");
                     
                     IDamageable hitObj = hit.collider?.gameObject.GetComponent<IDamageable>();
-                    hitObj?.Damage(2);
+                    hitObj?.Damage(4);
                 }
             }
         }

@@ -1,82 +1,94 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace StrategyGame_2DPlatformer
 {
-    public class ScrollPool : MonoBehaviour
+    public class ScrollPool : MonoBehaviour, IBeginDragHandler, IDragHandler, IScrollHandler
     {
-        #region Pool Related Variables
-        [SerializeField] private uint initPoolSize;
-        public uint InitPoolSize => initPoolSize;
-        [SerializeField] private PooledObject[] objectToPoolArray;
-        #endregion
-        #region Scroll Related Variables
-        public float ChildHeight { get { return heightOfPooledobject; } }
-        private RectTransform rectTransform;
-        private RectTransform[] rtPool;
-        private float  heightOfPooledobject;
-        [SerializeField] int _margin;
-        #endregion
-
-        private void Awake()
-        {
-            SetupPool();
-            rectTransform = GetComponent<RectTransform>();
-        }
+        [SerializeField] private PooledObjects _content;
+        [SerializeField] private float _boundary;
+        private ScrollRect myScrollRect;
+        private Vector2 lastDragPosition;
+        private bool positiveDrag;
 
         private void Start()
         {
-            #region Pool Related Assignments
-            List<RectTransform> activePoolElements = new List<RectTransform>();
-            for (int i = 0; i < rectTransform.childCount; i++)
+            myScrollRect = GetComponent<ScrollRect>();
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            lastDragPosition = eventData.position;
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            positiveDrag = eventData.position.y > lastDragPosition.y;
+            lastDragPosition = eventData.position;
+        }
+
+        public void OnScroll(PointerEventData eventData)
+        {
+            positiveDrag = eventData.scrollDelta.y > 0;
+        }
+
+        public void OnViewScroll()
+        {
+            HandleScroll();
+        }
+
+        private void HandleScroll()
+        {
+            int firstIndex = positiveDrag ? myScrollRect.content.childCount - 1 : 0;
+            var firstElement = GetPooledObject(myScrollRect, firstIndex);
+            int lastIndex = positiveDrag ? 0 : myScrollRect.content.childCount - 1;
+            var lastElement = GetPooledObject(myScrollRect, lastIndex);
+
+            var aimPosition = transform.position.y;
+            if (positiveDrag)
             {
-                RectTransform child = rectTransform.GetChild(i) as RectTransform;
-                if (child.gameObject.activeSelf)
+                aimPosition = transform.position.y + _content.ChildHeight * 0.5f + _content.ItemSpacing;
+                if (!(firstElement.position.y - _content.ChildHeight * 0.5f > aimPosition))
                 {
-                    activePoolElements.Add(child);
+                    return;
                 }
             }
-            rtPool = new RectTransform[activePoolElements.Count];
-            for (int i = 0; i < activePoolElements.Count; i++)
+            else
             {
-                rtPool[i] = activePoolElements[i];
+                aimPosition = transform.position.y - _content.ChildHeight * 0.5f - _content.ItemSpacing;
+                if (!(firstElement.position.y + _content.ChildHeight * 0.5f < aimPosition))
+                {
+                    return;
+                }
             }
-            #endregion
-            #region Scroll Related Assignments
-            heightOfPooledobject = rtPool[0].rect.height;
-
-            ArrangePoolPositionsAtStart();
-            #endregion
+            Vector2 newPos = RecalculatePoolPositions(lastElement);
+            UpdatePool(firstElement, newPos, lastIndex);
         }
-        private void SetupPool()
+
+        private Vector2 RecalculatePoolPositions(Transform lastElement)
         {
-            if (objectToPoolArray == null)
+            Vector2 newPos = lastElement.position;
+            if (positiveDrag)
             {
-                return;
+                newPos.y = lastElement.position.y - _content.ChildHeight * 1.5f + _content.ItemSpacing;
             }
-
-            PooledObject instance = null;
-
-            int index = 0;
-            for (int i = 0; i < initPoolSize; i++)
+            else
             {
-                if (index > objectToPoolArray.Length - 1) index = 0;
-                instance = Instantiate(objectToPoolArray[index], gameObject.transform);
-                instance.Pool = this;
-                index = index + 1;
+                newPos.y = lastElement.position.y + _content.ChildHeight * 1.5f - _content.ItemSpacing;
             }
+            return newPos;
         }
-        //Set the vertical position of each RectTransform in an array of RectTransforms
-        //relative to the parent RectTransform
-        private void ArrangePoolPositionsAtStart()
+
+        private void UpdatePool(Transform firstElement, Vector2 newPos, int lastIndex)
         {
-            float center = (rectTransform.rect.height * 0.5f);
-            for (int i = 0; i < rtPool.Length; i++)
-            {
-                Vector2 childPos = rtPool[i].localPosition;
-                childPos.y = center + i * (heightOfPooledobject + _margin);
-                rtPool[i].localPosition = childPos;
-            }
+            firstElement.position = newPos;
+            firstElement.SetSiblingIndex(lastIndex);
+        }
+
+        public Transform GetPooledObject(ScrollRect scrollRect, int index)
+        {
+            return scrollRect.content.GetChild(index);
         }
     }
 }

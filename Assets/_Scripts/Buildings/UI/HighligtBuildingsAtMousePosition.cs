@@ -8,7 +8,6 @@ namespace StrategyGame_2DPlatformer.Buildings.UI
 {
     public class HighligtBuildingsAtMousePosition : MonoBehaviour
     {
-
         public Color unavalaibleColor;
         public Color availaibleColor;
         private List<Vector3Int> _currentTilePositions;

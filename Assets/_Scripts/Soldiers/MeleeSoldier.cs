@@ -1,103 +1,132 @@
+using StrategyGame_2DPlatformer.Buildings;
 using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace StrategyGame_2DPlatformer.Soldiers
 {
     public class MeleeSoldier : Soldier
     {
-
         [SerializeField] private int _cost;
         public override int Cost { get { return _cost; } }
+        protected Selectable selectable;
+        public event Action OnMovementComplete;
 
-        #region Damage Related Variables
-        private int _currentHealth;
-        [SerializeField] private int _maxHealth;
-        public override int MaxHealth { get { return _maxHealth; } }
-        [SerializeField] private Image _fillBar;
-        public override Vector3Int DamageFrom { get => new Vector3Int(currentNode.x, currentNode.y, 0) + Vector3Int.left; }
-        public event Action<int> OnMovementComplete;
-        #endregion
+        [SerializeField] private int meleePopulationOccupied;
+        [SerializeField] private int _attackDamage;
+
+        public override int AttackDamage
+        {
+            get { return _attackDamage; }
+            set { _attackDamage = value; }
+        }
+
+        public override int PopulationOccupied => meleePopulationOccupied;
+        private List<Node> _pathToWalk;
+        private float moveSpeed = 2f;
+        private int _indexToVisit;
+        private bool isMoving;
+        Node nextNodee;
+        IDamageable _targetDamageable;
+        private bool isAttacking;
+
+        private bool destinationReached => _indexToVisit == _pathToWalk.Count;
 
         private void OnEnable()
         {
             OnMovementComplete += WhenReachedTargetToAttack;
             GameData.instance.IncreaseCurrentHumanPop(PopulationOccupied);
+            selectable = GetComponent<Selectable>();
+            _indexToVisit = 0;
+            isAttacking = false;
         }
 
         private void OnDisable()
         {
             GameData.instance.DecreaseCurrentHumanPop(PopulationOccupied);
         }
-
-        private void WhenReachedTargetToAttack(int damage)
+        private float _attackInterval = 1f;
+        private void WhenReachedTargetToAttack()
         {
-            hitObj1.Damage(damage);
+            if (_targetDamageable == null) return;
+            InvokeRepeating("DealDamage", 0f, _attackInterval);
+            isAttacking = true;
         }
 
-        [SerializeField] private int meleePopulationOccupied;
-        protected override int PopulationOccupied => meleePopulationOccupied;
-        private SpriteRenderer _spriteRenderer;
-        private List<Node> _pathToWalk;
-        private float moveSpeed = 2f;
-        private int _indexToVisit;
-        private bool isMoving;
 
-        private void Start()
+        private void DealDamage()
         {
-            _currentHealth = MaxHealth;
-            _spriteRenderer = GetComponent<SpriteRenderer>();
-            GameData.instance.CurrentHumanPopulationSize += PopulationOccupied;
-            base.IsSelected = false;
+            if (_targetDamageable.IsAlive && isAttacking)
+            {
+                Debug.Log("Damage was given!");
+                _targetDamageable.Damage(_attackDamage);
+            }
+            else
+            {
+                StopAttack();
+            }
         }
-        Node nextNodee;
-        IDamageable hitObj1;
-        Collider2D collider1;
 
-        
+        private void StopAttack()
+        {
+            isAttacking = false; //What if he attackes elsewhere during attack
+            CancelInvoke("DealDamage");
+            _targetDamageable = null;
+            Debug.Log("Stop Attacking the Damageable!");
+        }
+
         private void Update()
         {
-            if (Input.GetMouseButtonDown(1) && IsSelected && !isMoving)
+            if (Input.GetMouseButtonDown(1) && isAttacking)
+            {
+                StopAttack();
+            }
+            HandleRightClick();
+            HandleMovement();
+        }
+        Building building;
+        private void HandleRightClick()
+        {
+            if (Input.GetMouseButtonDown(1) && selectable.IsSelected && !isMoving)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
                 if (hit && hit.collider.GetComponent<IDamageable>() != null)
                 {
-                    collider1 = hit.collider;
-                    Debug.Log("Attack The Damageable!");
-                    IDamageable hitObj = hit.collider.GetComponent<IDamageable>();
-                    hitObj1 = hitObj;
-                    Vector3Int nextNode = hitObj.DamageFrom;
-                    nextNodee = GameData.instance.Graph.GetNodeAtPosition(nextNode);
-                    MoveTo(nextNodee);
-                    //hitObj.Damage(10);
+                    if (hit.collider.GetComponent<Building>() != null) building = hit.collider.GetComponent<Building>();
+                    HandleAttack(hit);
                 }
                 else
                 {
                     Node nextNode = GameData.instance.Graph.GetNodeAtMouseClick();
-                    MoveTo(nextNode);
+                    MoveToTarget(nextNode);
                 }
             }
-
-            if (isMoving)
-            {
-                Move();
-            }
-
-            if (IsSelected && Input.GetMouseButtonDown(0))
-            {
-                OnDeselected();
-            }
-
         }
 
+        private void HandleAttack(RaycastHit2D hit)
+        {
+            IDamageable targetDamageable = hit.collider.GetComponent<IDamageable>();
+            if (targetDamageable != null)
+            {
+                Attack(targetDamageable);
+            }
+        }
 
-        public void MoveTo(Node targetNode)
+        public override void Attack(IDamageable hitObj)
+        {
+            _targetDamageable = hitObj;
+            Vector3Int nextNode = hitObj.DamageFrom;
+            nextNodee = GameData.instance.Graph.GetNodeAtPosition(nextNode);
+            MoveToTarget(nextNodee);
+            //MoveToTarget(GetClosestNodeToAttack(building));
+        }
+        
+
+        public void MoveToTarget(Node targetNode)
         {
             if (isMoving) return;
             if (targetNode.isOccupied) return;
@@ -105,35 +134,40 @@ namespace StrategyGame_2DPlatformer.Soldiers
             if (_pathToWalk == null || _pathToWalk.Count == 0) return;
             currentNode.isOccupied = false;
             isMoving = true;
-            _indexToVisit = 0;
+            //_indexToVisit = 0;
+        }
+
+        private void HandleMovement()
+        {
+            if (isMoving)
+            {
+                Move();
+            }
         }
 
         public override void Move()
         {
-            Vector3 targetPosition = new Vector3(_pathToWalk[_indexToVisit].x, _pathToWalk[_indexToVisit].y, 0);
+            Vector3Int destination = new Vector3Int(_pathToWalk[_indexToVisit].x, _pathToWalk[_indexToVisit].y, 0);
+            Vector3 targetPosition = GameData.instance.Tilemap.GetCellCenterWorld(destination);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             if (transform.position == targetPosition)
             {
                 currentNode = _pathToWalk[_indexToVisit];
                 _indexToVisit++;
-                if (_indexToVisit >= _pathToWalk.Count)
+
+                if (destinationReached)
                 {
                     currentNode.isOccupied = true;
                     isMoving = false;
-                    if (hitObj1 != null)
+                    if (_targetDamageable != null)
                     {
-                        OnMovementComplete?.Invoke(20);
+                        OnMovementComplete?.Invoke();
                     }
-                    hitObj1 = null;
-
+                    //_targetDamageable = null;
+                    _pathToWalk = null;
+                    _indexToVisit = 0;
                 }
             }
-        }
-
-        private bool IsClickOnBuilding()
-        {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            return GetComponent<SpriteRenderer>().bounds.Contains(mousePosition);
         }
 
         public void SetCurrentNodeOnSpawn()
@@ -143,40 +177,9 @@ namespace StrategyGame_2DPlatformer.Soldiers
             Node nodeToAssign = GameData.instance.Graph.GetNodeAtPosition(currentTilePosition);
             currentNode = nodeToAssign;
         }
-        #region Selection Related Functionality
-        private void OnMouseDown()
-        {
-            OnSelected();
-        }
-        public override void OnSelected()
-        {
-            IsSelected = true;
-            GetComponent<SpriteRenderer>().color = Color.red;
-        }
-
-        public override void OnDeselected()
-        {
-            if (!EventSystem.current.IsPointerOverGameObject() && !IsClickOnBuilding())
-            {
-                IsSelected = false;
-                _spriteRenderer.color = Color.white;
-            }
-        }
-        #endregion
-
-        #region Damage related functionality
-        public override void Damage(int damage)
-        {
-            if (_currentHealth <= damage) { Destroy(gameObject); return; }
-            _currentHealth -= damage;
-            _fillBar.fillAmount = ((float)_currentHealth / (float)_maxHealth);
-        }
-
-        public override void Attack()
-        {
-
-        }
-        #endregion
 
     }
 }
+
+
+

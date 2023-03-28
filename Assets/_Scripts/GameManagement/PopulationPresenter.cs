@@ -31,8 +31,8 @@ namespace StrategyGame_2DPlatformer
 
         public void UpdateView()
         {
-            if (currentPop != null) currentPop.text = GameData.instance.CurrentHumanPopulationSize.ToString();
-            if (availaiblePop != null) availaiblePop.text = "/ " + GameData.instance.CurrentPopulationSize.ToString();
+            if (currentPop != null) currentPop.text = GameData.instance.CurrentPopulation.ToString();
+            if (availaiblePop != null) availaiblePop.text = "/ " + GameData.instance.AvailaiblePopulation.ToString();
         }
 
 

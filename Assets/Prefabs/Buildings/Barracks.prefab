@@ -15,7 +15,10 @@ GameObject:
   - component: {fileID: -9124901349407087527}
   - component: {fileID: 305667869396345496}
   - component: {fileID: -4349897377185923112}
+  - component: {fileID: -6125210371425204687}
+  - component: {fileID: -6570356109060960771}
   - component: {fileID: -6771990957981560524}
+  - component: {fileID: -3628520336758945938}
   m_Layer: 0
   m_Name: Barracks
   m_TagString: Untagged
@@ -170,11 +173,34 @@ MonoBehaviour:
   _name: Barracks
   _cost: 20
   factoryState: 0
-  soldierHolder: {fileID: 0}
-  _maxHealth: 100
-  _fillBar: {fileID: 7277717158711280012}
   _sizeX: 4
   _sizeY: 4
+--- !u!114 &-6125210371425204687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400177977207723549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaae340d3a22a1a47ad6857c0a58d76d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soldierHolder: {fileID: 0}
+--- !u!114 &-6570356109060960771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400177977207723549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d5ce816a9848c4c86500b01d5621f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
 --- !u!114 &-6771990957981560524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +215,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unavalaibleColor: {r: 0.7735849, g: 0.20726234, b: 0.20726234, a: 0.43137255}
   availaibleColor: {r: 0.28196865, g: 0.6886792, b: 0.28647947, a: 0.47058824}
+--- !u!114 &-3628520336758945938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400177977207723549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a51bf663f98ec248b17e3e97a0cb753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 7277717158711280012}
 --- !u!1001 &3955177577355551494
 PrefabInstance:
   m_ObjectHideFlags: 0

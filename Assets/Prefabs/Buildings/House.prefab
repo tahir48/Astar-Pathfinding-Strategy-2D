@@ -15,7 +15,10 @@ GameObject:
   - component: {fileID: 3592683787208430011}
   - component: {fileID: 3799880307580606330}
   - component: {fileID: -4552345263541850581}
+  - component: {fileID: -1157184769487492604}
   - component: {fileID: 3896332727249660882}
+  - component: {fileID: -825526091706556094}
+  - component: {fileID: 1353088910585166547}
   m_Layer: 0
   m_Name: House
   m_TagString: Untagged
@@ -169,11 +172,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: House
   _cost: 5
-  _maxHealth: 30
   takeDamageFrom: {x: 0, y: 0, z: 0}
-  _fillBar: {fileID: 2098291073176625695}
   _sizeX: 2
   _sizeY: 2
+--- !u!114 &-1157184769487492604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2587456785259176959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaae340d3a22a1a47ad6857c0a58d76d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soldierHolder: {fileID: 0}
 --- !u!114 &3896332727249660882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,6 +202,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unavalaibleColor: {r: 0.7735849, g: 0.20726234, b: 0.20726234, a: 0.43137255}
   availaibleColor: {r: 0.28196865, g: 0.6886792, b: 0.28647947, a: 0.47058824}
+--- !u!114 &-825526091706556094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2587456785259176959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d5ce816a9848c4c86500b01d5621f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 20
+--- !u!114 &1353088910585166547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2587456785259176959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a51bf663f98ec248b17e3e97a0cb753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 2098291073176625695}
 --- !u!1001 &5693280701995974805
 PrefabInstance:
   m_ObjectHideFlags: 0

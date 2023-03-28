@@ -15,7 +15,10 @@ GameObject:
   - component: {fileID: 116845820225472255}
   - component: {fileID: 360071885091913790}
   - component: {fileID: -1079527463812584896}
+  - component: {fileID: -2316916469400025424}
   - component: {fileID: -2598455119479231062}
+  - component: {fileID: 8766319601602073746}
+  - component: {fileID: 3562871517807606179}
   m_Layer: 0
   m_Name: Mill
   m_TagString: Untagged
@@ -170,10 +173,21 @@ MonoBehaviour:
   _name: Mill
   _cost: 10
   takeDamageFrom: {x: 0, y: 0, z: 0}
-  _maxHealth: 50
-  _fillBar: {fileID: 1595611674731612517}
   _sizeX: 2
   _sizeY: 3
+--- !u!114 &-2316916469400025424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417690800880776379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaae340d3a22a1a47ad6857c0a58d76d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soldierHolder: {fileID: 0}
 --- !u!114 &-2598455119479231062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,6 +202,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unavalaibleColor: {r: 0.7735849, g: 0.20726234, b: 0.20726234, a: 0.43137255}
   availaibleColor: {r: 0.28196865, g: 0.6886792, b: 0.28647947, a: 0.47058824}
+--- !u!114 &8766319601602073746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417690800880776379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a51bf663f98ec248b17e3e97a0cb753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 1595611674731612517}
+--- !u!114 &3562871517807606179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417690800880776379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d5ce816a9848c4c86500b01d5621f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 50
 --- !u!1001 &4915952094185679855
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -138,7 +138,6 @@ GameObject:
   - component: {fileID: 2296622390345681351}
   - component: {fileID: 2296622390345681352}
   - component: {fileID: 2296622390345681354}
-  - component: {fileID: 5283346691318775005}
   m_Layer: 5
   m_Name: House
   m_TagString: Untagged
@@ -166,7 +165,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 104, y: 991}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2296622390345681351
@@ -263,18 +262,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &5283346691318775005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2296622390345681356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 219d3ce84a1d97f42aa2f0edf768878b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2296622390723529534
 GameObject:
   m_ObjectHideFlags: 0

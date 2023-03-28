@@ -1,12 +1,27 @@
+using StrategyGame_2DPlatformer.Soldiers;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+
+//Possible improvements
+//Consider using the UnityEngine.Events.UnityEvent class instead of System.Action to declare events.
+//Explain class responsibilities
+
 namespace StrategyGame_2DPlatformer.GameManagement
 {
     public class GameData : MonoBehaviour
     {
+        /// <summary>
+        /// This class is responsible for holding all the data that is needed for the game to run.
+        /// Also it is responsible for updating the UI elements that are related to the data.
+        /// This class contains population data, therefore it is our Model for MVP pattern
+        /// This class is a Singleton.
+        /// </summary>
+        /// 
+
+        public Soldier soldier;
         #region Sprites
         public Sprite populationBuildingSprite;
         public Sprite productionBuildingSprite;
@@ -22,10 +37,15 @@ namespace StrategyGame_2DPlatformer.GameManagement
         public GameObject knightPrefab;
         #endregion
 
-        #region Population Related Variables
-        private int _maxPopulationSize;
-        public int MaxPopulationSize { get { return _maxPopulationSize; } private set { } }
-        #endregion
+        //#region Population Related Variables
+        //private int _maxPopulationSize;
+        //public int MaxPopulationSize { get { return _maxPopulationSize; } private set { } }
+        //#endregion
+        
+        Coroutine cor;
+        float lerpDuration = 0.5f;
+        private bool menuOpened;
+
 
         #region Simple Singleton
         public static GameData instance;
@@ -39,36 +59,34 @@ namespace StrategyGame_2DPlatformer.GameManagement
         #endregion
 
         #region Population MVP Pattern
-        //This class contains population data, therefore it is our Model for MVP pattern
-        //This class implements events in population change
         public event Action PopulationChanged; // This event notifies the Presenter that the population has changed.
-        private int _currentHumanPopulationSize;
-        private int _currentPopulationSize;
-        public int CurrentHumanPopulationSize { get { return _currentHumanPopulationSize; } set { _currentHumanPopulationSize = value; } }
-        public int CurrentPopulationSize { get { return _currentPopulationSize; } set { _currentPopulationSize = value; } }
+        private int _currentPopulation;
+        private int _availaiblePopulation;
+        public int CurrentPopulation { get { return _currentPopulation; } set { _currentPopulation = value; } }
+        public int AvailaiblePopulation { get { return _availaiblePopulation; } set { _availaiblePopulation = value; } }
 
 
         public void IncreaseCurrentHumanPop(int amount)
         {
-            _currentHumanPopulationSize += amount;
+            _currentPopulation += amount;
             UpdatePopulation();
         }
 
         public void IncreaseCurrentAvailaiblePop(int amount)
         {
-            _currentPopulationSize += amount;
+            _availaiblePopulation += amount;
             UpdatePopulation();
         }
 
         public void DecreaseCurrentHumanPop(int amount)
         {
-            _currentHumanPopulationSize -= amount;
+            _currentPopulation -= amount;
             UpdatePopulation();
         }
 
         public void DecreaseCurrentAvailaiblePop(int amount)
         {
-            _currentPopulationSize -= amount;
+            _availaiblePopulation -= amount;
             UpdatePopulation();
         }
 
@@ -97,7 +115,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
 
         public void UpdateMoney()
         {
-            MoneyChanged.Invoke();
+            MoneyChanged?.Invoke();
         }
         #endregion
 
@@ -105,11 +123,11 @@ namespace StrategyGame_2DPlatformer.GameManagement
 
         private void Awake()
         {
-            #region Population Related Variables
-            _currentPopulationSize = 5;
-            _maxPopulationSize = 200;
+            //initial availaible pop and resources
+            _availaiblePopulation = 5;
+            //_maxPopulationSize = 200;
             _money = 100;
-            #endregion
+
             #region Simple Singleton
             if (instance == null)
             {
@@ -130,9 +148,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
             InitializeHiddenInformationMenu();
         }
 
-        Coroutine cor;
-        float lerpDuration = 0.5f;
-        private bool menuOpened;
+
 
         public void HideInformationMenu()
         {
