@@ -27,6 +27,7 @@ namespace StrategyGame_2DPlatformer
             rectTransform = GetComponent<RectTransform>();
             SetupPool();
         }
+
         private void Start()
         {
             
@@ -44,12 +45,12 @@ namespace StrategyGame_2DPlatformer
 
         private void InitializePoolPositions()
         {
-            float originY = 0 - (height * 0.5f);
+            float originY = -(height * 0.5f);
             float posOffset = childHeight * 0.5f;
             for (int i = 0; i < rtChildren.Length; i++)
             {
                 Vector2 childPos = rtChildren[i].localPosition;
-                childPos.y = originY + posOffset + i * (childHeight + itemSpacing);
+                childPos.y = -4 * childHeight + originY + posOffset + i * (childHeight + itemSpacing);
                 rtChildren[i].localPosition = childPos;
             }
         }
@@ -60,17 +61,13 @@ namespace StrategyGame_2DPlatformer
             {
                 return;
             }
-
-
-            GameObject instance = null;
             int ind = 0;
             for (int i = 0; i < initPoolSize; i++)
             {
                 if (ind > objectsToPoolArray.Length - 1) ind = 0;
-                instance = Instantiate(objectsToPoolArray[ind], rectTransform.transform);
+                Instantiate(objectsToPoolArray[ind], rectTransform.transform);
                 ind= ind + 1;
             }
-
             rtPool = new RectTransform[rectTransform.childCount];
             for (int i = 0; i < rectTransform.childCount; i++)
             {

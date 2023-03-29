@@ -73,7 +73,7 @@ namespace StrategyGame_2DPlatformer.Buildings
         public override void OnBuildingPlaced()
         {
             _gameData.IncreaseCurrentAvailaiblePop(5);
-            _gameData.SpendMoney(5);
+            _gameData.SpendMoney(Cost);
         }
         #endregion
     }

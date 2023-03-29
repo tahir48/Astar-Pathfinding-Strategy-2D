@@ -44,7 +44,6 @@ namespace StrategyGame_2DPlatformer
             var firstElement = GetPooledObject(myScrollRect, firstIndex);
             int lastIndex = positiveDrag ? 0 : myScrollRect.content.childCount - 1;
             var lastElement = GetPooledObject(myScrollRect, lastIndex);
-
             var aimPosition = transform.position.y;
             if (positiveDrag)
             {
@@ -69,13 +68,14 @@ namespace StrategyGame_2DPlatformer
         private Vector2 RecalculatePoolPositions(Transform lastElement)
         {
             Vector2 newPos = lastElement.position;
+            var screenIndependencyRatio = Screen.height / (7 * _content.ChildHeight);
             if (positiveDrag)
             {
-                newPos.y = lastElement.position.y - _content.ChildHeight * 1.5f + _content.ItemSpacing;
+                newPos.y = lastElement.position.y - _content.ChildHeight * screenIndependencyRatio + _content.ItemSpacing;
             }
             else
             {
-                newPos.y = lastElement.position.y + _content.ChildHeight * 1.5f - _content.ItemSpacing;
+                newPos.y = lastElement.position.y + _content.ChildHeight * screenIndependencyRatio - _content.ItemSpacing;
             }
             return newPos;
         }
@@ -90,5 +90,6 @@ namespace StrategyGame_2DPlatformer
         {
             return scrollRect.content.GetChild(index);
         }
+
     }
 }

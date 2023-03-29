@@ -19,7 +19,6 @@ namespace StrategyGame_2DPlatformer.GameManagement
         /// This class contains population data, therefore it is our Model for MVP pattern
         /// This class is a Singleton.
         /// </summary>
-        /// 
 
         public Soldier soldier;
         #region Sprites
@@ -38,11 +37,6 @@ namespace StrategyGame_2DPlatformer.GameManagement
         public GameObject knightPrefab;
         #endregion
 
-        //#region Population Related Variables
-        //private int _maxPopulationSize;
-        //public int MaxPopulationSize { get { return _maxPopulationSize; } private set { } }
-        //#endregion
-        
         Coroutine cor;
         float lerpDuration = 0.5f;
         private bool menuOpened;
@@ -126,8 +120,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
         {
             //initial availaible pop and resources
             _availaiblePopulation = 5;
-            //_maxPopulationSize = 200;
-            _money = 100;
+            _money = 500;
 
             #region Simple Singleton
             if (instance == null)

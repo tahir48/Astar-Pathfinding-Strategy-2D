@@ -78,6 +78,7 @@ namespace StrategyGame_2DPlatformer.Buildings
             tilemap = GameData.instance.Tilemap;
             graph = GameData.instance.Graph;
         }
+
         private void OnEnable()
         {
             SpawnEvent.onSpawnButtonClick += HandleButtonClick;
@@ -91,7 +92,6 @@ namespace StrategyGame_2DPlatformer.Buildings
         {
             SpawnEvent.onSpawnButtonClick -= HandleButtonClick;
         }
-
 
         public Vector3Int GetClosestNodeToAttack(Soldier soldier)
         {
@@ -128,8 +128,7 @@ namespace StrategyGame_2DPlatformer.Buildings
             {
                 attackPoint = closestPosition + Vector3Int.up;
             }
-            //closestPosition = closestPosition + Vector3Int.right;
-            //return GameData.instance.Graph.GetNodeAtPosition(attackPoint);
+
             return attackPoint;
         }
 
@@ -149,7 +148,7 @@ namespace StrategyGame_2DPlatformer.Buildings
                 _currentFactory?.GetProduct(spawnPoint);
             }
         }
-        public void ChangeFactoryState(FactoryStates state) //Event caller
+        public void ChangeFactoryState(FactoryStates state)
         {
             factoryState = state;
             Debug.Log("Factory state has been " + state);
