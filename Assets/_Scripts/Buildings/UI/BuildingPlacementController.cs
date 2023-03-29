@@ -3,9 +3,8 @@ using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine;
 
 namespace StrategyGame_2DPlatformer.Buildings.UI
-{    //I shall rename this class, not as a presenter, but as a controller
-
-    public class BuildingPresenter : MonoBehaviour
+{   
+    public class BuildingPlacementController : MonoBehaviour
     {
         /// <summary>
         /// This class is responsible for placing the buildings on the map.
@@ -16,7 +15,7 @@ namespace StrategyGame_2DPlatformer.Buildings.UI
         public GameObject spritePrefab;
         private bool isOpen;
         GameObject sprite;
-        private PlaceBuilding _placeBuilding;
+        private PlacementPositionHandler _placeBuilding;
         private IPlaceable _placeable;
         private Camera mainCamera;
         private GameData gameData;
@@ -92,7 +91,7 @@ namespace StrategyGame_2DPlatformer.Buildings.UI
         public void OnBarracksButtonClick()
         {
             sprite = Instantiate(spritePrefab, Vector3.zero, Quaternion.identity);
-            _placeBuilding = sprite.GetComponent<PlaceBuilding>();
+            _placeBuilding = sprite.GetComponent<PlacementPositionHandler>();
             Vector3 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             sprite.transform.position = new Vector3(mousePos.x, mousePos.y, 0f);
             isOpen = true;

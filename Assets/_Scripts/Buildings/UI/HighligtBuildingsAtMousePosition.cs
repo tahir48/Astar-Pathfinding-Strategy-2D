@@ -3,7 +3,6 @@ using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using StrategyGame_2DPlatformer.Contracts;
-using UnityEngine.Rendering;
 
 namespace StrategyGame_2DPlatformer.Buildings.UI
 {

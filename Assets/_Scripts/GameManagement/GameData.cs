@@ -1,3 +1,4 @@
+using StrategyGame_2DPlatformer.SoldierFactory;
 using StrategyGame_2DPlatformer.Soldiers;
 using System;
 using System.Collections;
@@ -5,9 +6,6 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
-//Possible improvements
-//Consider using the UnityEngine.Events.UnityEvent class instead of System.Action to declare events.
-//Explain class responsibilities
 
 namespace StrategyGame_2DPlatformer.GameManagement
 {
@@ -19,6 +17,12 @@ namespace StrategyGame_2DPlatformer.GameManagement
         /// This class contains population data, therefore it is our Model for MVP pattern
         /// This class is a Singleton.
         /// </summary>
+
+        #region Factories
+        public Factory swordsmanFactory;
+        public Factory spearmanFactory;
+        public Factory knightFactory;
+        #endregion
 
         public Soldier soldier;
         #region Sprites
@@ -119,7 +123,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
         private void Awake()
         {
             //initial availaible pop and resources
-            _availaiblePopulation = 5;
+            _availaiblePopulation = 20;
             _money = 500;
 
             #region Simple Singleton

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace StrategyGame_2DPlatformer.Buildings.UI
 {
-    public class PlaceBuilding : MonoBehaviour
+    public class PlacementPositionHandler : MonoBehaviour
     {
         /// <summary>
         /// This class is responsible for deciding if the building can be placed on the map.

@@ -3,7 +3,6 @@ using StrategyGame_2DPlatformer.UI;
 using StrategyGame_2DPlatformer.SoldierFactory;
 using UnityEngine;
 using System;
-using StrategyGame_2DPlatformer.SoldierFactory.Factories;
 using StrategyGame_2DPlatformer.Soldiers;
 using UnityEngine.Tilemaps;
 
@@ -19,28 +18,9 @@ namespace StrategyGame_2DPlatformer.Buildings
         #region Production Related Variables
         public enum FactoryStates { Swordsman, Spearman, Knight }
         public FactoryStates factoryState;
-        private Factory swordsmanFactory;
-        private Factory spearmanFactory;
-        private Factory knightFactory;
+
         private Factory _currentFactory;
         private Vector3Int _spawnpoint;
-        public override Vector3Int SpawnPoint
-        {
-            get
-            {
-                if (_spawnpoint != null)
-                {
-                    return _spawnpoint;
-                }
-                else
-                {
-                    //FindSpawnPoint();
-                    _spawnpoint = GetClosestNodeToAttack(GameData.instance.soldier);
-                    return _spawnpoint;
-                }
-            }
-        }
-
         #endregion
 
         #region Placement Related Variables
@@ -82,9 +62,6 @@ namespace StrategyGame_2DPlatformer.Buildings
         private void OnEnable()
         {
             SpawnEvent.onSpawnButtonClick += HandleButtonClick;
-            swordsmanFactory = FindObjectOfType<SwordsmanConcreteFactory>();
-            knightFactory = FindObjectOfType<KnightConcreteFactory>();
-            spearmanFactory = FindObjectOfType<SpearmanConcreteFactory>();
             ChangeFactoryState(FactoryStates.Swordsman);
         }
 
@@ -155,13 +132,13 @@ namespace StrategyGame_2DPlatformer.Buildings
             switch (state)
             {
                 case FactoryStates.Swordsman:
-                    _currentFactory = swordsmanFactory;
+                    _currentFactory = GameData.instance.swordsmanFactory;
                     break;
                 case FactoryStates.Spearman:
-                    _currentFactory = spearmanFactory;
+                    _currentFactory = GameData.instance.spearmanFactory;
                     break;
                 case FactoryStates.Knight:
-                    _currentFactory = knightFactory;
+                    _currentFactory = GameData.instance.knightFactory;
                     break;
                 default:
                     break;

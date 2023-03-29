@@ -4,7 +4,6 @@ using StrategyGame_2DPlatformer.GameManagement;
 using StrategyGame_2DPlatformer.Soldiers;
 using System;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace StrategyGame_2DPlatformer
 {

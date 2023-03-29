@@ -15,7 +15,6 @@ namespace StrategyGame_2DPlatformer.Buildings
         public List<Vector3Int> OccupiedPositions { get; set; }
         public virtual int SizeX { get; set; }
         public virtual int SizeY { get; set; }
-        public virtual Vector3Int SpawnPoint { get; set; }
         public abstract void OnBuildingPlaced();
         #endregion
     }
