@@ -14,8 +14,8 @@ namespace StrategyGame_2DPlatformer.Buildings
         #region Placement Related Variables
         [SerializeField] private int _sizeX;
         [SerializeField] private int _sizeY;
-        public override int SizeX { get => _sizeX; set => _sizeX = value; }
-        public override int SizeY { get => _sizeY; set => _sizeY = value; }
+        public override int SizeX { get => _sizeX; protected set => _sizeX = value; }
+        public override int SizeY { get => _sizeY; protected set => _sizeY = value; }
         #endregion
 
         #region Generate Money

@@ -1,7 +1,6 @@
 using StrategyGame_2DPlatformer.Contracts;
 using StrategyGame_2DPlatformer.GameManagement;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace StrategyGame_2DPlatformer.Soldiers
@@ -23,23 +22,18 @@ namespace StrategyGame_2DPlatformer.Soldiers
         }
 
         public override int PopulationOccupied => meleePopulationOccupied;
-        private List<Node> _pathToWalk;
-        private float moveSpeed = 2f;
-        private int _indexToVisit;
-        private bool isMoving;
-        //Node nextNodee;
+        private SoldierMovementHandler _soldierMovementHandler;
         IDamageable _targetDamageable;
         private bool isAttacking;
         private Camera _mainCamera;
 
-        private bool destinationReached => _indexToVisit == _pathToWalk.Count;
-
         private void OnEnable()
         {
+            _soldierMovementHandler = GetComponent<SoldierMovementHandler>();
+            _soldierMovementHandler.OnMovementComplete += WhenReachedTargetToAttack;
             OnMovementComplete += WhenReachedTargetToAttack;
             GameData.instance.IncreaseCurrentHumanPop(PopulationOccupied);
             selectable = GetComponent<Selectable>();
-            _indexToVisit = 0;
             isAttacking = false;
             _mainCamera = Camera.main;
         }
@@ -85,11 +79,15 @@ namespace StrategyGame_2DPlatformer.Soldiers
                 StopAttack();
             }
             HandleRightClick();
-            HandleMovement();
+
+            if (_soldierMovementHandler.IsMoving)
+            {
+                Move();
+            }
         }
         private void HandleRightClick()
         {
-            if (Input.GetMouseButtonDown(1) && selectable.IsSelected && !isMoving)
+            if (Input.GetMouseButtonDown(1) && selectable.IsSelected && !_soldierMovementHandler.IsMoving)
             {
                 Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
@@ -101,7 +99,7 @@ namespace StrategyGame_2DPlatformer.Soldiers
                 else
                 {
                     Node nextNode = GameData.instance.Graph.GetNodeAtMouseClick();
-                    MoveToTarget(nextNode);
+                    _soldierMovementHandler.MoveToTarget(currentNode, nextNode);
                 }
             }
         }
@@ -119,58 +117,20 @@ namespace StrategyGame_2DPlatformer.Soldiers
         {
             _targetDamageable = hitObj;
             Vector3Int nextNode = hitObj.DamageFrom;
-            Node nextNodee = GameData.instance.Graph.GetNodeAtPosition(nextNode);
-            if (currentNode == nextNodee)
+            Node targetNode = GameData.instance.Graph.GetNodeAtPosition(nextNode);
+            if (currentNode == targetNode)
             {
                 OnMovementComplete?.Invoke();
             }
             else
             {
-                MoveToTarget(nextNodee);
-            }
-        }
-
-
-        public void MoveToTarget(Node targetNode)
-        {
-            if (isMoving) return;
-            if (targetNode.isOccupied) return;
-            _pathToWalk = AStar.FindPath(currentNode, targetNode);
-            if (_pathToWalk == null || _pathToWalk.Count == 0) return;
-            currentNode.isOccupied = false;
-            isMoving = true;
-        }
-
-        private void HandleMovement()
-        {
-            if (isMoving)
-            {
-                Move();
+                _soldierMovementHandler.MoveToTarget(currentNode, targetNode);
             }
         }
 
         public override void Move()
         {
-            Vector3Int destination = new Vector3Int(_pathToWalk[_indexToVisit].x, _pathToWalk[_indexToVisit].y, 0);
-            Vector3 targetPosition = GameData.instance.Tilemap.GetCellCenterWorld(destination);
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            if (transform.position == targetPosition)
-            {
-                currentNode = _pathToWalk[_indexToVisit];
-                _indexToVisit++;
-
-                if (destinationReached)
-                {
-                    currentNode.isOccupied = true;
-                    isMoving = false;
-                    if (_targetDamageable != null)
-                    {
-                        OnMovementComplete?.Invoke();
-                    }
-                    _pathToWalk = null;
-                    _indexToVisit = 0;
-                }
-            }
+            _soldierMovementHandler.Move(this, _targetDamageable);
         }
 
         public void SetCurrentNodeOnSpawn()
