@@ -26,17 +26,22 @@ This game contains 3 types of soldiers,
 ### Functionality
 ##### Selection
 All buildings and soldiers can be selected in the game.
+
 ![](Media/BuildingSelection.gif)
 
 ##### Movement
 Tilemap to graph - a tilemap to graph implementation is made.
+
 ![](Media/OnDrawGizmosGraph.png)
+
 In this implementation, each TileBase are stored in nodes of the graph. Possible paths are edges between the nodes.
 To move the player, an AStar Pathfinding algorithm is implemented. The shortest path is adopted to move the player among unoccupied nodes.
+
 ![](Media/PathFinding.gif)
 
 ##### Building placement
 Place is highlighted for appropriate area
+
 ![](Media/OccupiedPositions.gif)
 
 ##### Attack
@@ -47,4 +52,5 @@ Soldier attack a building or another soldier from the closest possible point.
 
 ##### Infinite Scrollview
 A simple object pooling is adopted for infinite scroll view.
+
 ![](Media/InfiniteScroll.gif)
