@@ -1,11 +1,11 @@
-using StrategyGame_2DPlatformer.Buildings;
+using StrategyGame_2DPlatformer.Core;
 using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Buildings
 {
-    public class SelectableBuilding : MonoBehaviour, Contracts.ISelectable
+    public class SelectableBuilding : MonoBehaviour, ISelectable
     {
         private bool _isSelected;
         private SpriteRenderer _spriteRenderer;

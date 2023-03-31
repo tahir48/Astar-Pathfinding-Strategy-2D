@@ -1,10 +1,10 @@
-using StrategyGame_2DPlatformer.Contracts;
-using StrategyGame_2DPlatformer.Soldiers;
+using StrategyGame_2DPlatformer.Core;
+using StrategyGame_2DPlatformer.GraphStructure;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Soldiers
 {
     public class SoldierMovementHandler : MonoBehaviour
     {
@@ -28,7 +28,7 @@ namespace StrategyGame_2DPlatformer
             if (targetNode.isOccupied) return;
             _pathToWalk = AStar.FindPath(currentNode, targetNode);
             if (_pathToWalk == null || _pathToWalk.Count == 0) return;
-            currentNode.isOccupied = false;
+            currentNode.SetOccupied(false);
             isMoving = true;
         }
 
@@ -45,7 +45,7 @@ namespace StrategyGame_2DPlatformer
 
                 if (destinationReached)
                 {
-                    currentNode.isOccupied = true;
+                    currentNode.SetOccupied(true);
                     soldier.currentNode = currentNode;
                     isMoving = false;
                     if (targetDamageable != null)

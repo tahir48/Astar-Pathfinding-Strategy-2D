@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Buildings
 {
     public class BuildingHealthPresenter : MonoBehaviour
     {
         /// <summary>
         /// This class is responsible for updating the health bar of the building i.e. Presenter.
         /// </summary>
+        /// 
+
         [SerializeField] private Image healthBar;
         DamageableBuilding damageable;
 

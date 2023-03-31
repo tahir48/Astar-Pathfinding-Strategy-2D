@@ -172,7 +172,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Mill
   _cost: 10
-  takeDamageFrom: {x: 0, y: 0, z: 0}
   _sizeX: 2
   _sizeY: 3
 --- !u!114 &-2316916469400025424
@@ -187,7 +186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaae340d3a22a1a47ad6857c0a58d76d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soldierHolder: {fileID: 0}
 --- !u!114 &-2598455119479231062
 MonoBehaviour:
   m_ObjectHideFlags: 0

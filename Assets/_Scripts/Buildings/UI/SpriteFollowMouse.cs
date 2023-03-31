@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StrategyGame_2DPlatformer.Buildings.UI
+namespace StrategyGame_2DPlatformer.Buildings
 {
     public class SpriteFollowMouse : MonoBehaviour
     {

@@ -1,8 +1,9 @@
-using StrategyGame_2DPlatformer.Contracts;
+using StrategyGame_2DPlatformer.Core;
 using StrategyGame_2DPlatformer.GameManagement;
+using StrategyGame_2DPlatformer.GraphStructure;
 using UnityEngine;
 
-namespace StrategyGame_2DPlatformer.Buildings.UI
+namespace StrategyGame_2DPlatformer.Buildings
 {   
     public class BuildingPlacementController : MonoBehaviour
     {

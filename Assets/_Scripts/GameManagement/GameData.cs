@@ -1,5 +1,6 @@
-using StrategyGame_2DPlatformer.SoldierFactory;
-using StrategyGame_2DPlatformer.Soldiers;
+using StrategyGame_2DPlatformer.Buildings;
+using StrategyGame_2DPlatformer.Core;
+using StrategyGame_2DPlatformer.GraphStructure;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace StrategyGame_2DPlatformer.GameManagement
         public Factory knightFactory;
         #endregion
 
-        public Soldier soldier;
+        [HideInInspector] public Soldier soldier;
         #region Sprites
         public Sprite populationBuildingSprite;
         public Sprite productionBuildingSprite;

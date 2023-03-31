@@ -1,9 +1,8 @@
-using StrategyGame_2DPlatformer.Contracts;
-using StrategyGame_2DPlatformer.Soldiers;
+using StrategyGame_2DPlatformer.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Soldiers
 {
     public class Selectable : MonoBehaviour, ISelectable
     {

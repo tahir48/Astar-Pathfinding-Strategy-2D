@@ -1,18 +1,16 @@
-using StrategyGame_2DPlatformer.Buildings;
-using StrategyGame_2DPlatformer.Contracts;
+using StrategyGame_2DPlatformer.Core;
 using StrategyGame_2DPlatformer.GameManagement;
-using StrategyGame_2DPlatformer.Soldiers;
 using System;
 using UnityEngine;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Buildings
 {
     public class DamageableBuilding : MonoBehaviour, IDamageable
     {
         /// <summary>
         /// This class is responsible for keeping data and updating the health of the building i.e. Model.
         /// </summary>
-        /// 
+
         public static event Action HealthChanged;
         private int _currentHealth;
         [SerializeField] 
@@ -52,7 +50,7 @@ namespace StrategyGame_2DPlatformer
             var positions = _building.OccupiedPositions;
             foreach (var pos in positions)
             {
-                GameData.instance.Graph.GetNodeAtPosition(pos).isOccupied = false;
+                GameData.instance.Graph.GetNodeAtPosition(pos).SetOccupied(false);
             }
             _isAlive = false;
             gameObject.SetActive(false);

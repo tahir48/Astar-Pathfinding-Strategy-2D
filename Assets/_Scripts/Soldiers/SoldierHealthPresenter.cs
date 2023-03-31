@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace StrategyGame_2DPlatformer
+namespace StrategyGame_2DPlatformer.Soldiers
 {
     public class SoldierHealthPresenter : MonoBehaviour
     {

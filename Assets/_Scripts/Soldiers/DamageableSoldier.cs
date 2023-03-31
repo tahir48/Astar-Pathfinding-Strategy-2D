@@ -1,10 +1,10 @@
-using StrategyGame_2DPlatformer.Contracts;
+using StrategyGame_2DPlatformer.Core;
 using StrategyGame_2DPlatformer.GameManagement;
-using StrategyGame_2DPlatformer.Soldiers;
 using System;
 using UnityEngine;
 
-namespace StrategyGame_2DPlatformer
+
+namespace StrategyGame_2DPlatformer.Soldiers
 {
     public class DamageableSoldier : MonoBehaviour, IDamageable
     {
@@ -43,7 +43,8 @@ namespace StrategyGame_2DPlatformer
         {
             var soldier = GetComponent<Soldier>();
             GameData.instance.DecreaseCurrentHumanPop(soldier.PopulationOccupied);
-            soldier.currentNode.isOccupied = false;
+            soldier.CancelInvoke();
+            soldier.currentNode.SetOccupied(false);
             _isAlive = false;
             gameObject.SetActive(false);
         }

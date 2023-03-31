@@ -1,6 +1,6 @@
 # StrategyGame_2DPlatformer
 ### Introduction
-This repository contains a primitive 2D strategy game with 3 types of buildings and 3 types of soldiers, with basic functionality such as selection, movement attack, and taking damage.
+This repository contains a primitive 2D strategy game with 3 types of buildings and 3 types of soldiers, with basic functionality such as selection, movement attack, and taking damage. It also contains some of the design patterns such as pooling, factory and singleton as well as MVP.
 
 ### Run The Repo
 ##### From Unity Editor
@@ -42,13 +42,12 @@ To move the player, an AStar Pathfinding algorithm is implemented. The shortest 
 ##### Building placement
 Place is highlighted for appropriate area
 
-![](Media/OccupiedPositions.gif)
+![](Media/BuildingPlacement.gif)
 
 ##### Attack
 Selected soldiers will be able to attack with right click on a unit or building.
 Soldiers and buildings should be destroyed when their hp is 0. 
 Soldier attack a building or another soldier from the closest possible point.
-
 
 ##### Infinite Scrollview
 A simple object pooling is adopted for infinite scroll view.

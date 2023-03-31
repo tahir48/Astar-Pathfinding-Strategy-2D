@@ -2,9 +2,10 @@ using UnityEngine;
 using StrategyGame_2DPlatformer.GameManagement;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
-using StrategyGame_2DPlatformer.Contracts;
+using StrategyGame_2DPlatformer.Core;
+using StrategyGame_2DPlatformer.GraphStructure;
 
-namespace StrategyGame_2DPlatformer.Buildings.UI
+namespace StrategyGame_2DPlatformer.Buildings
 {
     public class HighligtBuildingsAtMousePosition : MonoBehaviour
     {
