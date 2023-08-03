@@ -4,7 +4,7 @@ This repository contains a primitive 2D strategy game with 3 types of buildings 
 
 ### Run The Repo
 ##### From Unity Editor
-git clone https://github.com/tahirbey48/StrategyGame_2DPlatformer.git
+git clone https://github.com/tahir48/StrategyGame_2DPlatformer.git
 
 Open the project folder with Unity Editor
 ##### Playable Build
